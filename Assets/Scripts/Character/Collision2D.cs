@@ -14,24 +14,48 @@ public class Collision2D : MonoBehaviour
 
     private CircleCollider2D _circleCollider;
     private RaycastHit2D[] _collisionResults;
-    
+
+    private void Start()
+    {
+        _circleCollider = GetComponent<CircleCollider2D>();
+    }
+    private void FixedUpdate()
+    {
+        CheckCollision();
+    }
+
     public void CheckCollision()
     {
         _collisionResults = Physics2D.CircleCastAll(transform.position, _circleCollider.radius , Vector2.down, 0, _collisionLayerMask);
 
         for (int i = 0; i < _collisionResults.Length; i++)
         {
-            Vector3 direction;
-            float distance;
+            ColliderDistance2D repulsionInfomation = ReTurnRepulsionInfomation(_collisionResults[i].collider);
 
-            Physics.ComputePenetration(_circleCollider, transform.position, Quaternion.identity,
-                _collisionResults[i].collider, _collisionResults[i].transform.position, _collisionResults[i].transform.eulerAngles,
-                out direction, out distance);
+            DoRepulsion(repulsionInfomation);
         }
     }
 
-    private void SetRepulsionForce(float force)
-    {
+    /// <summary>
+    /// 反発するための情報を返すメソッド
+    /// </summary>
+    /// <param name="collisionCollider">衝突したコライダー</param>
+    /// <returns>反発情報</returns>
+    private ColliderDistance2D  ReTurnRepulsionInfomation(Collider2D collisionCollider)
+    {               
+        ColliderDistance2D colliderDistance = Physics2D.Distance(_circleCollider, collisionCollider);
 
+        return colliderDistance;
+    }
+
+    /// <summary>
+    /// オブジェクトを反発させるメソッド
+    /// </summary>
+    /// <param name="repulsionInfomation">ColliderDistance2D</param>
+    private void DoRepulsion(ColliderDistance2D repulsionInfomation)
+    {
+        Vector2 repulsion = repulsionInfomation.normal * repulsionInfomation.distance;
+
+        transform.position += new Vector3(repulsion.x, repulsion.y, 0);
     }
 }
