@@ -6,16 +6,39 @@ using UnityEngine;
 [RequireComponent(typeof(CharacterStatus))]
 public abstract class BaseCharacter : MonoBehaviour
 {
+    protected private Collision2D _collision2D;
+    protected private CharacterStatus _characterStatus;
 
-    private Collision2D _collision2D;
-    private CharacterStatus _characterStatus;
-
-    protected void Start()
-    {
-        
-    }
+    /// <summary>
+    /// 物理挙動の更新を行うメソッド
+    /// </summary>
     public void PhysicsUpDate()
     {
+        _collision2D.CheckCollision();
+    }
 
+    /// <summary>
+    /// コンポーネントを格納するメソッド                  
+    /// </summary>
+    protected virtual void SetComponent()
+    {
+        _collision2D = CheckComponentMissing<Collision2D>();
+        _characterStatus = CheckComponentMissing<CharacterStatus>();
+    }
+
+    /// <summary>
+    /// コンポーネント存在確認。なかった場合はAddを行う
+    /// </summary>
+    /// <typeparam name="T">チェックの行うコンポーネント</typeparam>
+    /// <returns>コンポーネント</returns>
+    protected private T CheckComponentMissing<T>()
+    {
+         T component;
+        if(!TryGetComponent<T>(out component))
+        {
+            Debug.LogError(transform.name + " " + typeof(T).FullName + "が足りないよ");
+            gameObject.AddComponent(typeof(T));
+        }
+        return component;
     }
 }
