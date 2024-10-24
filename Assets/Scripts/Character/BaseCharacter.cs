@@ -9,10 +9,16 @@ public abstract class BaseCharacter : MonoBehaviour
     protected private Collision2D _collision2D;
     protected private CharacterStatus _characterStatus;
 
+
+    private void Start()
+    {
+        SetComponent();
+    }
+
     /// <summary>
     /// 物理挙動の更新を行うメソッド
     /// </summary>
-    public void PhysicsUpDate()
+    public virtual void PhysicsUpDate()
     {
         _collision2D.CheckCollision();
     }

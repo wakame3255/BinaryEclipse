@@ -24,6 +24,9 @@ public class Collision2D : MonoBehaviour
         CheckCollision();
     }
 
+    /// <summary>
+    /// 衝突判定確認メソッド
+    /// </summary>
     public void CheckCollision()
     {
         _collisionResults = Physics2D.CircleCastAll(transform.position, _circleCollider.radius , Vector2.down, 0, _collisionLayerMask);

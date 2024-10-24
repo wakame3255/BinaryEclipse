@@ -4,5 +4,11 @@ using UnityEngine;
 
 public class PlayerCharacter : BaseCharacter
 {
-   
+    [SerializeField]
+    BaseCharacterAction _characterAction;
+
+    public override void PhysicsUpDate()
+    {
+        base.PhysicsUpDate();
+    }
 }
