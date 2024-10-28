@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class KnightAction : BaseCharacterAction
+public class HunterAction : BaseCharacterAction
 {
     IWalk walk;
     private void Start()

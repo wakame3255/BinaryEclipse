@@ -57,8 +57,8 @@ public class Collision2D : MonoBehaviour
     /// <param name="repulsionInfomation">ColliderDistance2D</param>
     private void DoRepulsion(ColliderDistance2D repulsionInfomation)
     {
-        Vector2 repulsion = repulsionInfomation.normal * repulsionInfomation.distance;
-
+        Vector2 repulsion = (repulsionInfomation.normal * repulsionInfomation.distance) * 1.1f;
+     
         transform.position += new Vector3(repulsion.x, repulsion.y, 0);
     }
 }
