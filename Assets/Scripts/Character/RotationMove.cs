@@ -21,11 +21,12 @@ public class RotationMove : MonoBehaviour
     {
         float myPosX = transform.position.x;
         float myPosY = transform.position.y;
-        Vector2 myRotation2D = new Vector2(myPosX, myPosY);
-        Vector2 targetDirection = new Vector2(mousePos.x - myPosX, mousePos.y - myPosY);
+        Vector3 targetDirection = new Vector3(mousePos.x - myPosX, mousePos.y - myPosY, 0);
 
-        Quaternion quaternion = Quaternion.LookRotation(targetDirection, transform.up);
+        Quaternion targetQuaternion = Quaternion.LookRotation(targetDirection, transform.up);
+        
+        Vector3 nowRotation = Quaternion.RotateTowards(transform.rotation, targetQuaternion, _rotationSpeed).eulerAngles;
 
-        Quaternion quaternion1 = Quaternion.RotateTowards(transform.rotation, quaternion, _rotationSpeed);
+        transform.rotation = Quaternion.Euler(0, 0, nowRotation.z);
     }
 }
