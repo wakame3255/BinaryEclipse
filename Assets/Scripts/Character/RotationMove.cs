@@ -7,7 +7,13 @@ public class RotationMove : MonoBehaviour
     [SerializeField]
     private float _rotationSpeed;
 
-    private void FixedUpdate()
+    private Transform _cacheTransform;
+
+    private void Start()
+    {
+        _cacheTransform = transform;
+    }
+    private void Update()
     {
         //マウスの座標を取得する
         Vector3 mousePos = Input.mousePosition;
@@ -17,16 +23,18 @@ public class RotationMove : MonoBehaviour
         DoRotationMove(pos);
     }
 
-    public void DoRotationMove(Vector3 mousePos)
+    public void DoRotationMove(Vector3 targetPos)
     {
-        float myPosX = transform.position.x;
-        float myPosY = transform.position.y;
-        Vector3 targetDirection = new Vector3(mousePos.x - myPosX, mousePos.y - myPosY, 0);
+        float targetAngle = ReturnTargetToAngle(targetPos);
 
-        Quaternion targetQuaternion = Quaternion.LookRotation(targetDirection, transform.up);
-        
-        Vector3 nowRotation = Quaternion.RotateTowards(transform.rotation, targetQuaternion, _rotationSpeed).eulerAngles;
+        _cacheTransform.rotation = Quaternion.AngleAxis(Mathf.Rad2Deg * targetAngle, Vector3.forward);
 
-        transform.rotation = Quaternion.Euler(0, 0, nowRotation.z);
+    }
+
+    private float ReturnTargetToAngle(Vector3 targetPos)
+    {
+        Vector3 targetDirection = targetPos - _cacheTransform.position;
+
+        return Mathf.Atan2(targetDirection.y, targetDirection.x);
     }
 }
