@@ -13,14 +13,10 @@ public class RotationMove : MonoBehaviour
     {
         _cacheTransform = transform;
     }
-    private void Update()
-    {
-        //マウスの座標を取得する
-        Vector3 mousePos = Input.mousePosition;
-        //スクリーン座標をワールド座標に変換する
-        Vector3 pos = Camera.main.ScreenToWorldPoint(mousePos);
 
-        DoRotationMove(pos);
+    private void FixedUpdate()
+    {
+        
     }
 
     /// <summary>

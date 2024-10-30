@@ -12,10 +12,18 @@ public class ObjectDictionary : MonoBehaviour
         SetGameObectsInDictionary(FindObjectsByType(typeof(GameObject), FindObjectsSortMode.None));
     }
 
-    public Object[] ReturnHasComponent<T>()
-    {
-        return FindObjectsByType(typeof(T), FindObjectsSortMode.None);
-    }
+ //   public T ReturnHasComponent<T>()
+ //   {
+ //       Object[] objects = FindObjectsByType(typeof(T), FindObjectsSortMode.None);
+
+ //       T[] components = new T[objects.Length];
+ //       for (int i = 0; i < components.Length; i++)
+ //       {
+ //           components[i] = objects[i].GetHashCode
+ //;
+ //       }
+ //       return 
+ //   }
 
     /// <summary>
     /// ディクショナリーに格納するメソッド

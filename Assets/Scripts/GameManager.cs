@@ -9,18 +9,16 @@ public class GameManager : MonoBehaviour
     private GameObject[] _sceneGameObjects;
     private ObjectDictionary _objectDictionary;
 
-    private BaseCharacter _baseCharacter;
+    private BaseCharacter[] _baseCharacter;
     void Start()
     {
-        _sceneGameObjects = FindObjectsByType<GameObject>(sortMode: FindObjectsSortMode.None);
-
         CheckAllComponent();
-        CallStartComponent();
+        SetVariableValue();     
     }
 
     private void FixedUpdate()
     {
-        
+        UpDateCharacter();
     }
 
     private void Update()
@@ -33,14 +31,18 @@ public class GameManager : MonoBehaviour
         _objectDictionary = CheckComponentMissing<ObjectDictionary>();
     }
 
-    private void CallStartComponent()
+    private void UpDateCharacter()
     {
-        
+        foreach (BaseCharacter character in _baseCharacter)
+        {
+            character.PhysicsUpDate();
+        }
     }
 
     private void SetVariableValue()
     {
-
+        _baseCharacter = FindObjectsByType<BaseCharacter>(FindObjectsSortMode.None);
+        _objectDictionary = CheckComponentMissing<ObjectDictionary>();
     }
 
     /// <summary>

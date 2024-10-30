@@ -31,7 +31,12 @@ public class InputManager : MonoBehaviour
 
     private void SetMousePosition()
     {
+        //マウスの座標を取得する
+        Vector3 mousePos = Input.mousePosition;
+        //スクリーン座標をワールド座標に変換する
+        Vector3 pos = Camera.main.ScreenToWorldPoint(mousePos);
 
+        _mousePosition = pos;
     }
 
     private void SetMoveInfomation()
