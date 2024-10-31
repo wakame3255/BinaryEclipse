@@ -5,8 +5,13 @@ using UnityEngine.EventSystems;
 
  public class BaseStateNode : MonoBehaviour, IDragHandler
 {
-    private protected BaseNode _inNode;
-    private protected BaseNode _outNode;
+    [SerializeField]
+    private protected InNode _inNode;
+    [SerializeField]
+    private protected OutNode _outNode;
+
+    public InNode InNode { get => _inNode; }
+    public OutNode OutNode { get => _outNode; }
 
     public void OnDrag(PointerEventData eventData)
     {
