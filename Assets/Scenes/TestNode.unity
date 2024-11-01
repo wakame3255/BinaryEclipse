@@ -881,7 +881,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _lineRenderer: {fileID: 1521567356}
-  _originPosition: {fileID: 406311667}
+  _rectOriginPosition: {fileID: 406311667}
   _collisionLayerMask:
     serializedVersion: 2
     m_Bits: 8192
