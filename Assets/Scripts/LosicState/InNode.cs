@@ -5,6 +5,15 @@ using UnityEngine.EventSystems;
 
 public class InNode : MonoBehaviour
 {
+    private RectTransform _rectMyTransform;
+
+    public RectTransform RectMyTransform { get => _rectMyTransform; }
+
+    private void Start()
+    {
+        _rectMyTransform = transform as RectTransform;
+    }
+
     public void OnDrag(PointerEventData eventData)
     {
         Vector3 TargetPos = Input.mousePosition;

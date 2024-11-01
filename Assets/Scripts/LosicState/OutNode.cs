@@ -6,48 +6,48 @@ using UnityEngine.UI.Extensions;
 public class OutNode : MonoBehaviour, IDragHandler, IEndDragHandler
 {
     [SerializeField]
-    private UILineRenderer _lineRenderer;
+    private UILineConnector _lineRenderer;
     [SerializeField]
-    private Transform _originPosition;
+    private RectTransform _rectOriginPosition;
+    private RectTransform _rectMyTransform;
+
     [SerializeField]
     private LayerMask _collisionLayerMask;
 
     private CircleCollider2D _circleCollider;
     private RaycastHit2D[] _collisionResults;
 
-    private BaseStateNode _nextNodeState;
-    private Transform _myTransform;
-
+    private BaseStateNode _nextStateNode;
     private bool _isConect = default;
     private bool _isComponentNull = default;
 
-    public BaseStateNode BaseStateNode { get => _nextNodeState; }
+    public RectTransform MyRectTransform { get => _rectMyTransform; }
+    public BaseStateNode NextNodeState { get => _nextStateNode; }
     public bool IsConect { get => _isConect; }
     private void Start()
     {
-        _myTransform = transform;
+        _rectMyTransform = transform as RectTransform;
         CheckComponentNull();
-    }
-
-    private void Update()
-    {
-        if (!_isComponentNull)
-        {
-            UpDateNodePosition(_isConect);
-        }
     }
 
     public void OnDrag(PointerEventData eventData)
     {
         Vector3 TargetPos = Input.mousePosition;
         TargetPos.z = 0;
-        _myTransform.position = TargetPos;
+        _rectMyTransform.position = TargetPos;
     }
 
     public void OnEndDrag(PointerEventData eventData)
     {
-        CheckCollisionNode();
-        print("‚â‚ß");
+        if (!_isComponentNull)
+        {
+            CheckCollisionNode();
+        }  
+    }
+
+    public void SetParentNodeState(GameObject stateNode)
+    {
+
     }
 
     private void CheckCollisionNode()
@@ -66,13 +66,16 @@ public class OutNode : MonoBehaviour, IDragHandler, IEndDragHandler
 
     private bool CheckHasComponent(RaycastHit2D raycastHit)
     {
-        bool hasComponent;
-        BaseStateNode inNode;
+        bool hasComponent = default;
+        BaseStateNode stateNode;
 
-        if (raycastHit.collider.TryGetComponent<BaseStateNode>(out inNode))
+        if (raycastHit.collider.TryGetComponent<BaseStateNode>(out stateNode))
         {
-            hasComponent = true;
-            UpDateConectState(inNode);
+            //if ()
+            //{
+                hasComponent = true;
+                UpDateConectState(stateNode);
+            //}
         }
         else
         {
@@ -85,32 +88,28 @@ public class OutNode : MonoBehaviour, IDragHandler, IEndDragHandler
         return hasComponent;
     }
 
-    private void UpDateConectState(BaseStateNode inNode)
+    private void UpDateConectState(BaseStateNode stateNode)
     {
-        _nextNodeState = inNode;
-    }
+        transform.position = _rectOriginPosition.TransformPoint(_rectOriginPosition.anchoredPosition3D);
+        _nextStateNode = stateNode;
 
-    private void UpDateNodePosition(bool isConectNode)
-    {
-        if (isConectNode)
+        _lineRenderer.transforms = new RectTransform[]
         {
-            transform.position = _nextNodeState.InNode.transform.position;
-        }
-        UpDateLine();
-    }
-
-    private void UpDateLine()
-    {
-        _lineRenderer.Points = new Vector2[]{
-            new Vector2(_originPosition.position.x, _originPosition.position.y),
-            new Vector2(_myTransform.position.x, _myTransform.position.y)
-         };
+            _rectOriginPosition,
+            stateNode.InNode.RectMyTransform
+        };
     }
 
     private void ResetNode()
     {
-        transform.position = _originPosition.position;
+        transform.position = _rectOriginPosition.TransformPoint(_rectOriginPosition.anchoredPosition3D);
         _isConect = false;
+
+        _lineRenderer.transforms = new RectTransform[]
+       {
+            _rectOriginPosition,
+            _rectMyTransform
+       };
     }
 
     private void CheckComponentNull()
