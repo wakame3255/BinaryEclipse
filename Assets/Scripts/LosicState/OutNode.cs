@@ -18,6 +18,7 @@ public class OutNode : MonoBehaviour, IDragHandler, IEndDragHandler
     private RaycastHit2D[] _collisionResults;
 
     private BaseStateNode _nextStateNode;
+    private BaseStateNode _myParentStateNode = default;
     private bool _isConect = default;
     private bool _isComponentNull = default;
 
@@ -45,9 +46,9 @@ public class OutNode : MonoBehaviour, IDragHandler, IEndDragHandler
         }  
     }
 
-    public void SetParentNodeState(GameObject stateNode)
+    public void SetParentNodeState(BaseStateNode stateNode)
     {
-
+        _myParentStateNode = stateNode;
     }
 
     private void CheckCollisionNode()
@@ -64,6 +65,11 @@ public class OutNode : MonoBehaviour, IDragHandler, IEndDragHandler
         ResetNode();
     }
 
+    /// <summary>
+    /// BaseStateを持っているか判定を行うメソッド
+    /// </summary>
+    /// <param name="raycastHit">当たったオブジェクト</param>
+    /// <returns>BaseStateを見つけたかどうか</returns>
     private bool CheckHasComponent(RaycastHit2D raycastHit)
     {
         bool hasComponent = default;
@@ -71,11 +77,11 @@ public class OutNode : MonoBehaviour, IDragHandler, IEndDragHandler
 
         if (raycastHit.collider.TryGetComponent<BaseStateNode>(out stateNode))
         {
-            //if ()
-            //{
+            if (stateNode != _myParentStateNode)
+            { 
                 hasComponent = true;
                 UpDateConectState(stateNode);
-            //}
+            }
         }
         else
         {
@@ -88,6 +94,10 @@ public class OutNode : MonoBehaviour, IDragHandler, IEndDragHandler
         return hasComponent;
     }
 
+    /// <summary>
+    /// ノード接続情報の更新
+    /// </summary>
+    /// <param name="stateNode">取得したBaseNode</param>
     private void UpDateConectState(BaseStateNode stateNode)
     {
         transform.position = _rectOriginPosition.TransformPoint(_rectOriginPosition.anchoredPosition3D);
@@ -100,6 +110,9 @@ public class OutNode : MonoBehaviour, IDragHandler, IEndDragHandler
         };
     }
 
+    /// <summary>
+    /// ノード接続のリセット
+    /// </summary>
     private void ResetNode()
     {
         transform.position = _rectOriginPosition.TransformPoint(_rectOriginPosition.anchoredPosition3D);
