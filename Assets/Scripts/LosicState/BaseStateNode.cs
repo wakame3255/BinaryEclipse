@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using R3;
 
  public class BaseStateNode : MonoBehaviour, IDragHandler
 {
@@ -14,6 +15,7 @@ using UnityEngine.EventSystems;
 
     public InNode InNode { get => _inNode; }
     public OutNode OutNode { get => _outNode; }
+
 
     private void Start()
     {

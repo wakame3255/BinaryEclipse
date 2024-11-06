@@ -1,0 +1,34 @@
+{
+    "name": "Player",
+    "maps": [
+        {
+            "name": "Player",
+            "id": "cd42df80-5cb6-4f1c-91b9-94f6f87938a8",
+            "actions": [
+                {
+                    "name": "Move",
+                    "type": "Button",
+                    "id": "70a1e3c6-0114-4e75-81d7-3e7d90b8f4b6",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "bc352cb6-5296-44b9-830f-ba1a5d40fdfb",
+                    "path": "<Keyboard>/w",
+                    "interactions": "Press",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Move",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
+        }
+    ],
+    "controlSchemes": []
+}

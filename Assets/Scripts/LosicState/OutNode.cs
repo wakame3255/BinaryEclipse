@@ -116,6 +116,7 @@ public class OutNode : MonoBehaviour, IDragHandler, IEndDragHandler
     private void ResetNode()
     {
         transform.position = _rectOriginPosition.TransformPoint(_rectOriginPosition.anchoredPosition3D);
+        _nextStateNode = null;
         _isConect = false;
 
         _lineRenderer.transforms = new RectTransform[]

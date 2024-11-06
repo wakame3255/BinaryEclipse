@@ -10,10 +10,14 @@ public class InputManager : MonoBehaviour
 
     private static Vector3 _mousePosition;
 
+    private static bool _k_key;
+
     public static float InputX { get => _inputX; }
     public static float InputY { get => _inputY; }
 
     public static Vector3 MousePosition { get => _mousePosition; }
+
+    public static bool K_key { get => _k_key; }
 
     private void Update()
     {
