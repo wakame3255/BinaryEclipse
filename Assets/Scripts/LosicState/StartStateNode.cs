@@ -20,6 +20,10 @@ public class StartStateNode : BaseStateNode
         return _baseStateNodes;
     }
 
+    public override void EnterState() { }
+    public override void UpdateState() { }
+    public override void ExitState() { }
+
     /// <summary>
     /// ステートの連なりを再帰的に確認
     /// </summary>

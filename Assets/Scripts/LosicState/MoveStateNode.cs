@@ -5,12 +5,7 @@ using R3;
 
 public class MoveStateNode : BaseStateNode
 {
-    private Subject<bool> _exitStateSubject = new Subject<bool>();
-
-    public Observable<bool> OnExitState
-    {
-        get { return _exitStateSubject; }
-    }
-
-
+    public override void EnterState() { }
+    public override void UpdateState() { }
+    public override void ExitState() { }
 }

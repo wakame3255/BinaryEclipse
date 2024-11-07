@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using R3;
 
- public class BaseStateNode : MonoBehaviour, IDragHandler
+ public abstract class BaseStateNode : MonoBehaviour, IDragHandler
 {
     [SerializeField]
     private protected InNode _inNode;
@@ -16,6 +16,9 @@ using R3;
     public InNode InNode { get => _inNode; }
     public OutNode OutNode { get => _outNode; }
 
+    public abstract void EnterState();
+    public abstract void UpdateState();
+    public abstract void ExitState();
 
     private void Start()
     {
