@@ -14,8 +14,32 @@ public class StateMachine
 
     public BaseStateNode CurrentStateNode { get; private set; }
    
-    public StateMachine()
+    public void Initialize(BaseStateNode baseState)
     {
+        CurrentStateNode = baseState;
+        CurrentStateNode.EnterState();
+    }
 
+    public void TransitionNextState(BaseStateNode nextStateNode)
+    {
+        CurrentStateNode.ExitState();
+        CurrentStateNode = nextStateNode;
+        CurrentStateNode.EnterState();
+    }
+
+    public void UpdateState()
+    {
+        if (CurrentStateNode != null)
+        {
+            CurrentStateNode.UpdateState();
+        }
+    }
+
+    public StateMachine(BaseCharacter baseCharacter)
+    {
+        foreach (BaseStateNode baseState in _baseStateNodes)
+        {
+            baseState.SetStateNode(baseCharacter);
+        }
     }
 }

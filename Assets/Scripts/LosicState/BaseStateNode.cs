@@ -11,6 +11,8 @@ using R3;
     [SerializeField]
     private protected OutNode _outNode;
 
+    private protected BaseCharacter _baseCharacter;
+
     private protected bool _isComponentNull = default;
 
     public InNode InNode { get => _inNode; }
@@ -27,6 +29,11 @@ using R3;
         {
             _outNode.SetParentNodeState(this);
         }
+    }
+
+    public void SetStateNode(BaseCharacter baseCharacter)
+    {
+        _baseCharacter = baseCharacter;
     }
 
     public void OnDrag(PointerEventData eventData)
