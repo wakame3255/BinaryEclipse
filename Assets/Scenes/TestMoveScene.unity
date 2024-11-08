@@ -953,7 +953,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _characterAction: {fileID: 626868409}
   _stateMachine:
-    _startStateNode: {fileID: 0}
+    _startStateNode: {fileID: 1348174573}
     _baseStateNodes: []
 --- !u!114 &626868406
 MonoBehaviour:
