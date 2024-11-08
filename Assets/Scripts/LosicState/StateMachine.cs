@@ -13,7 +13,8 @@ public class StateMachine
     List<BaseStateNode> _baseStateNodes = new List<BaseStateNode>();
 
     public BaseStateNode CurrentStateNode { get; private set; }
-   
+    private CpuController _cpuController;
+
     public void Initialize(BaseStateNode baseState)
     {
         CurrentStateNode = baseState;
@@ -35,11 +36,12 @@ public class StateMachine
         }
     }
 
-    public StateMachine(BaseCharacter baseCharacter)
+    public StateMachine(BaseCharacter baseCharacter, CpuController cpuController)
     {
         foreach (BaseStateNode baseState in _baseStateNodes)
         {
-            baseState.SetStateNode(baseCharacter);
+            baseState.SetCharacterInfomation(baseCharacter);
+            baseState.SetCpuContoller(cpuController);
         }
     }
 }

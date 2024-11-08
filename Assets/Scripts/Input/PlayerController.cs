@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class InputManager : MonoBehaviour
+public class PlayerController : MonoBehaviour, ICharacterController
 {
     private static float _inputX;
     private static float _inputY;
@@ -12,12 +12,12 @@ public class InputManager : MonoBehaviour
 
     private static bool _k_key;
 
-    public static float InputX { get => _inputX; }
-    public static float InputY { get => _inputY; }
+    public float InputX { get => _inputX; }
+    public float InputY { get => _inputY; }
 
-    public static Vector3 MousePosition { get => _mousePosition; }
+    public Vector3 Direction { get => _mousePosition; }
 
-    public static bool K_key { get => _k_key; }
+    public bool IsAttack { get => _k_key; }
 
     private void Update()
     {

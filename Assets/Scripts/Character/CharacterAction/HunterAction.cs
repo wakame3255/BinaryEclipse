@@ -5,15 +5,16 @@ using UnityEngine;
 public class HunterAction : BaseCharacterAction
 {
     IWalk walk;
+  
     private void Start()
     {
         SetComponent();
     }
 
-    private void FixedUpdate()
-    {
-        walk.DoWalk(InputManager.InputX, InputManager.InputY);
-    }
+     public override void SetInput(ICharacterController characterController)
+     {
+        walk.DoWalk(characterController.InputX, characterController.InputY);
+     }
 
     protected override void SetComponent()
     {

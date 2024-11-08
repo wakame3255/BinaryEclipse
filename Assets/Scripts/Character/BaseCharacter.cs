@@ -6,9 +6,11 @@ using UnityEngine;
 [RequireComponent(typeof(CharacterStatus))]
 public abstract class BaseCharacter : MonoBehaviour
 {
+    [SerializeField]
+    protected private BaseCharacterAction _characterAction;
+
     protected private Collision2D _collision2D;
     protected private CharacterStatus _characterStatus;
-
 
     private void Start()
     {

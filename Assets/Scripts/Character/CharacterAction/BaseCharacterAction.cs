@@ -4,13 +4,13 @@ using UnityEngine;
 
 //[RequireComponent(typeof())]
 public abstract class BaseCharacterAction : MonoBehaviour
-{
+{ 
 
     /// <summary>
     /// インプット情報をすべてのアクションに渡すメソッド
     /// </summary>
-    public virtual void SetInput(InputManager inputManager) { }
-
+    public virtual void SetInput(ICharacterController inputManager) { }
+    
     /// <summary>
     /// コンポーネント存在確認。なかった場合はAddを行う
     /// </summary>

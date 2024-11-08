@@ -12,6 +12,7 @@ using R3;
     private protected OutNode _outNode;
 
     private protected BaseCharacter _baseCharacter;
+    private protected CpuController _cpuController;
 
     private protected bool _isComponentNull = default;
 
@@ -31,9 +32,13 @@ using R3;
         }
     }
 
-    public void SetStateNode(BaseCharacter baseCharacter)
+    public void SetCharacterInfomation(BaseCharacter baseCharacter)
     {
         _baseCharacter = baseCharacter;
+    }
+    public void SetCpuContoller(CpuController cpuController)
+    {
+        _cpuController = cpuController;
     }
 
     public void OnDrag(PointerEventData eventData)
