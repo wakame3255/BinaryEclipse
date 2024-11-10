@@ -27,7 +27,7 @@ public class GameManager : MonoBehaviour
 
     private void CheckAllComponent()
     {
-        _objectDictionary = CheckComponentMissing<ObjectDictionary>();
+        _objectDictionary = this.CheckComponentMissing<ObjectDictionary>();
     }
 
     private void UpDateCharacter()
@@ -41,22 +41,5 @@ public class GameManager : MonoBehaviour
     private void SetVariableValue()
     {
         _baseCharacter = FindObjectsByType<BaseCharacter>(FindObjectsSortMode.None);
-        _objectDictionary = CheckComponentMissing<ObjectDictionary>();
-    }
-
-    /// <summary>
-    /// コンポーネント存在確認。なかった場合はAddを行う
-    /// </summary>
-    /// <typeparam name="T">チェックの行うコンポーネント</typeparam>
-    /// <returns>コンポーネント</returns>
-     private T CheckComponentMissing<T>()
-    {
-        T component;
-        if (!TryGetComponent<T>(out component))
-        {
-            Debug.LogError(transform.name + " " + typeof(T).FullName + "が足りないよ");
-            gameObject.AddComponent(typeof(T));
-        }
-        return component;
     }
 }

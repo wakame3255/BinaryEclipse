@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class HunterAction : BaseCharacterAction
+public class HunterAction : MonoBehaviour, ICharacterAction
 {
     IWalk walk;
   
@@ -11,13 +11,13 @@ public class HunterAction : BaseCharacterAction
         SetComponent();
     }
 
-     public override void SetInput(ICharacterController characterController)
+     public void SetInput(ICharacterController characterController)
      {
         walk.DoWalk(characterController.InputX, characterController.InputY);
      }
 
-    protected override void SetComponent()
+    protected void SetComponent()
     {
-        walk = CheckComponentMissing<IWalk>();
+        walk = this.CheckComponentMissing<Walk>();
     }
 }

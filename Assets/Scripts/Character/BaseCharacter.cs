@@ -6,9 +6,7 @@ using UnityEngine;
 [RequireComponent(typeof(CharacterStatus))]
 public abstract class BaseCharacter : MonoBehaviour
 {
-    [SerializeField]
-    protected private BaseCharacterAction _characterAction;
-
+    protected private ICharacterAction _characterAction;
     protected private Collision2D _collision2D;
     protected private CharacterStatus _characterStatus;
 
@@ -32,6 +30,7 @@ public abstract class BaseCharacter : MonoBehaviour
     {
         _collision2D = CheckComponentMissing<Collision2D>();
         _characterStatus = CheckComponentMissing<CharacterStatus>();
+        _characterAction = CheckComponentMissing<ICharacterAction>();
     }
 
     /// <summary>

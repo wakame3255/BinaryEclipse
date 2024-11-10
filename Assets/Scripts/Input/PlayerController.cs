@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -5,24 +6,37 @@ using UnityEngine.InputSystem;
 
 public class PlayerController : MonoBehaviour, ICharacterController
 {
-    private static float _inputX;
-    private static float _inputY;
+    private static PlayerController _instance;
 
-    private static Vector3 _mousePosition;
+    private float _inputX;
+    private float _inputY;
+    private Vector3 _mousePosition;
+    private bool _k_key;
 
-    private static bool _k_key;
-
+    public static PlayerController Instance { get => _instance; }
     public float InputX { get => _inputX; }
     public float InputY { get => _inputY; }
-
     public Vector3 Direction { get => _mousePosition; }
-
     public bool IsAttack { get => _k_key; }
+
+    private void Awake()
+    {
+        //インスタンスが存在しない場合、自身をインスタンスにする
+        if (_instance == null)
+        {
+            _instance = this;
+        }
+        else if (_instance != this)
+        {
+            Debug.LogError(transform.root.name + "複数のインスタンスが存在します");
+        }
+    }
 
     private void Update()
     {
         CheckKeyBoardDevice();
         SetMousePosition();
+        print(_mousePosition);
     }
 
     private void CheckKeyBoardDevice()
@@ -45,35 +59,7 @@ public class PlayerController : MonoBehaviour, ICharacterController
 
     private void SetMoveInfomation()
     {
-        float inputX;
-        float inputY;
-
-        if (Keyboard.current.wKey.isPressed)
-        {
-            inputY = 1 ;
-        }
-        else if(Keyboard.current.sKey.isPressed)
-        {
-            inputY = -1;
-        }
-        else
-        {
-            inputY = 0;
-        }
-
-        if (Keyboard.current.aKey.isPressed)
-        {
-            inputX = -1;
-        }
-        else if (Keyboard.current.dKey.isPressed)
-        {
-            inputX = 1;
-        }
-        else
-        {
-            inputX = 0;
-        }
-        _inputX = inputX;
-        _inputY = inputY;
+        _inputX = Keyboard.current.aKey.isPressed ? -1 : Keyboard.current.dKey.isPressed ? 1 : 0;
+        _inputY = Keyboard.current.sKey.isPressed ? -1 : Keyboard.current.wKey.isPressed ? 1 : 0;
     }
 }
