@@ -11,7 +11,7 @@ using R3;
     [SerializeField]
     private protected OutNode _outNode;
 
-    private protected BaseCharacter _baseCharacter;
+    private protected CpuCharacter _cpuCharacter;
     private protected CpuController _cpuController;
 
     private protected bool _isComponentNull = default;
@@ -32,9 +32,9 @@ using R3;
         }
     }
 
-    public void SetCharacterInfomation(BaseCharacter baseCharacter)
+    public void SetCharacterInfomation(CpuCharacter cpuCharacter)
     {
-        _baseCharacter = baseCharacter;
+        _cpuCharacter = cpuCharacter;
     }
     public void SetCpuContoller(CpuController cpuController)
     {

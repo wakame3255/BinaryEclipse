@@ -5,36 +5,14 @@ using R3;
 
 public class StartStateNode : BaseStateNode
 {
-    List<BaseStateNode> _baseStateNodes = new List<BaseStateNode>();
 
-    public List<BaseStateNode> UpDateStateNodeFlow()
+    public override void EnterState()
     {
-        if (_outNode != null)
+        if (_outNode.NextNodeState != null)
         {
-            _baseStateNodes.Clear();
-
-            _baseStateNodes.Add(this);
-            CheckNextState(_outNode);
+            _cpuCharacter.StateMachine.TransitionNextState(_outNode.NextNodeState);
         }
-      
-        return _baseStateNodes;
     }
-
-    public override void EnterState() { }
     public override void UpdateState() { }
     public override void ExitState() { }
-
-    /// <summary>
-    /// ステートの連なりを再帰的に確認
-    /// </summary>
-    /// <param name="outNode"></param>
-    private void CheckNextState(OutNode outNode)
-    {
-
-        if (outNode.NextNodeState != null)
-        {
-            _baseStateNodes.Add(outNode.NextNodeState);
-            CheckNextState(outNode.NextNodeState.OutNode);
-        }
-    }
 }

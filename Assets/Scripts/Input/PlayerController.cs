@@ -36,7 +36,6 @@ public class PlayerController : MonoBehaviour, ICharacterController
     {
         CheckKeyBoardDevice();
         SetMousePosition();
-        print(_mousePosition);
     }
 
     private void CheckKeyBoardDevice()

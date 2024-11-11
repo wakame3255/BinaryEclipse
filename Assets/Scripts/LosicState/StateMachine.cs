@@ -7,13 +7,13 @@ using System;
 public class StateMachine
 {
     [SerializeField]
-    StartStateNode _startStateNode;
+    private List<BaseStateNode> _baseStateNodes = new List<BaseStateNode>();
 
-    [SerializeField]
-    List<BaseStateNode> _baseStateNodes = new List<BaseStateNode>();
+    private CpuCharacter _cpuCharacter;
+    private CpuController _cpuController;
+    private StartStateNode _startStateNode;
 
     public BaseStateNode CurrentStateNode { get; private set; }
-    private CpuController _cpuController;
 
     public void Initialize(BaseStateNode baseState)
     {
@@ -36,12 +36,44 @@ public class StateMachine
         }
     }
 
-    public StateMachine(BaseCharacter baseCharacter, CpuController cpuController)
+    public StateMachine(CpuCharacter cpuCharacter, CpuController cpuController, StartStateNode startState)
     {
+        _cpuCharacter = cpuCharacter;
+        _cpuController = cpuController;
+        _startStateNode = startState;
+    }
+
+    public void UpdateStateNode()
+    {
+        UpDateStateNodeFlow();
+
         foreach (BaseStateNode baseState in _baseStateNodes)
         {
-            baseState.SetCharacterInfomation(baseCharacter);
-            baseState.SetCpuContoller(cpuController);
+            baseState.SetCharacterInfomation(_cpuCharacter);
+            baseState.SetCpuContoller(_cpuController);
+        }
+    }
+
+    private void UpDateStateNodeFlow()
+    {
+        if (_startStateNode != null)
+        {
+            _baseStateNodes.Clear();
+            CheckNextState(_startStateNode.OutNode);
+        }
+    }
+
+    /// <summary>
+    /// ステートの連なりを再帰的に確認
+    /// </summary>
+    /// <param name="outNode"></param>
+    private void CheckNextState(OutNode outNode)
+    {
+
+        if (outNode.NextNodeState != null)
+        {
+            _baseStateNodes.Add(outNode.NextNodeState);
+            CheckNextState(outNode.NextNodeState.OutNode);
         }
     }
 }
