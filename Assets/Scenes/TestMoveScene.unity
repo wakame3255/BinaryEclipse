@@ -2481,6 +2481,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _inNode: {fileID: 1611876845}
   _outNode: {fileID: 2065822612}
+  _targetPos: {x: 5, y: 0, z: 0}
 --- !u!61 &1515506814
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -2621,6 +2622,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _inNode: {fileID: 2081486154}
   _outNode: {fileID: 900269585}
+  _targetPos: {x: 0, y: 5, z: 0}
 --- !u!61 &1590799323
 BoxCollider2D:
   m_ObjectHideFlags: 0

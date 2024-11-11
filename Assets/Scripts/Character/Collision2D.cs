@@ -29,7 +29,7 @@ public class Collision2D : MonoBehaviour
     /// </summary>
     public void CheckCollision()
     {
-        _collisionResults = Physics2D.CircleCastAll(transform.position, _circleCollider.radius , Vector2.down, 0, _collisionLayerMask);
+        _collisionResults = Physics2D.CircleCastAll(transform.position, _circleCollider.radius , Vector2.down, 0f, _collisionLayerMask);
 
         for (int i = 0; i < _collisionResults.Length; i++)
         {
@@ -57,7 +57,7 @@ public class Collision2D : MonoBehaviour
     /// <param name="repulsionInfomation">ColliderDistance2D</param>
     private void DoRepulsion(ColliderDistance2D repulsionInfomation)
     {
-        Vector2 repulsion = (repulsionInfomation.normal * repulsionInfomation.distance) * 1.1f;
+        Vector2 repulsion = (repulsionInfomation.normal * repulsionInfomation.distance);
      
         transform.position += new Vector3(repulsion.x, repulsion.y, 0);
     }

@@ -23,8 +23,18 @@ public class StateMachine
 
     public void TransitionNextState(BaseStateNode nextStateNode)
     {
+        BaseStateNode baseStateNode;
+        if (nextStateNode == null)
+        {
+            baseStateNode = _baseStateNodes[0];
+        }
+        else
+        {
+            baseStateNode = nextStateNode;
+        }
+
         CurrentStateNode.ExitState();
-        CurrentStateNode = nextStateNode;
+        CurrentStateNode = baseStateNode;
         CurrentStateNode.EnterState();
     }
 
@@ -41,10 +51,18 @@ public class StateMachine
         _cpuCharacter = cpuCharacter;
         _cpuController = cpuController;
         _startStateNode = startState;
+
+        _startStateNode.SetCharacterInfomation(cpuCharacter);
+        _startStateNode.SetCpuContoller(cpuController);
     }
 
     public void UpdateStateNode()
     {
+        if(CurrentStateNode != null)
+        {
+            CurrentStateNode.ExitState();
+        }
+            
         UpDateStateNodeFlow();
 
         foreach (BaseStateNode baseState in _baseStateNodes)
@@ -69,7 +87,6 @@ public class StateMachine
     /// <param name="outNode"></param>
     private void CheckNextState(OutNode outNode)
     {
-
         if (outNode.NextNodeState != null)
         {
             _baseStateNodes.Add(outNode.NextNodeState);

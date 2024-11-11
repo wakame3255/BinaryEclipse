@@ -8,7 +8,7 @@ public class CpuCharacter : BaseCharacter
 {
     [SerializeField][Header("スタートノード")]
     private StartStateNode _startStateNode;
- 
+    [SerializeField]
     private StateMachine _stateMachine;
 
     private RotationMove _rotationMove;
