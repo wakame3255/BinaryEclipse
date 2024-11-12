@@ -67,7 +67,7 @@ using R3;
     {
         if (_inNode == null || _outNode == null)
         {
-            Debug.LogError(transform.root.name + " " + "子のノードがないよ");
+            Debug.LogError(transform.name + " " + "子のノードがないよ");
             _isComponentNull = true;
         }
     }

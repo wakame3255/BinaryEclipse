@@ -23,6 +23,7 @@ public class CpuCharacter : BaseCharacter
         _cpuController = CheckComponentMissing<CpuController>();
         base.SetComponent();
 
+        //インスタンスの生成
         _stateMachine = new StateMachine(this, _cpuController, _startStateNode);
     }
 

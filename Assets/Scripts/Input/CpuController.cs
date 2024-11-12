@@ -4,12 +4,16 @@ using UnityEngine;
 
 public class CpuController : MonoBehaviour, ICharacterController
 {
-    private static float _inputX;
-    private static float _inputY;
+    [SerializeField]
+    private float _inputX;
+    [SerializeField]
+    private float _inputY;
 
-    private static Vector3 _mousePosition;
+    [SerializeField]
+    private Vector3 _mousePosition;
 
-    private static bool _k_key;
+    [SerializeField]
+    private bool _k_key;
 
     public float InputX { get => _inputX; }
     public float InputY { get => _inputY; }
