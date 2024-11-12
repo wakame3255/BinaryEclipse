@@ -14,7 +14,7 @@ public class MoveStateNode : BaseStateNode
     {
         if (Vector3.Distance(_targetPos, _cpuCharacter.transform.position) <= 1)
         {
-            _cpuCharacter.StateMachine.TransitionNextState(_outNode.NextNodeState);    
+            _cpuCharacter.StateMachine.TransitionNextState(_outNode.NextStateNode);    
         }
         else
         {

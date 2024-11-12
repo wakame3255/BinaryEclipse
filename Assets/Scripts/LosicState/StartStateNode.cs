@@ -8,9 +8,9 @@ public class StartStateNode : BaseStateNode
 
     public override void EnterState()
     {
-        if (_outNode.NextNodeState != null)
+        if (_outNode.NextStateNode != null)
         {
-            _cpuCharacter.StateMachine.TransitionNextState(_outNode.NextNodeState);
+            _cpuCharacter.StateMachine.TransitionNextState(_outNode.NextStateNode);
         }
     }
     public override void UpdateState() { }

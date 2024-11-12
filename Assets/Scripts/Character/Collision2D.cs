@@ -19,11 +19,7 @@ public class Collision2D : MonoBehaviour
     {
         _circleCollider = GetComponent<CircleCollider2D>();
     }
-    private void FixedUpdate()
-    {
-        CheckCollision();
-    }
-
+   
     /// <summary>
     /// 衝突判定確認メソッド
     /// </summary>

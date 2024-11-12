@@ -77,6 +77,7 @@ public class StateMachine
         if (_startStateNode != null)
         {
             _baseStateNodes.Clear();
+            _startStateNode.OutNode.UpdateNextNode();
             CheckNextState(_startStateNode.OutNode);
         }
     }
@@ -87,10 +88,13 @@ public class StateMachine
     /// <param name="outNode"></param>
     private void CheckNextState(OutNode outNode)
     {
-        if (outNode.NextNodeState != null)
+        BaseStateNode nextStateNode = outNode.NextStateNode;
+
+        if (nextStateNode != null)
         {
-            _baseStateNodes.Add(outNode.NextNodeState);
-            CheckNextState(outNode.NextNodeState.OutNode);
+            _baseStateNodes.Add(nextStateNode);
+            nextStateNode.OutNode.UpdateNextNode();
+            CheckNextState(nextStateNode.OutNode);
         }
     }
 }

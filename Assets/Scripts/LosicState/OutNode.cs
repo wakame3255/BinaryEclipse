@@ -17,13 +17,14 @@ public class OutNode : MonoBehaviour, IDragHandler, IEndDragHandler
     private CircleCollider2D _circleCollider;
     private RaycastHit2D[] _collisionResults;
 
-    private BaseStateNode _nextStateNode;
+    private BaseStateNode _nowNextStateNode;
+    private BaseStateNode _currentNextNode;
     private BaseStateNode _myParentStateNode = default;
     private bool _isConect = default;
     private bool _isComponentNull = default;
 
     public RectTransform MyRectTransform { get => _rectMyTransform; }
-    public BaseStateNode NextNodeState { get => _nextStateNode; }
+    public BaseStateNode NextStateNode { get => _currentNextNode; }
     public bool IsConect { get => _isConect; }
     private void Start()
     {
@@ -49,6 +50,11 @@ public class OutNode : MonoBehaviour, IDragHandler, IEndDragHandler
     public void SetParentNodeState(BaseStateNode stateNode)
     {
         _myParentStateNode = stateNode;
+    }
+
+    public void UpdateNextNode()
+    {
+        _currentNextNode = _nowNextStateNode;
     }
 
     private void CheckCollisionNode()
@@ -101,7 +107,7 @@ public class OutNode : MonoBehaviour, IDragHandler, IEndDragHandler
     private void UpDateConectState(BaseStateNode stateNode)
     {
         transform.position = _rectOriginPosition.TransformPoint(_rectOriginPosition.anchoredPosition3D);
-        _nextStateNode = stateNode;
+        _nowNextStateNode = stateNode;
 
         _lineRenderer.transforms = new RectTransform[]
         {
@@ -116,7 +122,7 @@ public class OutNode : MonoBehaviour, IDragHandler, IEndDragHandler
     private void ResetNode()
     {
         transform.position = _rectOriginPosition.TransformPoint(_rectOriginPosition.anchoredPosition3D);
-        _nextStateNode = null;
+        _nowNextStateNode = null;
         _isConect = false;
 
         _lineRenderer.transforms = new RectTransform[]
