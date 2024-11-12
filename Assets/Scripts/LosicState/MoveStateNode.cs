@@ -30,5 +30,11 @@ public class MoveStateNode : BaseStateNode
         _cpuController.SetInputMove(0, 0);
         base.ExitState();
     }
-    
+
+    public override OutNode[] ReturnHasOutNode()
+    {
+        _outNode.UpdateNextNode();
+
+        return new OutNode[] { _outNode };
+    }
 }

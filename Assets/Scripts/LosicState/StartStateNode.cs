@@ -15,4 +15,11 @@ public class StartStateNode : BaseStateNode
     }
     public override void UpdateState() { }
     public override void ExitState() { }
+
+    public override OutNode[] ReturnHasOutNode()
+    {
+        _outNode.UpdateNextNode();
+
+        return new OutNode[] { _outNode };
+    }
 }

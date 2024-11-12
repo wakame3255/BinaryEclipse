@@ -5,7 +5,7 @@ using UnityEngine.UI;
 using UnityEngine.EventSystems;
 using R3;
 
- public abstract class BaseStateNode : MonoBehaviour, IDragHandler
+public abstract class BaseStateNode : MonoBehaviour, IDragHandler
 {
     [SerializeField]
     private protected InNode _inNode;
@@ -37,6 +37,8 @@ using R3;
             _stateImage.color = Color.white;
         }
     }
+
+    public abstract OutNode[] ReturnHasOutNode();
 
     private void Start()
     {

@@ -17,16 +17,25 @@ public class RamificationStateNode : BaseStateNode
         if (_changeTrg)
         {
             _cpuCharacter.StateMachine.TransitionNextState(_outNode.NextStateNode);
-           
+            _changeTrg = false;
         }
         else
         {
             _cpuCharacter.StateMachine.TransitionNextState(_falseNode.NextStateNode);
+            _changeTrg = true;
         }
     }
     public override void ExitState()
     {
-        //_changeTrg = true;
+        
         base.ExitState();
+    }
+
+    public override OutNode[] ReturnHasOutNode()
+    {
+        _outNode.UpdateNextNode();
+        _falseNode.UpdateNextNode();
+
+        return new OutNode[] { _outNode, _falseNode };
     }
 }

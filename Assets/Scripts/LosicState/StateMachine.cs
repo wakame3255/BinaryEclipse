@@ -100,8 +100,9 @@ public class StateMachine
         if (_startStateNode != null)
         {
             _baseStateNodes.Clear();
-            _startStateNode.OutNode.UpdateNextNode();
-            CheckNextState(_startStateNode.OutNode);
+            _startStateNode.ReturnHasOutNode();
+            OutNode[] outNodes = new OutNode[] { _startStateNode.OutNode };
+            CacheNextState(outNodes);
         }
     }
 
@@ -109,15 +110,19 @@ public class StateMachine
     /// ステートの連なりを再帰的に確認
     /// </summary>
     /// <param name="outNode"></param>
-    private void CheckNextState(OutNode outNode)
+    private void CacheNextState(OutNode[] outNodes)
     {
-        BaseStateNode nextStateNode = outNode.NextStateNode;
 
-        if (nextStateNode != null)
+        foreach (OutNode outNode in outNodes)
         {
-            _baseStateNodes.Add(nextStateNode);
-            nextStateNode.OutNode.UpdateNextNode();
-            CheckNextState(nextStateNode.OutNode);
+            BaseStateNode nextStateNode = outNode.NextStateNode;
+
+            if (nextStateNode != null)
+            {
+                _baseStateNodes.Add(nextStateNode);
+               
+                CacheNextState(nextStateNode.ReturnHasOutNode());
+            }
         }
     }
 }
