@@ -9,7 +9,10 @@ public class MoveStateNode : BaseStateNode
     [SerializeField]
     private Vector3 _targetPos;
 
-    public override void EnterState() { }
+    public override void EnterState()
+    {
+        base.EnterState();
+    }
     public override void UpdateState()
     {
         if (Vector3.Distance(_targetPos, _cpuCharacter.transform.position) <= 1)
@@ -25,6 +28,7 @@ public class MoveStateNode : BaseStateNode
     public override void ExitState()
     {
         _cpuController.SetInputMove(0, 0);
+        base.ExitState();
     }
     
 }

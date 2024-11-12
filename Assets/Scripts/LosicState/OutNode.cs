@@ -96,7 +96,6 @@ public class OutNode : MonoBehaviour, IDragHandler, IEndDragHandler
         }
 
         _isConect = hasComponent;
-        print(hasComponent + " " + raycastHit.collider.name);
         return hasComponent;
     }
 

@@ -15,12 +15,20 @@ public class StateMachine
 
     public BaseStateNode CurrentStateNode { get; private set; }
 
+    /// <summary>
+    /// ステートの開始処理
+    /// </summary>
+    /// <param name="baseState">ステート</param>
     public void Initialize(BaseStateNode baseState)
     {
         CurrentStateNode = baseState;
         CurrentStateNode.EnterState();
     }
 
+    /// <summary>
+    /// ステートの切り替え処理
+    /// </summary>
+    /// <param name="nextStateNode">ステート</param>
     public void TransitionNextState(BaseStateNode nextStateNode)
     {
         BaseStateNode baseStateNode;
@@ -38,6 +46,9 @@ public class StateMachine
         CurrentStateNode.EnterState();
     }
 
+    /// <summary>
+    /// ステートのUpdate処理
+    /// </summary>
     public void UpdateState()
     {
         if (CurrentStateNode != null)
@@ -46,6 +57,12 @@ public class StateMachine
         }
     }
 
+    /// <summary>
+    /// ステートマシンの生成
+    /// </summary>
+    /// <param name="cpuCharacter">キャラクター情報</param>
+    /// <param name="cpuController">コントローラー情報</param>
+    /// <param name="startState">初期のステート</param>
     public StateMachine(CpuCharacter cpuCharacter, CpuController cpuController, StartStateNode startState)
     {
         _cpuCharacter = cpuCharacter;
@@ -56,6 +73,9 @@ public class StateMachine
         _startStateNode.SetCpuContoller(cpuController);
     }
 
+    /// <summary>
+    /// ステートの流れ更新
+    /// </summary>
     public void UpdateStateNode()
     {
         if(CurrentStateNode != null)
@@ -72,6 +92,9 @@ public class StateMachine
         }
     }
 
+    /// <summary>
+    /// ステートリセットと更新メソッド
+    /// </summary>
     private void UpDateStateNodeFlow()
     {
         if (_startStateNode != null)

@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using UnityEngine.EventSystems;
 using R3;
 
@@ -10,6 +11,8 @@ using R3;
     private protected InNode _inNode;
     [SerializeField]
     private protected OutNode _outNode;
+    [SerializeField]
+    private protected Image _stateImage;
 
     private protected CpuCharacter _cpuCharacter;
     private protected CpuController _cpuController;
@@ -19,9 +22,21 @@ using R3;
     public InNode InNode { get => _inNode; }
     public OutNode OutNode { get => _outNode; }
 
-    public abstract void EnterState();
+    public virtual void EnterState()
+    {
+        if (_stateImage != null)
+        {
+            _stateImage.color = Color.red;
+        }
+    }
     public abstract void UpdateState();
-    public abstract void ExitState();
+    public virtual void ExitState()
+    {
+        if (_stateImage != null)
+        {
+            _stateImage.color = Color.white;
+        }
+    }
 
     private void Start()
     {
