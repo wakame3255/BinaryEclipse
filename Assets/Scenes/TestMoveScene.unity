@@ -1491,7 +1491,7 @@ MonoBehaviour:
   _inNode: {fileID: 112156131}
   _outNode: {fileID: 856268207}
   _stateImage: {fileID: 472950733}
-  _targetPos: {x: 5, y: 0, z: 0}
+  _targetPos: {x: 0, y: -3, z: 0}
 --- !u!61 &472950732
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -1635,6 +1635,7 @@ MonoBehaviour:
   _outNode: {fileID: 2372619}
   _stateImage: {fileID: 479859931}
   _falseNode: {fileID: 1478520564}
+  _changeTrg: 0
 --- !u!61 &479859930
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -4903,7 +4904,7 @@ MonoBehaviour:
   _inNode: {fileID: 1358458997}
   _outNode: {fileID: 728875912}
   _stateImage: {fileID: 1824234791}
-  _targetPos: {x: 5, y: 0, z: 0}
+  _targetPos: {x: 0, y: 2, z: 0}
 --- !u!61 &1824234790
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -5386,7 +5387,7 @@ MonoBehaviour:
   _inNode: {fileID: 311134199}
   _outNode: {fileID: 1083238284}
   _stateImage: {fileID: 1974066812}
-  _targetPos: {x: 5, y: 0, z: 0}
+  _targetPos: {x: -5, y: 0, z: 0}
 --- !u!61 &1974066811
 BoxCollider2D:
   m_ObjectHideFlags: 0
