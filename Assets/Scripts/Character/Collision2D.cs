@@ -29,7 +29,7 @@ public class Collision2D : MonoBehaviour
 
         for (int i = 0; i < _collisionResults.Length; i++)
         {
-            ColliderDistance2D repulsionInfomation = ReTurnRepulsionInfomation(_collisionResults[i].collider);
+            ColliderDistance2D repulsionInfomation = ReTurnRepulsionInformation(_collisionResults[i].collider);
 
             DoRepulsion(repulsionInfomation);
         }
@@ -40,7 +40,7 @@ public class Collision2D : MonoBehaviour
     /// </summary>
     /// <param name="collisionCollider">衝突したコライダー</param>
     /// <returns>反発情報</returns>
-    private ColliderDistance2D  ReTurnRepulsionInfomation(Collider2D collisionCollider)
+    private ColliderDistance2D  ReTurnRepulsionInformation(Collider2D collisionCollider)
     {               
         ColliderDistance2D colliderDistance = Physics2D.Distance(_circleCollider, collisionCollider);
 
@@ -50,10 +50,10 @@ public class Collision2D : MonoBehaviour
     /// <summary>
     /// オブジェクトを反発させるメソッド
     /// </summary>
-    /// <param name="repulsionInfomation">ColliderDistance2D</param>
-    private void DoRepulsion(ColliderDistance2D repulsionInfomation)
+    /// <param name="repulsionInformation">ColliderDistance2Dの情報</param>
+    private void DoRepulsion(ColliderDistance2D repulsionInformation)
     {
-        Vector2 repulsion = (repulsionInfomation.normal * repulsionInfomation.distance);
+        Vector2 repulsion = (repulsionInformation.normal * repulsionInformation.distance);
      
         transform.position += new Vector3(repulsion.x, repulsion.y, 0);
     }

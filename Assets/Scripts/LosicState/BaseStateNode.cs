@@ -47,7 +47,7 @@ using R3;
         }
     }
 
-    public void SetCharacterInfomation(CpuCharacter cpuCharacter)
+    public void SetCharacterInformation(CpuCharacter cpuCharacter)
     {
         _cpuCharacter = cpuCharacter;
     }
