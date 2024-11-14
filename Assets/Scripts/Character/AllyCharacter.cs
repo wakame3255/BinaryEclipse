@@ -4,7 +4,7 @@ using UnityEngine;
 
 [RequireComponent(typeof(RotationMove))]
 [RequireComponent(typeof(CpuController))]
-public class CpuCharacter : BaseCharacter
+public class AllyCharacter : BaseCharacter
 {
     [SerializeField][Header("スタートノード")]
     private StartStateNode _startStateNode;

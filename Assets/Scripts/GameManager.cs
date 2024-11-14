@@ -2,15 +2,16 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[RequireComponent(typeof(ObjectDictionary))]
 public class GameManager : MonoBehaviour
 { 
     private GameObject[] _sceneGameObjects;
     private ObjectDictionary _objectDictionary;
+    private CharacterStateDictionary _characterState;
 
     private BaseCharacter[] _baseCharacter;
     void Start()
     {
+        AddComponents();
         CheckAllComponent();
         SetVariableValue();     
     }
@@ -25,9 +26,21 @@ public class GameManager : MonoBehaviour
         
     }
 
+    private void AddComponents()
+    {
+        _objectDictionary = gameObject.AddComponent<ObjectDictionary>();
+        _characterState = gameObject.AddComponent<CharacterStateDictionary>();
+    }
+
     private void CheckAllComponent()
     {
-        _objectDictionary = this.CheckComponentMissing<ObjectDictionary>();
+
+    }
+
+    private void SetVariableValue()
+    {
+        _baseCharacter = FindObjectsByType<BaseCharacter>(FindObjectsSortMode.None);
+        _characterState.SetCharacterState(_baseCharacter);
     }
 
     private void UpDateCharacter()
@@ -36,10 +49,5 @@ public class GameManager : MonoBehaviour
         {
             character.PhysicsUpDate();
         }
-    }
-
-    private void SetVariableValue()
-    {
-        _baseCharacter = FindObjectsByType<BaseCharacter>(FindObjectsSortMode.None);
     }
 }

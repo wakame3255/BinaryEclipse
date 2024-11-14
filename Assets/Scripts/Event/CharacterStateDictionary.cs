@@ -1,24 +1,34 @@
-using System.Collections;
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class CharacterStateDictionary : MonoBehaviour
 {
-    private List<BaseCharacter>_allys = new List<BaseCharacter>();
+    [SerializeField]
+    private List<BaseCharacter> _allys = new List<BaseCharacter>();
+
+    [SerializeField]
     private List<BaseCharacter> _enemys;
 
     public void SetCharacterState(BaseCharacter[] baseCharacters)
     {
-        //_allys.Add(ReturnHasSubClass<PlayerCharacter>());
+        _enemys = ReturnHasSubClass(baseCharacters, typeof(BossCharacter));
+        _allys = ReturnHasSubClass(baseCharacters, typeof(PlayerCharacter));
+        _allys.AddRange(ReturnHasSubClass(baseCharacters, typeof(AllyCharacter)));
     }
 
-    private List<BaseCharacter> ReturnHasSubClass(BaseCharacter[] baseCharacters, BaseCharacter baseCharacter)
+    public void ReturnCharacterCondition()
     {
-        List<BaseCharacter> cacheCharacters = new List<BaseCharacter>();
+        
+    }
 
-        foreach (BaseCharacter character in baseCharacters)
+    private List<T> ReturnHasSubClass<T>(T[] baseCharacters, Type types)
+    {
+        List<T> cacheCharacters = new List<T>();
+
+        foreach (T character in baseCharacters)
         {
-            if(character is types)
+            if (character.GetType() == types)
             {
                 cacheCharacters.Add(character);
             }

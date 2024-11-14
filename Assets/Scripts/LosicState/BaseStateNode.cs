@@ -14,7 +14,7 @@ public abstract class BaseStateNode : MonoBehaviour, IDragHandler
     [SerializeField]
     private protected Image _stateImage;
 
-    private protected CpuCharacter _cpuCharacter;
+    private protected AllyCharacter _cpuCharacter;
     private protected CpuController _cpuController;
 
     private protected bool _isComponentNull = default;
@@ -49,7 +49,7 @@ public abstract class BaseStateNode : MonoBehaviour, IDragHandler
         }
     }
 
-    public void SetCharacterInformation(CpuCharacter cpuCharacter)
+    public void SetCharacterInformation(AllyCharacter cpuCharacter)
     {
         _cpuCharacter = cpuCharacter;
     }

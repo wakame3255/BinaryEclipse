@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using R3;
 
 [RequireComponent(typeof(Collision2D))]
 [RequireComponent(typeof(CharacterStatus))]
@@ -9,6 +10,8 @@ public abstract class BaseCharacter : MonoBehaviour
     protected private ICharacterAction _characterAction;
     protected private Collision2D _collision2D;
     protected private CharacterStatus _characterStatus;
+
+    public CharacterStatus CharacterStatus { get => _characterStatus; }
 
     private void Start()
     {
