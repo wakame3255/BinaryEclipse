@@ -5,15 +5,19 @@ using R3;
 
 public class CharacterStatus : MonoBehaviour
 {
-    [SerializeField]
     private int _hp;
 
-    private Subject<int> _hpSubject = new Subject<int>();
+    private ReactiveProperty<int> _reactiveHp = new ReactiveProperty<int>();
 
-    public int Hp { get => _hp;}
+    public ReactiveProperty<int> ReactiveHp { get => _reactiveHp; }
+
+    private void Awake()
+    {
+        _reactiveHp.Value = _hp;
+    }
 
     public void SubtractionHp(int damage)
     {
-        _hp -= damage;
+        _reactiveHp.Value -= damage;
     }
 }

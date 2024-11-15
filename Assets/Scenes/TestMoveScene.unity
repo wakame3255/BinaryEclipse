@@ -1462,6 +1462,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f0690a8708a24b143a0586632d16f94e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _characterStateView:
+    _hp: 0
 --- !u!1 &247890200
 GameObject:
   m_ObjectHideFlags: 0
@@ -2768,6 +2770,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 36baa5b147909ab4ca3ce610663ebc86, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _characterStateView:
+    _hp: 0
   _startStateNode: {fileID: 1348174573}
   _stateMachine:
     _baseStateNodes: []
@@ -4618,7 +4622,7 @@ MonoBehaviour:
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
+          m_IntArgument: 2
           m_FloatArgument: 0
           m_StringArgument: 
           m_BoolArgument: 0
@@ -6916,6 +6920,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b188f394ce753964584a6853ddc21de1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _characterStateView:
+    _hp: 0
 --- !u!114 &2046275411
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6928,7 +6934,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b6777878ef40223419b467a0c08b2d78, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _hp: 0
+  _hp: 5
 --- !u!114 &2046275412
 MonoBehaviour:
   m_ObjectHideFlags: 0

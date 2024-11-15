@@ -11,11 +11,21 @@ public abstract class BaseCharacter : MonoBehaviour
     protected private Collision2D _collision2D;
     protected private CharacterStatus _characterStatus;
 
+    [SerializeField]
+    protected private CharacterStateView _characterStateView;
+
     public CharacterStatus CharacterStatus { get => _characterStatus; }
+    public CharacterStateView CharacterStatusView { get => _characterStateView; }
+
+    protected void Awake()
+    {
+        _characterStateView = new CharacterStateView();
+    }
 
     private void Start()
     {
         SetComponent();
+        DeliveryValue();
     }
 
     /// <summary>
@@ -34,6 +44,14 @@ public abstract class BaseCharacter : MonoBehaviour
         _collision2D = CheckComponentMissing<Collision2D>();
         _characterStatus = CheckComponentMissing<CharacterStatus>();
         _characterAction = CheckComponentMissing<ICharacterAction>();
+    }
+
+    /// <summary>
+    /// ƒRƒ“ƒ|ƒlƒ“ƒg“¯Žm‚ÌŽó‚¯“n‚µ           
+    /// </summary>
+    protected virtual void DeliveryValue()
+    {
+        _characterStateView.SetComponent(_characterStatus, this.transform);
     }
 
     /// <summary>
