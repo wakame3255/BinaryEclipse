@@ -10,6 +10,9 @@ public class CharacterStateDictionary : MonoBehaviour
     [SerializeField]
     private List<BaseCharacter> _enemys;
 
+    [SerializeField]
+    private List<ICpuCharacter> _cpuCharacters = new List<ICpuCharacter>();
+
     public void SetCharacterState(BaseCharacter[] baseCharacters)
     {
         _enemys = ReturnHasSubClass(baseCharacters, typeof(BossCharacter));
@@ -17,18 +20,13 @@ public class CharacterStateDictionary : MonoBehaviour
         _allys.AddRange(ReturnHasSubClass(baseCharacters, typeof(AllyCharacter)));
     }
 
-    public void ReturnCharacterCondition()
-    {
-        
-    }
-
-    private List<T> ReturnHasSubClass<T>(T[] baseCharacters, Type types)
+    private List<T> ReturnHasSubClass<T>(IEnumerable<T> baseCharacters, Type subClassTypes)
     {
         List<T> cacheCharacters = new List<T>();
 
         foreach (T character in baseCharacters)
         {
-            if (character.GetType() == types)
+            if (character.GetType() == subClassTypes)
             {
                 cacheCharacters.Add(character);
             }

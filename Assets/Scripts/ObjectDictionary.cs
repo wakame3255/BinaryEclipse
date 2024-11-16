@@ -3,27 +3,17 @@ using UnityEngine;
 
 public class ObjectDictionary : MonoBehaviour
 {
+    private Object[] _sceneGameObjects;
+
     private Dictionary<GameObject, BaseCharacter> _characterDictionary = new Dictionary<GameObject, BaseCharacter>();
 
     public Dictionary<GameObject, BaseCharacter> CharacterDictionary { get => _characterDictionary; }
 
     private void Start()
     {
+        _sceneGameObjects = FindObjectsByType(typeof(GameObject), FindObjectsSortMode.None);
         SetGameObectsInDictionary(FindObjectsByType(typeof(GameObject), FindObjectsSortMode.None));
     }
-
- //   public T ReturnHasComponent<T>()
- //   {
- //       Object[] objects = FindObjectsByType(typeof(T), FindObjectsSortMode.None);
-
- //       T[] components = new T[objects.Length];
- //       for (int i = 0; i < components.Length; i++)
- //       {
- //           components[i] = objects[i].GetHashCode
- //;
- //       }
- //       return 
- //   }
 
     /// <summary>
     /// ディクショナリーに格納するメソッド
