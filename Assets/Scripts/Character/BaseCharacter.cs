@@ -10,6 +10,7 @@ public abstract class BaseCharacter : MonoBehaviour
     protected private ICharacterAction _characterAction;
     protected private Collision2D _collision2D;
     protected private CharacterStatus _characterStatus;
+    protected private Transform _cacheTransform;
 
     [SerializeField]
     protected private CharacterStateView _characterStateView;
@@ -18,13 +19,12 @@ public abstract class BaseCharacter : MonoBehaviour
     public CharacterStateView CharacterStatusView { get => _characterStateView; }
 
     protected void Awake()
-    {
-        _characterStateView = new CharacterStateView();
+    { 
+        SetComponent();
     }
 
-    private void Start()
+    protected void Start()
     {
-        SetComponent();
         DeliveryValue();
     }
 
@@ -41,6 +41,8 @@ public abstract class BaseCharacter : MonoBehaviour
     /// </summary>
     protected virtual void SetComponent()
     {
+        _characterStateView = new CharacterStateView();
+        _cacheTransform = this.transform;
         _collision2D = CheckComponentMissing<Collision2D>();
         _characterStatus = CheckComponentMissing<CharacterStatus>();
         _characterAction = CheckComponentMissing<ICharacterAction>();

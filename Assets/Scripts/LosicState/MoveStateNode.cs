@@ -15,13 +15,13 @@ public class MoveStateNode : BaseStateNode
     }
     public override void UpdateState()
     {
-        if (Vector3.Distance(_targetPos, _cpuCharacter.transform.position) <= 1)
+        if (Vector3.Distance(_targetPos, _cpuCharacter.Transform.position) <= 1)
         {
             _cpuCharacter.StateMachine.TransitionNextState(_outNode.NextStateNode);    
         }
         else
         {
-            Vector3 targetDirection = (_targetPos - _cpuCharacter.transform.position).normalized;
+            Vector3 targetDirection = (_targetPos - _cpuCharacter.Transform.position).normalized;
             _cpuController.SetInputMove(targetDirection.x, targetDirection.y);
         }      
     }

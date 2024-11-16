@@ -4,7 +4,7 @@ using UnityEngine;
 
 [RequireComponent(typeof(RotationMove))]
 [RequireComponent(typeof(CpuController))]
-public class AllyCharacter : BaseCharacter
+public class AllyCharacter : BaseCharacter, ICpuCharacter
 {
     [SerializeField][Header("スタートノード")]
     private StartStateNode _startStateNode;
@@ -16,16 +16,7 @@ public class AllyCharacter : BaseCharacter
 
 
     public StateMachine StateMachine { get => _stateMachine; }
-
-    protected override void SetComponent()
-    {
-        _rotationMove = CheckComponentMissing<RotationMove>();
-        _cpuController = CheckComponentMissing<CpuController>();
-        base.SetComponent();
-
-        //インスタンスの生成
-        _stateMachine = new StateMachine(this, _cpuController, _startStateNode);
-    }
+    public Transform Transform { get => _cacheTransform; }
 
     public override void PhysicsUpDate()
     {
@@ -39,5 +30,17 @@ public class AllyCharacter : BaseCharacter
     {
         _stateMachine.UpdateStateNode();
         _stateMachine.Initialize(_startStateNode);
+    }
+
+    public void InitializeStateMachine(CharacterStateDictionary characterState)
+    {
+        //インスタンスの生成
+        _stateMachine = new StateMachine(this, _cpuController, _startStateNode);
+    }
+
+    protected override void SetComponent()
+    {
+        _rotationMove = CheckComponentMissing<RotationMove>();
+        _cpuController = CheckComponentMissing<CpuController>();
     }
 }

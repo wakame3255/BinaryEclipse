@@ -9,7 +9,7 @@ public class StateMachine
     [SerializeField]
     private List<BaseStateNode> _baseStateNodes = new List<BaseStateNode>();
 
-    private AllyCharacter _cpuCharacter;
+    private ICpuCharacter _cpuCharacter;
     private CpuController _cpuController;
     private StartStateNode _startStateNode;
 
@@ -63,7 +63,7 @@ public class StateMachine
     /// <param name="cpuCharacter">キャラクター情報</param>
     /// <param name="cpuController">コントローラー情報</param>
     /// <param name="startState">初期のステート</param>
-    public StateMachine(AllyCharacter cpuCharacter, CpuController cpuController, StartStateNode startState)
+    public StateMachine(ICpuCharacter cpuCharacter, CpuController cpuController, StartStateNode startState)
     {
         _cpuCharacter = cpuCharacter;
         _cpuController = cpuController;

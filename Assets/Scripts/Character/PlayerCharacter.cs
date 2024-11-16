@@ -10,7 +10,6 @@ public class PlayerCharacter : BaseCharacter
     protected override void SetComponent()
     {
         _rotationMove = CheckComponentMissing<RotationMove>();
-       
         base.SetComponent();
     }
 
