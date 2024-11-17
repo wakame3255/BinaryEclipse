@@ -29,13 +29,15 @@ public class CharacterStateDictionary : MonoBehaviour
 
     public void SetCharacterState(ObjectDictionary objectDictionary)
     {
-        List<BaseCharacter> baseCharacters = objectDictionary.RetrunHasComponent<BaseCharacter>();
-        
-        _allBosses = ReturnHasSubClass(baseCharacters, typeof(BossCharacter));
-        _allAllys = ReturnHasSubClass(baseCharacters, typeof(PlayerCharacter));
-        _allAllys.AddRange(ReturnHasSubClass(baseCharacters, typeof(AllyCharacter)));
+        MyExtensionClass.CheckArgumentNull(objectDictionary, nameof(objectDictionary));
 
-        _allCpuCharacters = objectDictionary.RetrunHasComponent<ICpuCharacter>();
+        List<BaseCharacter> baseCharacters = objectDictionary.ReturnHasComponent<BaseCharacter>();
+
+        _allBosses = GetHasSubClass(baseCharacters, typeof(BossCharacter));
+        _allAllys = GetHasSubClass(baseCharacters, typeof(PlayerCharacter));
+        _allAllys.AddRange(GetHasSubClass(baseCharacters, typeof(AllyCharacter)));
+
+        _allCpuCharacters = objectDictionary.ReturnHasComponent<ICpuCharacter>();
         SelectionCpuCharacter(_allCpuCharacters);
     }
 
@@ -45,9 +47,11 @@ public class CharacterStateDictionary : MonoBehaviour
     /// <param name="cpuCharacters">すべてのCpuキャラクター</param>
     private void SelectionCpuCharacter(List<ICpuCharacter> cpuCharacters)
     {
+        MyExtensionClass.CheckArgumentNull(cpuCharacters, nameof(cpuCharacters));
+
         foreach (ICpuCharacter cpuCharacter in cpuCharacters)
         {
-            switch(cpuCharacter)
+            switch (cpuCharacter)
             {
                 case BossCharacter bossCharacter:
                     InitializeCpuStateMachine(cpuCharacter, _allBosses, _allAllys);
@@ -68,11 +72,12 @@ public class CharacterStateDictionary : MonoBehaviour
     /// <param name="enemies">敵となるキャラ</param>
     private void InitializeCpuStateMachine(ICpuCharacter cpuCharacter, List<BaseCharacter> allys, List<BaseCharacter> enemies)
     {
-        List<CharacterStateView> otherAllys = new List<CharacterStateView>();
-        List<CharacterStateView> otherenemys = new List<CharacterStateView>();
+        MyExtensionClass.CheckArgumentNull(cpuCharacter, nameof(cpuCharacter));
+        MyExtensionClass.CheckArgumentNull(allys, nameof(allys));
+        MyExtensionClass.CheckArgumentNull(enemies, nameof(enemies));
 
-        otherAllys = ReturnStateView(cpuCharacter, allys);
-        otherenemys = ReturnStateView(cpuCharacter, enemies);
+        List<CharacterStateView> otherAllys = GetStateView(cpuCharacter, allys);
+        List<CharacterStateView> otherenemys = GetStateView(cpuCharacter, enemies);
 
         cpuCharacter.InitializeStateMachine(new OtherCharacterStatus(otherAllys, otherenemys));
     }
@@ -83,8 +88,11 @@ public class CharacterStateDictionary : MonoBehaviour
     /// <param name="cpuCharacter">省きたいキャラクター</param>
     /// <param name="characters">指定したすべてのキャラクター</param>
     /// <returns>省き済みのステートビュー</returns>
-    private List<CharacterStateView> ReturnStateView(ICpuCharacter cpuCharacter, List<BaseCharacter> characters)
+    private List<CharacterStateView> GetStateView(ICpuCharacter cpuCharacter, List<BaseCharacter> characters)
     {
+        MyExtensionClass.CheckArgumentNull(cpuCharacter, nameof(cpuCharacter));
+        MyExtensionClass.CheckArgumentNull(characters, nameof(characters));
+
         List<CharacterStateView> characterStateViews = new List<CharacterStateView>();
 
         foreach (BaseCharacter character in characters)
@@ -105,13 +113,16 @@ public class CharacterStateDictionary : MonoBehaviour
     /// <param name="baseCharacters">探し出すリスト</param>
     /// <param name="subClassTypes">探したいサブクラス</param>
     /// <returns>指定のサブクラスを持ったスーパクラス</returns>
-    private List<T> ReturnHasSubClass<T>(IEnumerable<T> baseCharacters, Type subClassTypes)
+    private List<T> GetHasSubClass<T>(IEnumerable<T> baseCharacters, Type subClassTypes)
     {
+        MyExtensionClass.CheckArgumentNull(baseCharacters, nameof(baseCharacters));
+        MyExtensionClass.CheckArgumentNull(subClassTypes, nameof(subClassTypes));
+
         List<T> cacheCharacters = new List<T>();
 
         foreach (T character in baseCharacters)
         {
-            if (character.GetType() == subClassTypes)
+            if (subClassTypes.IsAssignableFrom(character.GetType()))
             {
                 cacheCharacters.Add(character);
             }

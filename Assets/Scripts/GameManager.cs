@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour
 { 
-    private GameObject[] _sceneGameObjects;
     private ObjectDictionary _objectDictionary;
     private CharacterStateDictionary _characterState;
 

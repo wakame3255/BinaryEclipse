@@ -9,13 +9,24 @@ public class ObjectDictionary : MonoBehaviour
 
     private void Start()
     {
-        SetGameObectsInDictionary(RetrunHasComponent<Object>());
+        SetGameObectsInDictionary(ReturnHasComponent<BaseCharacter>());
     }
 
-    public List<T> RetrunHasComponent<T>()
+    public List<T> ReturnHasComponent<T>()
     {
-        return FindObjectsByType(typeof(T), FindObjectsSortMode.None) as List<T>;
+        List<T> componentsWithT = new List<T>();
+        foreach (GameObject obj in FindObjectsByType(typeof(T) ,FindObjectsSortMode.None))
+        {
+            T component = obj.GetComponent<T>();
+            if (component != null)
+            {
+                componentsWithT.Add(component);
+            }
+        }
+        return componentsWithT;
     }
+
+
 
     /// <summary>
     /// ディクショナリーに格納するメソッド
@@ -23,6 +34,8 @@ public class ObjectDictionary : MonoBehaviour
     /// <param name="gameObjects">すべてのオブジェクト</param>
     private void SetGameObectsInDictionary(IEnumerable<Object> gameObjects)
     { 
+        MyExtensionClass.CheckArgumentNull(gameObjects, nameof(gameObjects));
+
         _characterDictionary = RetuneDictionary<BaseCharacter>(gameObjects);
     }
 
@@ -34,6 +47,8 @@ public class ObjectDictionary : MonoBehaviour
     /// <returns>指定の要素が入ったディクショナリー</returns>
     private Dictionary<GameObject, T> RetuneDictionary<T>(IEnumerable<Object> gameObjects)
     {
+        MyExtensionClass.CheckArgumentNull(gameObjects, nameof(gameObjects));
+
         Dictionary<GameObject, T> saveDictionary = new Dictionary<GameObject, T>();
 
         foreach (GameObject gameObject in gameObjects)

@@ -1,5 +1,6 @@
 
 using UnityEngine;
+using UnityEngine.DedicatedServer;
 
 public static class MyExtensionClass 
 {
@@ -18,5 +19,19 @@ public static class MyExtensionClass
             component = monoBehaviour.gameObject.AddComponent<T>();
         }
         return component;
+    }
+
+    /// <summary>
+    /// 引数がnullかどうかをチェックするメソッド
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
+    /// <param name="arugment">引数</param>
+    /// <exception cref="System.ArgumentNullException"></exception>
+    public static void CheckArgumentNull<T>(T arugment, string arugmentName)
+    {
+        if (arugment == null)
+        {
+            throw new System.ArgumentNullException(arugmentName);
+        }
     }
 }

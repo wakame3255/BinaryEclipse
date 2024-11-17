@@ -15,6 +15,9 @@ public class CharacterStateView
 
     public void SetComponent(CharacterStatus characterStatus, Transform transform)
     {
+        MyExtensionClass.CheckArgumentNull(characterStatus , nameof(characterStatus));
+        MyExtensionClass.CheckArgumentNull(transform , nameof(transform));
+
         _characterTransform = transform;
         characterStatus.ReactiveHp.Subscribe(hp => _hp = hp); 
     }

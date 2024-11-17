@@ -42,5 +42,6 @@ public class AllyCharacter : BaseCharacter, ICpuCharacter
     {
         _rotationMove = CheckComponentMissing<RotationMove>();
         _cpuController = CheckComponentMissing<CpuController>();
+        base.SetComponent();
     }
 }
