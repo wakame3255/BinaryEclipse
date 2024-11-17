@@ -9,10 +9,14 @@ public class GameManager : MonoBehaviour
     private CharacterStateDictionary _characterState;
 
     private BaseCharacter[] _baseCharacter;
-    void Start()
+
+    private void Awake()
     {
         AddComponents();
         CheckAllComponent();
+    }
+    void Start()
+    {       
         SetVariableValue();     
     }
 
@@ -40,7 +44,7 @@ public class GameManager : MonoBehaviour
     private void SetVariableValue()
     {
         _baseCharacter = FindObjectsByType<BaseCharacter>(FindObjectsSortMode.None);
-        _characterState.SetCharacterState(_baseCharacter);
+        _characterState.SetCharacterState(_objectDictionary);
     }
 
     private void UpDateCharacter()

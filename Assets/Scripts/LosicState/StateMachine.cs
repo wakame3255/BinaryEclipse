@@ -12,6 +12,7 @@ public class StateMachine
     private ICpuCharacter _cpuCharacter;
     private CpuController _cpuController;
     private StartStateNode _startStateNode;
+    private OtherCharacterStatus _otherCharacterStatus;
 
     public BaseStateNode CurrentStateNode { get; private set; }
 
@@ -63,11 +64,12 @@ public class StateMachine
     /// <param name="cpuCharacter">キャラクター情報</param>
     /// <param name="cpuController">コントローラー情報</param>
     /// <param name="startState">初期のステート</param>
-    public StateMachine(ICpuCharacter cpuCharacter, CpuController cpuController, StartStateNode startState)
+    public StateMachine(ICpuCharacter cpuCharacter, CpuController cpuController, StartStateNode startState, OtherCharacterStatus otherCharacter)
     {
         _cpuCharacter = cpuCharacter;
         _cpuController = cpuController;
         _startStateNode = startState;
+        _otherCharacterStatus = otherCharacter;
 
         _startStateNode.SetCharacterInformation(cpuCharacter);
         _startStateNode.SetCpuContoller(cpuController);

@@ -8,5 +8,5 @@ public interface ICpuCharacter
 
     public Transform Transform { get; }
 
-    public void InitializeStateMachine(CharacterStateDictionary characterState);
+    public void InitializeStateMachine(OtherCharacterStatus otherCharacterState);
 }

@@ -26,10 +26,10 @@ public class BossCharacter : BaseCharacter, ICpuCharacter
         _stateMachine.Initialize(_startStateNode);
     }
 
-    public void InitializeStateMachine(CharacterStateDictionary characterState)
+    public void InitializeStateMachine(OtherCharacterStatus characterState)
     {
         //インスタンスの生成
-        _stateMachine = new StateMachine(this, _cpuController, _startStateNode);
+        _stateMachine = new StateMachine(this, _cpuController, _startStateNode, characterState);
     }
 
     protected override void SetComponent()
