@@ -35,6 +35,30 @@ public class ObjectDictionary : MonoBehaviour
         return cacheComponent;
     }
 
+    /// <summary>
+    /// 指定のサブクラスを持ったリストを返すメソッド
+    /// </summary>
+    /// <typeparam name="T">スーパークラスなど</typeparam>
+    /// <param name="baseClass">探し出すリスト</param>
+    /// <param name="subClassTypes">探したいサブクラス</param>
+    /// <returns>指定のサブクラスを持ったスーパクラス</returns>
+    public List<T> GetHasSubClass<T>(IEnumerable<T> baseClass, Type subClassTypes)
+    {
+        MyExtensionClass.CheckArgumentNull(baseClass, nameof(baseClass));
+        MyExtensionClass.CheckArgumentNull(subClassTypes, nameof(subClassTypes));
+
+        List<T> cacheComponent = new List<T>();
+
+        foreach (T character in baseClass)
+        {
+            if (subClassTypes.IsAssignableFrom(character.GetType()))
+            {
+                cacheComponent.Add(character);
+            }
+        }
+        return cacheComponent;
+    }
+
 
 
     /// <summary>

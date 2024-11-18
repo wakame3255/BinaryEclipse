@@ -51,11 +51,8 @@ public abstract class BaseCharacter : MonoBehaviour
     /// <summary>
     /// コンポネント同士の受け渡し           
     /// </summary>
-    protected virtual void DeliveryValue()
-    {
-        _characterStateView.SetComponent(_characterStatus, this.transform);
-    }
-
+    protected abstract void DeliveryValue();
+    
     /// <summary>
     /// コンポーネント存在確認。なかった場合はAddを行う
     /// </summary>

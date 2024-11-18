@@ -15,12 +15,13 @@ public class CharacterStateView
     public Transform TargetTransform { get => _targetTransform; }
     public int Hp { get => _hp; }
 
-    public void SetComponent(CharacterStatus characterStatus, Transform transform)
+    public void SetComponent(CharacterStatus characterStatus, Transform transform, ICharacterController controller)
     {
         MyExtensionClass.CheckArgumentNull(characterStatus , nameof(characterStatus));
         MyExtensionClass.CheckArgumentNull(transform , nameof(transform));
 
         _characterTransform = transform;
+        controller.ReactiveTargetTransform.Subscribe(transform => _targetTransform = transform);
         characterStatus.ReactiveHp.Subscribe(hp => _hp = hp); 
 
     }

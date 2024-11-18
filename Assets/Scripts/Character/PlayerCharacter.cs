@@ -19,4 +19,9 @@ public class PlayerCharacter : BaseCharacter
         _rotationMove.DoRotationMove(PlayerController.Instance.Direction);
         base.PhysicsUpDate();
     }
+
+    protected override void DeliveryValue()
+    {
+        _characterStateView.SetComponent(_characterStatus, this.transform, PlayerController.Instance);
+    }
 }

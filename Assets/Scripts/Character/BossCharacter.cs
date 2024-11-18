@@ -38,4 +38,9 @@ public class BossCharacter : BaseCharacter, ICpuCharacter
         _cpuController = CheckComponentMissing<CpuController>();
         base.SetComponent();
     }
+
+    protected override void DeliveryValue()
+    {
+        _characterStateView.SetComponent(_characterStatus, this.transform, _cpuController);
+    }
 }

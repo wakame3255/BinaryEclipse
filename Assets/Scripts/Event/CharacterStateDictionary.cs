@@ -37,9 +37,9 @@ public class CharacterStateDictionary : MonoBehaviour
 
         List<BaseCharacter> baseCharacters = objectDictionary.GetHasComponent<BaseCharacter>();
 
-        _allBosses = GetHasSubClass(baseCharacters, typeof(BossCharacter));
-        _allAllys = GetHasSubClass(baseCharacters, typeof(PlayerCharacter));
-        _allAllys.AddRange(GetHasSubClass(baseCharacters, typeof(AllyCharacter)));
+        _allBosses = objectDictionary.GetHasSubClass(baseCharacters, typeof(BossCharacter));
+        _allAllys = objectDictionary.GetHasSubClass(baseCharacters, typeof(PlayerCharacter));
+        _allAllys.AddRange(objectDictionary.GetHasSubClass(baseCharacters, typeof(AllyCharacter)));
 
         _allCpuCharacters = objectDictionary.GetHasComponent<ICpuCharacter>();
         SelectionCpuCharacter(_allCpuCharacters);
@@ -110,27 +110,5 @@ public class CharacterStateDictionary : MonoBehaviour
         return characterStateViews;
     }
 
-    /// <summary>
-    /// 指定のサブクラスを持ったリストを返すメソッド
-    /// </summary>
-    /// <typeparam name="T">スーパークラスなど</typeparam>
-    /// <param name="baseCharacters">探し出すリスト</param>
-    /// <param name="subClassTypes">探したいサブクラス</param>
-    /// <returns>指定のサブクラスを持ったスーパクラス</returns>
-    private List<T> GetHasSubClass<T>(IEnumerable<T> baseCharacters, Type subClassTypes)
-    {
-        MyExtensionClass.CheckArgumentNull(baseCharacters, nameof(baseCharacters));
-        MyExtensionClass.CheckArgumentNull(subClassTypes, nameof(subClassTypes));
-
-        List<T> cacheCharacters = new List<T>();
-
-        foreach (T character in baseCharacters)
-        {
-            if (subClassTypes.IsAssignableFrom(character.GetType()))
-            {
-                cacheCharacters.Add(character);
-            }
-        }
-        return cacheCharacters;
-    }
+    
 }
