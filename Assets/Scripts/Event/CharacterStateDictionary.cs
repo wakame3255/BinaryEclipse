@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+
+[Serializable]
 public class OtherCharacterStatus
 {
     public OtherCharacterStatus(List<CharacterStateView> allys, List<CharacterStateView> enemys)
@@ -9,7 +11,9 @@ public class OtherCharacterStatus
         _enemys = enemys;
     }
 
+    [SerializeField]
     private List<CharacterStateView> _allys = new List<CharacterStateView>();
+    [SerializeField]
     private List<CharacterStateView> _enemys = new List<CharacterStateView>();
 
     public List<CharacterStateView> Allys { get => _allys; }
@@ -31,13 +35,13 @@ public class CharacterStateDictionary : MonoBehaviour
     {
         MyExtensionClass.CheckArgumentNull(objectDictionary, nameof(objectDictionary));
 
-        List<BaseCharacter> baseCharacters = objectDictionary.ReturnHasComponent<BaseCharacter>();
+        List<BaseCharacter> baseCharacters = objectDictionary.GetHasComponent<BaseCharacter>();
 
         _allBosses = GetHasSubClass(baseCharacters, typeof(BossCharacter));
         _allAllys = GetHasSubClass(baseCharacters, typeof(PlayerCharacter));
         _allAllys.AddRange(GetHasSubClass(baseCharacters, typeof(AllyCharacter)));
 
-        _allCpuCharacters = objectDictionary.ReturnHasComponent<ICpuCharacter>();
+        _allCpuCharacters = objectDictionary.GetHasComponent<ICpuCharacter>();
         SelectionCpuCharacter(_allCpuCharacters);
     }
 

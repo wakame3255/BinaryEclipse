@@ -7,6 +7,7 @@ public class BossCharacter : BaseCharacter, ICpuCharacter
     [SerializeField] [Header("スタートノード")]
     private StartStateNode _startStateNode;
     
+    [SerializeField]
     private StateMachine _stateMachine;
     private CpuController _cpuController;
 

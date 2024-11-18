@@ -12,6 +12,7 @@ public class StateMachine
     private ICpuCharacter _cpuCharacter;
     private CpuController _cpuController;
     private StartStateNode _startStateNode;
+    [SerializeField]
     private OtherCharacterStatus _otherCharacterStatus;
 
     public BaseStateNode CurrentStateNode { get; private set; }
@@ -66,6 +67,11 @@ public class StateMachine
     /// <param name="startState">初期のステート</param>
     public StateMachine(ICpuCharacter cpuCharacter, CpuController cpuController, StartStateNode startState, OtherCharacterStatus otherCharacter)
     {
+        MyExtensionClass.CheckArgumentNull(cpuCharacter, nameof(cpuCharacter));
+        MyExtensionClass.CheckArgumentNull(cpuCharacter, nameof(cpuController));
+        MyExtensionClass.CheckArgumentNull(startState, nameof(startState));
+        MyExtensionClass.CheckArgumentNull(otherCharacter, nameof(otherCharacter));
+
         _cpuCharacter = cpuCharacter;
         _cpuController = cpuController;
         _startStateNode = startState;
@@ -114,6 +120,7 @@ public class StateMachine
     /// <param name="outNode"></param>
     private void CacheNextState(OutNode[] outNodes)
     {
+        MyExtensionClass.CheckArgumentNull(outNodes, nameof(outNodes));
 
         foreach (OutNode outNode in outNodes)
         {
