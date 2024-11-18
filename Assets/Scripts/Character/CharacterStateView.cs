@@ -8,9 +8,11 @@ using R3;
 public class CharacterStateView
 {
     private int _hp;
+    private Transform _targetTransform;
     private Transform _characterTransform;
 
     public Transform CharacterTransform { get => _characterTransform; }
+    public Transform TargetTransform { get => _targetTransform; }
     public int Hp { get => _hp; }
 
     public void SetComponent(CharacterStatus characterStatus, Transform transform)
@@ -20,5 +22,6 @@ public class CharacterStateView
 
         _characterTransform = transform;
         characterStatus.ReactiveHp.Subscribe(hp => _hp = hp); 
+
     }
 }

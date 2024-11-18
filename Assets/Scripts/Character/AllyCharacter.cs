@@ -22,7 +22,7 @@ public class AllyCharacter : BaseCharacter, ICpuCharacter
     {
         _stateMachine.UpdateState();
         _characterAction.SetInput(_cpuController);
-        _rotationMove.DoRotationMove(_cpuController.Direction);
+        _rotationMove.DoRotationMove(_cpuController.Target);
         base.PhysicsUpDate();
     }
 

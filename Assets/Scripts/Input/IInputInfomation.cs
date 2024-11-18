@@ -1,6 +1,6 @@
-using System.Collections;
-using System.Collections.Generic;
+
 using UnityEngine;
+using R3;
 
 public interface ICharacterController
 {
@@ -8,6 +8,9 @@ public interface ICharacterController
     public float InputY { get; }
 
     public Vector3 Direction { get; }
+    public Transform Target { get; }
 
     public bool IsAttack { get; }
+
+   public ReactiveProperty<Transform> ReactiveTargetTransform { get; }
 }

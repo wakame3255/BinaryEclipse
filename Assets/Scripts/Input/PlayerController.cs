@@ -1,8 +1,7 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
+
 using UnityEngine;
 using UnityEngine.InputSystem;
+using R3;
 
 public class PlayerController : MonoBehaviour, ICharacterController
 {
@@ -11,14 +10,19 @@ public class PlayerController : MonoBehaviour, ICharacterController
     private float _inputX;
     private float _inputY;
     private Vector3 _mousePosition;
+    private Transform _targetPosition;
     private bool _k_key;
+
+    private ReactiveProperty<Transform> _reactiveTargetTransform = new ReactiveProperty<Transform>();
 
     public static PlayerController Instance { get => _instance; }
     public float InputX { get => _inputX; }
     public float InputY { get => _inputY; }
     public Vector3 Direction { get => _mousePosition; }
+    public Transform Target { get => _targetPosition; }
     public bool IsAttack { get => _k_key; }
 
+    public ReactiveProperty<Transform> ReactiveTargetTransform { get => _reactiveTargetTransform; }
     private void Awake()
     {
         //インスタンスが存在しない場合、自身をインスタンスにする

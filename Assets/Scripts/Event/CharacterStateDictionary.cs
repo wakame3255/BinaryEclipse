@@ -57,11 +57,11 @@ public class CharacterStateDictionary : MonoBehaviour
         {
             switch (cpuCharacter)
             {
-                case BossCharacter bossCharacter:
+                case BossCharacter:
                     InitializeCpuStateMachine(cpuCharacter, _allBosses, _allAllys);
                     break;
 
-                case AllyCharacter allyCharacter:
+                case AllyCharacter:
                     InitializeCpuStateMachine(cpuCharacter, _allAllys, _allBosses);
                     break;
             }
