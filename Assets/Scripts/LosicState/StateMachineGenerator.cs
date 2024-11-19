@@ -1,29 +1,64 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class StateMachineGenerator : MonoBehaviour
 {
-    public void InitializeStateMachine(ICpuCharacter[] cpuCharacters)
+    public void InitializeStateMachine(List<ICpuCharacter> cpuCharacters, CharacterDictionary characterState)
     {
-
+        foreach (ICpuCharacter cpuCharacter in cpuCharacters)
+        {
+            OtherCharacterStatus characterStatus = GetOtherCharacterStatus(cpuCharacter, characterState);
+        }
     }
 
     /// <summary>
-    /// cpuキャラクターのステートマシンを初期化するメソッド
+    /// Cpuキャラクターの種類選別メソッド
     /// </summary>
-    /// <param name="cpuCharacter">cpu</param>
-    /// <param name="allys">味方となるキャラ</param>
-    /// <param name="enemies">敵となるキャラ</param>
-    private void InitializeCpuStateMachine(ICpuCharacter cpuCharacter, List<BaseCharacter> allys, List<BaseCharacter> enemies)
+    /// <param name="cpuCharacters">すべてのCpuキャラクター</param>
+    private OtherCharacterStatus GetOtherCharacterStatus(ICpuCharacter cpuCharacters, CharacterDictionary characterState)
+    {
+        MyExtensionClass.CheckArgumentNull(cpuCharacters, nameof(cpuCharacters));
+        MyExtensionClass.CheckArgumentNull(characterState, nameof(characterState));
+        List<CharacterStateView> otherAllys = null;
+        List<CharacterStateView> otherEnemys = null; ;
+
+        switch (cpuCharacters)
+        {
+            case BossCharacter:
+                otherAllys = GetStateView(cpuCharacters, characterState.AllBosses);
+                otherEnemys = GetStateView(cpuCharacters, characterState.AllAllys);
+                break;
+
+            case AllyCharacter:
+                otherAllys = GetStateView(cpuCharacters, characterState.AllAllys);
+                otherEnemys = GetStateView(cpuCharacters, characterState.AllBosses);
+                break;
+        }
+
+        return new OtherCharacterStatus(otherAllys, otherEnemys);
+    }
+
+    /// <summary>
+    /// 指定のcpuを省いたステートビューを返すメソッド
+    /// </summary>
+    /// <param name="cpuCharacter">省きたいキャラクター</param>
+    /// <param name="characters">指定したすべてのキャラクター</param>
+    /// <returns>省き済みのステートビュー</returns>
+    private List<CharacterStateView> GetStateView(ICpuCharacter cpuCharacter, List<BaseCharacter> characters)
     {
         MyExtensionClass.CheckArgumentNull(cpuCharacter, nameof(cpuCharacter));
-        MyExtensionClass.CheckArgumentNull(allys, nameof(allys));
-        MyExtensionClass.CheckArgumentNull(enemies, nameof(enemies));
+        MyExtensionClass.CheckArgumentNull(characters, nameof(characters));
 
-        List<CharacterStateView> otherAllys = GetStateView(cpuCharacter, allys);
-        List<CharacterStateView> otherenemys = GetStateView(cpuCharacter, enemies);
+        List<CharacterStateView> characterStateViews = new List<CharacterStateView>();
 
-        cpuCharacter.InitializeStateMachine(new OtherCharacterStatus(otherAllys, otherenemys));
+        foreach (BaseCharacter character in characters)
+        {
+            if (character != (BaseCharacter)cpuCharacter)
+            {
+                characterStateViews.Add(character.CharacterStatusView);
+            }
+        }
+
+        return characterStateViews;
     }
 }

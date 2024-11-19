@@ -32,10 +32,9 @@ public class AllyCharacter : BaseCharacter, ICpuCharacter
         _stateMachine.Initialize(_startStateNode);
     }
 
-    public void InitializeStateMachine(OtherCharacterStatus characterState)
+    public void SetStateMachine(StateMachine stateMachine)
     {
-        //インスタンスの生成
-        _stateMachine = new StateMachine(this, _cpuController, _startStateNode, characterState);
+        _stateMachine = stateMachine;
     }
 
     protected override void SetComponent()

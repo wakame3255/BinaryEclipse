@@ -5,15 +5,13 @@ using UnityEngine;
 public class CharacterGenerator : MonoBehaviour
 {
     private StateMachineGenerator _stateMachineGenerator;
-    private CharacterStateDictionary _characterStateDictionary;
+    private CharacterDictionary _characterStateDictionary;
 
-    public void GenerateCharacter()
+    public void GenerateCharacter(ObjectDictionary objectDictionary)
     {
-        
-    }
+        //キャラクター作るメソッド
 
-    public void SetCharacterState(ObjectDictionary objectDictionary)
-    {
+        //ここでキャラクターへ情報を格納
         _characterStateDictionary.SetCharacterState(objectDictionary);
     }
 }

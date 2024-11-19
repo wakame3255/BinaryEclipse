@@ -15,7 +15,6 @@ public abstract class BaseCharacter : MonoBehaviour
     [SerializeField]
     protected private CharacterStateView _characterStateView;
 
-    public CharacterStatus CharacterStatus { get => _characterStatus; }
     public CharacterStateView CharacterStatusView { get => _characterStateView; }
 
     protected void Awake()

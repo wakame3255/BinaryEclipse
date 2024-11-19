@@ -69,7 +69,7 @@ public class ObjectDictionary : MonoBehaviour
     { 
         MyExtensionClass.CheckArgumentNull(gameObjects, nameof(gameObjects));
 
-        _characterDictionary = RetuneDictionary<BaseCharacter>(gameObjects);
+        _characterDictionary = GetDictionary<BaseCharacter>(gameObjects);
     }
 
     /// <summary>
@@ -78,7 +78,7 @@ public class ObjectDictionary : MonoBehaviour
     /// <typeparam name="T">値となるコンポーネント</typeparam>
     /// <param name="gameObjects">すべてのオブジェクト</param>
     /// <returns>指定の要素が入ったディクショナリー</returns>
-    private Dictionary<GameObject, T> RetuneDictionary<T>(IEnumerable<GameObject> gameObjects)
+    private Dictionary<GameObject, T> GetDictionary<T>(IEnumerable<GameObject> gameObjects)
     {
         MyExtensionClass.CheckArgumentNull(gameObjects, nameof(gameObjects));
 

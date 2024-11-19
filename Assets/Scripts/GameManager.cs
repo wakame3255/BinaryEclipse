@@ -5,7 +5,7 @@ using UnityEngine;
 public class GameManager : MonoBehaviour
 { 
     private ObjectDictionary _objectDictionary;
-    private CharacterStateDictionary _characterState;
+    private CharacterDictionary _characterState;
 
     private BaseCharacter[] _baseCharacter;
 
@@ -32,7 +32,7 @@ public class GameManager : MonoBehaviour
     private void AddComponents()
     {
         _objectDictionary = gameObject.AddComponent<ObjectDictionary>();
-        _characterState = gameObject.AddComponent<CharacterStateDictionary>();
+        _characterState = gameObject.AddComponent<CharacterDictionary>();
     }
 
     private void CheckAllComponent()
