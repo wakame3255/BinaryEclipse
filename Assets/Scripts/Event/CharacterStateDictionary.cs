@@ -68,23 +68,7 @@ public class CharacterStateDictionary : MonoBehaviour
         }
     }
 
-    /// <summary>
-    /// cpuキャラクターのステートマシンを初期化するメソッド
-    /// </summary>
-    /// <param name="cpuCharacter">cpu</param>
-    /// <param name="allys">味方となるキャラ</param>
-    /// <param name="enemies">敵となるキャラ</param>
-    private void InitializeCpuStateMachine(ICpuCharacter cpuCharacter, List<BaseCharacter> allys, List<BaseCharacter> enemies)
-    {
-        MyExtensionClass.CheckArgumentNull(cpuCharacter, nameof(cpuCharacter));
-        MyExtensionClass.CheckArgumentNull(allys, nameof(allys));
-        MyExtensionClass.CheckArgumentNull(enemies, nameof(enemies));
-
-        List<CharacterStateView> otherAllys = GetStateView(cpuCharacter, allys);
-        List<CharacterStateView> otherenemys = GetStateView(cpuCharacter, enemies);
-
-        cpuCharacter.InitializeStateMachine(new OtherCharacterStatus(otherAllys, otherenemys));
-    }
+    
 
     /// <summary>
     /// 指定のcpuを省いたステートビューを返すメソッド

@@ -9,6 +9,11 @@ public class CharacterGenerator : MonoBehaviour
 
     public void GenerateCharacter()
     {
+        
+    }
 
+    public void SetCharacterState(ObjectDictionary objectDictionary)
+    {
+        _characterStateDictionary.SetCharacterState(objectDictionary);
     }
 }
