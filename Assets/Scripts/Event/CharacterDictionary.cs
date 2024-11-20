@@ -20,7 +20,7 @@ public class OtherCharacterStatus
     public List<CharacterStateView> Enemys { get => _enemys; }
 }
 
-public class CharacterDictionary : MonoBehaviour
+public class CharacterDictionary
 {
     private List<BaseCharacter> _allAllys;
     private List<BaseCharacter> _allBosses;
