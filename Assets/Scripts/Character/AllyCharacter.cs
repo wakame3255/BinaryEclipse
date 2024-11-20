@@ -14,9 +14,10 @@ public class AllyCharacter : BaseCharacter, ICpuCharacter
     private RotationMove _rotationMove;
     private CpuController _cpuController;
 
-
+    public StartStateNode StartStateNode { get => _startStateNode; }
     public StateMachine StateMachine { get => _stateMachine; }
     public Transform Transform { get => _cacheTransform; }
+    public CpuController CpuController { get => _cpuController; }
 
     public override void PhysicsUpDate()
     {
@@ -34,6 +35,7 @@ public class AllyCharacter : BaseCharacter, ICpuCharacter
 
     public void SetStateMachine(StateMachine stateMachine)
     {
+        MyExtensionClass.CheckArgumentNull(stateMachine, nameof(stateMachine));
         _stateMachine = stateMachine;
     }
 

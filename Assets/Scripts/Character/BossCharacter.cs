@@ -11,8 +11,10 @@ public class BossCharacter : BaseCharacter, ICpuCharacter
     private StateMachine _stateMachine;
     private CpuController _cpuController;
 
+    public StartStateNode StartStateNode { get => _startStateNode; }
     public StateMachine StateMachine { get => _stateMachine; }
     public Transform Transform { get => _cacheTransform; }
+    public CpuController CpuController { get => _cpuController; }
 
     public override void PhysicsUpDate()
     {

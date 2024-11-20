@@ -5,6 +5,7 @@ using R3;
 
 public class CharacterStatus : MonoBehaviour
 {
+    [SerializeField]
     private int _hp;
 
     private ReactiveProperty<int> _reactiveHp = new ReactiveProperty<int>();
@@ -16,8 +17,15 @@ public class CharacterStatus : MonoBehaviour
         _reactiveHp.Value = _hp;
     }
 
-    public void SubtractionHp(int damage)
+    public void SubtractionHp(int damageAmount)
     {
-        _reactiveHp.Value -= damage;
+        _reactiveHp.Value -= damageAmount;
+        _hp -= damageAmount;
+    }
+
+    public void AddHp(int recoveryAmount)
+    {
+        _reactiveHp.Value += recoveryAmount;
+        _hp += recoveryAmount;
     }
 }

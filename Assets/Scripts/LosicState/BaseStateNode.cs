@@ -16,6 +16,7 @@ public abstract class BaseStateNode : MonoBehaviour, IDragHandler
 
     private protected ICpuCharacter _cpuCharacter;
     private protected CpuController _cpuController;
+    private protected OtherCharacterStatus _otherCharacters;
 
     private protected bool _isComponentNull = default;
 
@@ -38,7 +39,11 @@ public abstract class BaseStateNode : MonoBehaviour, IDragHandler
         }
     }
 
-    public abstract OutNode[] ReturnHasOutNode();
+    /// <summary>
+    /// 自身が持っているアウトノードを返却
+    /// </summary>
+    /// <returns></returns>
+    public abstract OutNode[] GetHasOutNode();
 
     private void Start()
     {
@@ -56,6 +61,10 @@ public abstract class BaseStateNode : MonoBehaviour, IDragHandler
     public void SetCpuContoller(CpuController cpuController)
     {
         _cpuController = cpuController;
+    }
+    public void SetOtherCharacterInformation(OtherCharacterStatus otherCharacters)
+    {
+        _otherCharacters = otherCharacters;
     }
 
     public void OnDrag(PointerEventData eventData)

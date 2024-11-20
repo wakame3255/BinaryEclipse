@@ -16,7 +16,7 @@ public class StartStateNode : BaseStateNode
     public override void UpdateState() { }
     public override void ExitState() { }
 
-    public override OutNode[] ReturnHasOutNode()
+    public override OutNode[] GetHasOutNode()
     {
         _outNode.UpdateNextNode();
 

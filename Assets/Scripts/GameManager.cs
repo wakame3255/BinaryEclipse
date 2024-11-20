@@ -5,9 +5,9 @@ using UnityEngine;
 public class GameManager : MonoBehaviour
 { 
     private ObjectDictionary _objectDictionary;
-    private CharacterDictionary _characterState;
+    private CharacterGenerator _characterGenerator;
 
-    private BaseCharacter[] _baseCharacter;
+    private List<BaseCharacter> _baseCharacter;
 
     private void Awake()
     {
@@ -32,7 +32,7 @@ public class GameManager : MonoBehaviour
     private void AddComponents()
     {
         _objectDictionary = gameObject.AddComponent<ObjectDictionary>();
-        _characterState = gameObject.AddComponent<CharacterDictionary>();
+        _characterGenerator = new CharacterGenerator();
     }
 
     private void CheckAllComponent()
@@ -42,8 +42,8 @@ public class GameManager : MonoBehaviour
 
     private void SetVariableValue()
     {
-        _baseCharacter = FindObjectsByType<BaseCharacter>(FindObjectsSortMode.None);
-        _characterState.SetCharacterState(_objectDictionary);
+        _characterGenerator.GenerateCharacter(_objectDictionary);
+        _baseCharacter = _objectDictionary.GetHasComponent<BaseCharacter>();
     }
 
     private void UpDateCharacter()

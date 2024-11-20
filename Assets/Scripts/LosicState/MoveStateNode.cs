@@ -31,7 +31,7 @@ public class MoveStateNode : BaseStateNode
         base.ExitState();
     }
 
-    public override OutNode[] ReturnHasOutNode()
+    public override OutNode[] GetHasOutNode()
     {
         _outNode.UpdateNextNode();
 

@@ -1,13 +1,24 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class StateMachineGenerator : MonoBehaviour
+public class StateMachineGenerator
 {
-    public void InitializeStateMachine(List<ICpuCharacter> cpuCharacters, CharacterDictionary characterState)
+    /// <summary>
+    /// cpuで使うステートマシンを生成するメソッド
+    /// </summary>
+    /// <param name="characterState">キャラクター辞典</param>
+    public void InitializeStateMachine(CharacterDictionary characterState)
     {
-        foreach (ICpuCharacter cpuCharacter in cpuCharacters)
+        MyExtensionClass.CheckArgumentNull(characterState, nameof(characterState));
+
+        foreach (ICpuCharacter cpuCharacter in characterState.AllCpuCharacters)
         {
             OtherCharacterStatus characterStatus = GetOtherCharacterStatus(cpuCharacter, characterState);
+            CpuController cpuController = cpuCharacter.CpuController;
+            StartStateNode startState = cpuCharacter.StartStateNode;
+
+            StateMachine stateMachine = new StateMachine(cpuCharacter, cpuController, startState, characterStatus);
+            cpuCharacter.SetStateMachine(stateMachine);
         }
     }
 

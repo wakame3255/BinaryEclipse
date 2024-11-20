@@ -96,7 +96,8 @@ public class StateMachine
         foreach (BaseStateNode baseState in _baseStateNodes)
         {
             baseState.SetCharacterInformation(_cpuCharacter);
-            baseState.SetCpuContoller(_cpuController);
+            baseState.SetOtherCharacterInformation(_otherCharacterStatus);
+            baseState.SetCpuContoller(_cpuController);    
         }
     }
 
@@ -108,7 +109,7 @@ public class StateMachine
         if (_startStateNode != null)
         {
             _baseStateNodes.Clear();
-            _startStateNode.ReturnHasOutNode();
+            _startStateNode.GetHasOutNode();
             OutNode[] outNodes = new OutNode[] { _startStateNode.OutNode };
             CacheNextState(outNodes);
         }
@@ -130,7 +131,7 @@ public class StateMachine
             {
                 _baseStateNodes.Add(nextStateNode);
                
-                CacheNextState(nextStateNode.ReturnHasOutNode());
+                CacheNextState(nextStateNode.GetHasOutNode());
             }
         }
     }
