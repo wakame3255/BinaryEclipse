@@ -6,14 +6,14 @@ public class StateMachineGenerator
     /// <summary>
     /// cpuで使うステートマシンを生成するメソッド
     /// </summary>
-    /// <param name="characterState">キャラクター辞典</param>
-    public void InitializeStateMachine(CharacterDictionary characterState)
+    /// <param name="characterDictionary">キャラクター辞典</param>
+    public void InitializeStateMachine(CharacterDictionary characterDictionary)
     {
-        MyExtensionClass.CheckArgumentNull(characterState, nameof(characterState));
+        MyExtensionClass.CheckArgumentNull(characterDictionary, nameof(characterDictionary));
 
-        foreach (ICpuCharacter cpuCharacter in characterState.AllCpuCharacters)
+        foreach (ICpuCharacter cpuCharacter in characterDictionary.AllCpuCharacters)
         {
-            OtherCharacterStatus characterStatus = GetOtherCharacterStatus(cpuCharacter, characterState);
+            OtherCharacterStatus characterStatus = GetOtherCharacterStatus(cpuCharacter, characterDictionary);
             CpuController cpuController = cpuCharacter.CpuController;
             StartStateNode startState = cpuCharacter.StartStateNode;
 
