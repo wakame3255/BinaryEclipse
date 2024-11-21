@@ -36,7 +36,7 @@ public class BossCharacter : BaseCharacter, ICpuCharacter
 
     protected override void SetComponent()
     {
-        _cpuController = CheckComponentMissing<CpuController>();
+        _cpuController = this.CheckComponentMissing<CpuController>();
         base.SetComponent();
     }
 

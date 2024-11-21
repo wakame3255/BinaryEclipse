@@ -41,8 +41,8 @@ public class AllyCharacter : BaseCharacter, ICpuCharacter
 
     protected override void SetComponent()
     {
-        _rotationMove = CheckComponentMissing<RotationMove>();
-        _cpuController = CheckComponentMissing<CpuController>();
+        _rotationMove = this.CheckComponentMissing<RotationMove>();
+        _cpuController = this.CheckComponentMissing<CpuController>();
         base.SetComponent();
     }
 
