@@ -9,14 +9,9 @@ public class RotationMove : MonoBehaviour
 
     private Transform _cacheTransform;
 
-    private void Start()
+    private void Awake()
     {
         _cacheTransform = transform;
-    }
-
-    private void FixedUpdate()
-    {
-        
     }
 
     /// <summary>

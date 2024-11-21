@@ -9,13 +9,10 @@ public class Collision2D : MonoBehaviour
     [SerializeField]
     private LayerMask _collisionLayerMask;
 
-    [SerializeField]
-    private int _maxCollisionCount;
-
     private CircleCollider2D _circleCollider;
     private RaycastHit2D[] _collisionResults;
 
-    private void Start()
+    private void Awake()
     {
         _circleCollider = GetComponent<CircleCollider2D>();
     }
