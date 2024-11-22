@@ -10,5 +10,6 @@ public abstract class BaseGenerateObject : MonoBehaviour
 }
 public abstract class BaseGenerator
 {
+    public abstract BaseGenerateObject(Tparam p) w
 }
 
