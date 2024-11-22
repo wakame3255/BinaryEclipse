@@ -8,11 +8,11 @@ public class BossCharacter : BaseCharacter, ICpuCharacter
     private StartStateNode _startStateNode;
     
     [SerializeField]
-    private StateMachine _stateMachine;
+    private Cpu.StateMachine _stateMachine;
     private CpuController _cpuController;
 
     public StartStateNode StartStateNode { get => _startStateNode; }
-    public StateMachine StateMachine { get => _stateMachine; }
+    public Cpu.StateMachine StateMachine { get => _stateMachine; }
     public Transform Transform { get => _cacheTransform; }
     public CpuController CpuController { get => _cpuController; }
 
@@ -29,7 +29,7 @@ public class BossCharacter : BaseCharacter, ICpuCharacter
         _stateMachine.Initialize(_startStateNode);
     }
 
-    public void SetStateMachine(StateMachine stateMachine)
+    public void SetStateMachine(Cpu.StateMachine stateMachine)
     {
         _stateMachine = stateMachine;
     }

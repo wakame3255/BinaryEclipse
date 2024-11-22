@@ -11,13 +11,19 @@ public class StateMachineGenerator
     {
         MyExtensionClass.CheckArgumentNull(characterDictionary, nameof(characterDictionary));
 
+        //各Cpuにステートマシンを付与する
         foreach (ICpuCharacter cpuCharacter in characterDictionary.AllCpuCharacters)
         {
-            OtherCharacterStatus characterStatus = GetOtherCharacterStatus(cpuCharacter, characterDictionary);
-            CpuController cpuController = cpuCharacter.CpuController;
-            StartStateNode startState = cpuCharacter.StartStateNode;
+            //ステートマシンに使うデータの生成
+            StateMachineInformation stateMachineInformation = new StateMachineInformation
+                (
+                 cpuCharacter,
+                 cpuCharacter.CpuController,
+                 cpuCharacter.StartStateNode,
+                 GetOtherCharacterStatus(cpuCharacter, characterDictionary)
+                );
 
-            StateMachine stateMachine = new StateMachine(cpuCharacter, cpuController, startState, characterStatus);
+            Cpu.StateMachine stateMachine = new(stateMachineInformation);
             cpuCharacter.SetStateMachine(stateMachine);
         }
     }
