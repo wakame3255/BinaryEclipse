@@ -15,7 +15,7 @@ public class BossAction : MonoBehaviour, ICharacterAction
         SetComponent();
     }
 
-    public void SetInput(ICharacterController characterController, Transform myTransform)
+    public void SetControlInformation(ICharacterController characterController, Transform myTransform)
     {
         _walk.DoWalk(characterController.InputX, characterController.InputY, myTransform);
 

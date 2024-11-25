@@ -19,7 +19,7 @@ public class BossCharacter : BaseCharacter, ICpuCharacter
     public override void PhysicsUpDate()
     {
         _stateMachine.UpdateState();
-        _characterAction.SetInput(_cpuController, transform);
+        _characterAction.SetControlInformation(_cpuController, transform);
         base.PhysicsUpDate();
     }
 
