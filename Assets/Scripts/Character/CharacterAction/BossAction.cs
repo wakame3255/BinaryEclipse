@@ -4,27 +4,30 @@ using UnityEngine;
 
 public class BossAction : MonoBehaviour, ICharacterAction
 {
-    IWalk walk;
+    [SerializeField]
+    protected private GameObject _actionObject;
 
-    private Transform _transform;
+    private IWalk _walk;
+    private IAttack _attack;
 
     private void Awake()
     {
         SetComponent();
     }
 
-    public void SetInput(ICharacterController characterController)
+    public void SetInput(ICharacterController characterController, Transform myTransform)
     {
-        walk.DoWalk(characterController.InputX, characterController.InputY);
-    }
+        _walk.DoWalk(characterController.InputX, characterController.InputY, myTransform);
 
-    public void SetTransform(Transform characterTransform)
-    {
-        _transform = characterTransform;
+        if (characterController.IsAttack)
+        {
+            _attack.DoAttack();
+        }
     }
 
     protected void SetComponent()
     {
-        walk = this.CheckComponentMissing<Walk>();
+        _walk = this.CheckComponentMissing<Walk>(_actionObject);
+        _attack = this.CheckComponentMissing<ShotAttack>(_actionObject);
     }
 }

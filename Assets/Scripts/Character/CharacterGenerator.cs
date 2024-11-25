@@ -2,8 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CharacterGenerator
+public class CharacterGenerator : MonoBehaviour
 {
+    [SerializeField]
+    EnemyDate enemyDate;
+
     private StateMachineGenerator _stateMachineGenerator;
     private CharacterDictionary _characterStateDictionary;
 

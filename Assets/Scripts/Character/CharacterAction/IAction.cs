@@ -16,5 +16,5 @@ interface ISkill
 }
 interface IWalk
 {
-    public void DoWalk(float inputX, float inputY);
+    public void DoWalk(float inputX, float inputY, Transform myTransform);
 }

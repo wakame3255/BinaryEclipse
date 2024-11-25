@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+[RequireComponent(typeof(CharacterGenerator))]
 public class GameManager : MonoBehaviour
 { 
     private ObjectDictionary _objectDictionary;
@@ -32,7 +33,7 @@ public class GameManager : MonoBehaviour
     private void AddComponents()
     {
         _objectDictionary = gameObject.AddComponent<ObjectDictionary>();
-        _characterGenerator = new CharacterGenerator();
+        _characterGenerator = this.CheckComponentMissing< CharacterGenerator >();
     }
 
     private void CheckAllComponent()

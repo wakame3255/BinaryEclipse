@@ -10,13 +10,22 @@ public static class MyExtensionClass
     /// <typeparam name="T">チェックの行うコンポーネント</typeparam>
     /// <param name="monoBehaviour">拡張メソッドを呼び出すMonoBehaviour</param>
     /// <returns>コンポーネント</returns>
-    public static T CheckComponentMissing<T>(this MonoBehaviour monoBehaviour)
+    public static T CheckComponentMissing<T>(this MonoBehaviour monoBehaviour, GameObject gameObject = null)
     {
         T component;
         if (!monoBehaviour.TryGetComponent<T>(out component))
         {
             Debug.LogError(monoBehaviour.transform.name + " " + typeof(T).FullName + "が足りないよ");
-            monoBehaviour.gameObject.AddComponent(typeof(T));
+
+            //付けたいオブジェクトの指定
+            if (gameObject == null)
+            {
+                monoBehaviour.gameObject.AddComponent(typeof(T));
+            }
+            else
+            {
+                gameObject.AddComponent(typeof(T));
+            }
         }
         return component;
     }
