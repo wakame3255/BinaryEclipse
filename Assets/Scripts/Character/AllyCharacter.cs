@@ -22,7 +22,7 @@ public class AllyCharacter : BaseCharacter, ICpuCharacter
     public override void PhysicsUpDate()
     {
         _stateMachine.UpdateState();
-        _characterAction.SetControlInformation(_cpuController, transform);
+        _characterAction.SetControlInformation(_cpuController);
         _rotationMove.DoRotationMove(_cpuController.Target);
         base.PhysicsUpDate();
     }

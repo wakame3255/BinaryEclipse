@@ -15,7 +15,7 @@ public class PlayerCharacter : BaseCharacter
 
     public override void PhysicsUpDate()
     {
-        _characterAction.SetControlInformation(PlayerController.Instance, transform);
+        _characterAction.SetControlInformation(PlayerController.Instance);
         _rotationMove.DoRotationMove(PlayerController.Instance.Direction);
         base.PhysicsUpDate();
     }

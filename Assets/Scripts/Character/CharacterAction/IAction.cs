@@ -2,19 +2,20 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-interface IAttack
+public interface IAttack
 {
-    public void DoAttack();
+    public void SetResource(GameObject[] gameObjects);
+    public void DoAttack(Vector3 targetPosition);
 }
-interface IDash
+public interface IDash
 {
     public void DoDash();
 }
-interface ISkill
+public interface ISkill
 {
     public void UseSkill();
 }
-interface IWalk
+public interface IWalk
 {
     public void DoWalk(float inputX, float inputY, Transform myTransform);
 }
