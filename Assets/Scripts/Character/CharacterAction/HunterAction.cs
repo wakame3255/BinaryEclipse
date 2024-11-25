@@ -1,10 +1,11 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using UnityEngine;
 
 public class HunterAction : MonoBehaviour, ICharacterAction
 {
-    [SerializeField]
+    [SerializeField, Required]
     protected private GameObject _actionObject;
 
     private CharacterStateView _stateView;
