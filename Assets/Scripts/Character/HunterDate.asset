@@ -12,4 +12,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bd0f7aebcc030a543b29ea1fd5aa87dd, type: 3}
   m_Name: HunterDate
   m_EditorClassIdentifier: 
-  _enemyInformation: []
+  _hunterInformation:
+  - _id: 0
+    _hp: 0
+    _attack: 0
+    _hunterPrefab:
+      rid: -2
+    _bullets: []
+  references:
+    version: 2
+    RefIds:
+    - rid: -2
+      type: {class: , ns: , asm: }
