@@ -4,7 +4,7 @@ using UnityEngine;
 
 public interface IAttack
 {
-    public void SetResource(GameObject[] gameObjects);
+    public void SetResource(BaseBullet[] bullets);
     public void DoAttack(Vector3 targetPosition);
 }
 public interface IDash

@@ -21,15 +21,17 @@ public class HunterAction : MonoBehaviour, ICharacterAction
      {
         _walk.DoWalk(characterController.InputX, characterController.InputY, _stateView.CharacterTransform);
 
+        //çUåÇì¸óÕ
         if (characterController.IsAttack)
         {
             _attack.DoAttack(_stateView.TargetTransform.position);
         }
      }
 
-    public void SetResourceInformation(CharacterStateView characterState)
+    public void SetResourceInformation(CharacterStateView characterState, BaseBullet[] bullets)
     {
         _stateView = characterState;
+        _attack.SetResource(bullets);
     }
 
     protected void SetComponent()

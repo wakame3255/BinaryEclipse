@@ -8,5 +8,5 @@ public interface ICharacterAction
     /// </summary>
     public void SetControlInformation(ICharacterController inputManager);
 
-    public void SetResourceInformation(CharacterStateView characterState);
+    public void SetResourceInformation(CharacterStateView characterState, BaseBullet[] bullets);
 }

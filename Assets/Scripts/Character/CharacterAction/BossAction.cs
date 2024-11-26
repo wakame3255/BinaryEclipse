@@ -1,10 +1,12 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+
 using UnityEngine;
 
 public class BossAction : MonoBehaviour, ICharacterAction
 {
-    [SerializeField]
+    [SerializeField, Required]
     protected private GameObject _actionObject;
 
     private CharacterStateView _stateView;
@@ -26,9 +28,10 @@ public class BossAction : MonoBehaviour, ICharacterAction
         }
     }
 
-    public void SetResourceInformation(CharacterStateView characterState)
+    public void SetResourceInformation(CharacterStateView characterState, BaseBullet[] bullets)
     {
         _stateView = characterState;
+        _attack.SetResource(bullets);
     }
 
     private void SetComponent()
