@@ -19,7 +19,7 @@ public class EnemyInformation
     private int _defense;
 
     [SerializeField]
-    private GameObject _enemyPrefab; //基礎になる敵のプレハブ
+    private BaseCharacter _enemyPrefab; //基礎になる敵のプレハブ
 
     [SerializeField]
     private GameObject[] _weapons; //使う武器のプレハブ
