@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using UnityEngine;
 using System;
+using System.Runtime.InteropServices;
 
 [Serializable]
 public class HunterInformation
@@ -17,7 +18,7 @@ public class HunterInformation
     [SerializeField]
     private int _attack;//UŒ‚—Í
 
-    [Required]
+    [SerializeField] 
     private ICharacterAction _hunterPrefab; //Šî‘b‚É‚È‚éƒvƒŒƒnƒu
 
     [SerializeField, Required]
