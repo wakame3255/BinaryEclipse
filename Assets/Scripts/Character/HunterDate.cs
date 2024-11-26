@@ -1,9 +1,8 @@
-using System.Collections;
+
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using UnityEngine;
 using System;
-using System.Runtime.InteropServices;
 
 [Serializable]
 public class HunterInformation
@@ -18,8 +17,9 @@ public class HunterInformation
     [SerializeField]
     private int _attack;//攻撃力
 
-    [SerializeField] 
-    private ICharacterAction _hunterPrefab; //基礎になるプレハブ
+    
+    private ICharacterAction _hunterPrefab; //使う武器のプレハブ
+    
     [SerializeField, Required]
     private BaseBulletFactory[] _bullets; //使う武器のプレハブ
 }

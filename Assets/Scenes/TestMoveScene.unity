@@ -3903,7 +3903,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _enemyDate: {fileID: 11400000, guid: cc59569804aafd3459b44f8b36ff0ff1, type: 2}
-  _hunterDate: {fileID: 0}
+  _hunterDate: {fileID: 11400000, guid: 774e98122faae744b9f8b914a9861716, type: 2}
 --- !u!1 &667848716
 GameObject:
   m_ObjectHideFlags: 0

@@ -1,8 +1,10 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System;
 using UnityEngine;
 
+[Serializable]
 public class HunterAction : MonoBehaviour, ICharacterAction
 {
     [SerializeField, Required]

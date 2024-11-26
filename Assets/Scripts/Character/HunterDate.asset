@@ -16,11 +16,4 @@ MonoBehaviour:
   - _id: 0
     _hp: 0
     _attack: 0
-    _hunterPrefab:
-      rid: -2
     _bullets: []
-  references:
-    version: 2
-    RefIds:
-    - rid: -2
-      type: {class: , ns: , asm: }
