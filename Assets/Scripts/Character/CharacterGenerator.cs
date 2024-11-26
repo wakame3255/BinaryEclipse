@@ -4,8 +4,11 @@ using UnityEngine;
 
 public class CharacterGenerator : MonoBehaviour
 {
-    [SerializeField]
-    EnemyDate enemyDate;
+    [SerializeField][Header("ハンターデータ")]
+    EnemyDate _enemyDate;
+
+    [SerializeField][Header("ボスデータ")]
+    EnemyDate _hunterDate;
 
     private StateMachineGenerator _stateMachineGenerator;
     private CharacterDictionary _characterStateDictionary;

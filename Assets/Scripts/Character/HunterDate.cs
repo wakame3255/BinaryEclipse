@@ -5,9 +5,10 @@ using UnityEngine;
 using System;
 
 [Serializable]
-public class EnemyInformation
+public class HunterInformation
 {
-    [SerializeField][UnityEngine.Range(0,100)]
+    [SerializeField]
+    [UnityEngine.Range(0, 100)]
     private int _id;
 
     [SerializeField]
@@ -16,18 +17,16 @@ public class EnemyInformation
     [SerializeField]
     private int _attack;//攻撃力
 
-    [SerializeField, Required]
-    private BaseCharacter _enemyPrefab; //基礎になるプレハブ
+    [SerializeReference, Required]
+    private ICharacterAction _hunterPrefab; //基礎になるプレハブ
 
     [SerializeField, Required]
     private BaseBulletFactory[] _bullets; //使う武器のプレハブ
 }
 
 [CreateAssetMenu(menuName = "ScriptableObject/Character Setting", fileName = "CharacterDate")]
-public class EnemyDate : ScriptableObject
+public class HunterDate : ScriptableObject
 {
     [SerializeField]
-    private List<EnemyInformation> _enemyInformation;
+    private List<HunterInformation> _hunterInformation;
 }
-
-
