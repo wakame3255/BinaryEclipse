@@ -20,7 +20,6 @@ public class HunterInformation
 
     [SerializeField] 
     private ICharacterAction _hunterPrefab; //基礎になるプレハブ
-
     [SerializeField, Required]
     private BaseBulletFactory[] _bullets; //使う武器のプレハブ
 }

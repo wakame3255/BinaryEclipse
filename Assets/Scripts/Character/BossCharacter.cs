@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class BossCharacter : BaseCharacter, ICpuCharacter
 {
+    
     [SerializeField] [Header("スタートノード")]
     private StartStateNode _startStateNode;
     
