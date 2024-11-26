@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _hunterInformation:
   - _id: 0
-    _hp: 0
-    _attack: 0
+    _hp: 5
+    _attack: 10
     _hunterPrefab: {fileID: 6084560874897942402, guid: 686042192b08ff74d97142a47c408fad, type: 3}
     _bullets: []
