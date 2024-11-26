@@ -4,7 +4,7 @@ using UnityEngine;
 using System;
 
 public class StateMachineInformation
-{
+{   
     public ICpuCharacter CpuCharacterDate { get; private set; }
     public CpuController CpuControllerDate { get; private set; }
     public StartStateNode StartStateNodeDate { get; private set; }

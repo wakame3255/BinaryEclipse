@@ -17,7 +17,7 @@ public class HunterInformation
     [SerializeField]
     private int _attack;//UŒ‚—Í
 
-    [SerializeReference, Required]
+    [Required]
     private ICharacterAction _hunterPrefab; //Šî‘b‚É‚È‚éƒvƒŒƒnƒu
 
     [SerializeField, Required]
