@@ -4,6 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using UnityEngine;
 using System;
 
+
 [Serializable]
 public class HunterInformation
 {
@@ -17,8 +18,9 @@ public class HunterInformation
     [SerializeField]
     private int _attack;//攻撃力
 
-    
-    private ICharacterAction _hunterPrefab; //使う武器のプレハブ
+    [Required][SerializeField]
+    [InterfaceField(typeof(ICharacterAction))]
+    private Component _hunterPrefab; //使う武器のプレハブ
     
     [SerializeField, Required]
     private BaseBulletFactory[] _bullets; //使う武器のプレハブ
