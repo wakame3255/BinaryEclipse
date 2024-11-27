@@ -17,4 +17,5 @@ MonoBehaviour:
     _hp: 5
     _attack: 10
     _hunterPrefab: {fileID: 6084560874897942402, guid: 686042192b08ff74d97142a47c408fad, type: 3}
-    _bullets: []
+    _bullets:
+    - {fileID: 2812363607279090795, guid: dbacdbbba1d144843b956e29e4042b96, type: 3}

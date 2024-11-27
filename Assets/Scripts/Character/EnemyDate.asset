@@ -16,6 +16,6 @@ MonoBehaviour:
   - _id: 0
     _hp: 10
     _attack: 5
-    _enemyPrefab: {fileID: 6191586363522397546, guid: 6e33397b115bcef459dbfe2c948e896f, type: 3}
+    _enemyPrefab: {fileID: 2957726711894133144, guid: 6e33397b115bcef459dbfe2c948e896f, type: 3}
     _bullets:
-    - {fileID: 0}
+    - {fileID: 2812363607279090795, guid: dbacdbbba1d144843b956e29e4042b96, type: 3}
