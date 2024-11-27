@@ -21,16 +21,14 @@ public class ObjectDictionary : MonoBehaviour
 
     public List<T> GetHasComponent<T>()
     {
-        List<T> cacheComponent = new List<T>();
+        List<T> cacheComponent = new List<T>() ;
 
-        UnityEngine.Object[] cacheObject = FindObjectsByType(typeof(T), FindObjectsSortMode.None);
-
-        foreach(UnityEngine.Object gameObject in cacheObject)
+        foreach(GameObject gameObject in _allObjects)
         {
             T component;
-            if (gameObject.GetType() == typeof(T))
+            if (gameObject.TryGetComponent<T>(out component))
             {
-                cacheComponent.Add();
+                cacheComponent.Add(component);
             }
         }
 
