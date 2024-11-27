@@ -21,6 +21,8 @@ public class ObjectDictionary : MonoBehaviour
 
     public List<T> GetHasComponent<T>()
     {
+        _allObjects = FindObjectsByType<GameObject>(FindObjectsSortMode.None);
+
         List<T> cacheComponent = new List<T>() ;
 
         foreach(GameObject gameObject in _allObjects)

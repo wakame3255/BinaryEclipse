@@ -56,14 +56,17 @@ public abstract class BaseStateNode : MonoBehaviour, IDragHandler
 
     public void SetCharacterInformation(ICpuCharacter cpuCharacter)
     {
+        MyExtensionClass.CheckArgumentNull(cpuCharacter, nameof(cpuCharacter));
         _cpuCharacter = cpuCharacter;
     }
     public void SetCpuContoller(CpuController cpuController)
     {
+        MyExtensionClass.CheckArgumentNull(cpuController, nameof(cpuController));
         _cpuController = cpuController;
     }
     public void SetOtherCharacterInformation(OtherCharacterStatus otherCharacters)
     {
+        MyExtensionClass.CheckArgumentNull(otherCharacters, nameof(otherCharacters));
         _otherCharacters = otherCharacters;
     }
 

@@ -86,6 +86,8 @@ namespace Cpu
         public StateMachine(StateMachineInformation stateMachineInformation)
         {
             MyExtensionClass.CheckArgumentNull(stateMachineInformation, nameof(stateMachineInformation));
+            Debug.Log(stateMachineInformation.CpuCharacterDate);
+            Debug.Log(stateMachineInformation.CpuControllerDate);
 
             _cpuCharacter = stateMachineInformation.CpuCharacterDate;
             _cpuController = stateMachineInformation.CpuControllerDate;
