@@ -14,15 +14,18 @@ public class HunterFactory : BaseCharacterFactory
         for (int i = 0; i < _characterInformation.Count; i++)
         {
             GameObject character;
+            BaseCharacter baseCharacter;
+            //プレイヤーとキャラクターの生成
             character = Instantiate(_characterInformation[i].CharacterPrefab).gameObject;
             if (i == 0)
             {
-                character.AddComponent<PlayerCharacter>();
+                baseCharacter = character.AddComponent<PlayerCharacter>();
             }
             else
             {
-                character.AddComponent<AllyCharacter>();
+                baseCharacter = character.AddComponent<AllyCharacter>();
             }
+            SetCharacterInformation(_characterInformation[i], baseCharacter);
         }
     }
     

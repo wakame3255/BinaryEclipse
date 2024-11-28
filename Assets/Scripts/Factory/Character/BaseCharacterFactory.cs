@@ -18,6 +18,9 @@ public abstract class BaseCharacterFactory : MonoBehaviour
     /// <param name="characterAction"></param>
     private protected void SetCharacterInformation(CharacterInformation resource, BaseCharacter baseCharacter)
     {
+        MyExtensionClass.CheckArgumentNull(resource, nameof(resource));
+        MyExtensionClass.CheckArgumentNull(baseCharacter, nameof(baseCharacter));
+
         Debug.LogWarning("引数コンパクトにする");
 
         MyExtensionClass.CheckArgumentNull(resource, nameof(resource));
