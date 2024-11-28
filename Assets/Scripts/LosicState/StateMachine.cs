@@ -94,8 +94,8 @@ namespace Cpu
             _startStateNode = stateMachineInformation.StartStateNodeDate;
             _otherCharacterStatus = stateMachineInformation.OtherCharacterStatusDate;
 
-            _startStateNode.SetCharacterInformation(stateMachineInformation.CpuCharacterDate);
-            _startStateNode.SetCpuContoller(stateMachineInformation.CpuControllerDate);
+            _startStateNode.SetCharacterInformation(_cpuCharacter);
+            _startStateNode.SetCpuContoller(_cpuController);
         }
 
         /// <summary>

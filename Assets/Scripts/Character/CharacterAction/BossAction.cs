@@ -20,6 +20,17 @@ public class BossAction : MonoBehaviour, ICharacterAction
 
     public void SetControlInformation(ICharacterController characterController)
     {
+        MyExtensionClass.CheckArgumentNull(characterController, nameof(characterController));
+
+        if (_walk == null)
+        {
+            Debug.Log("walk‚È‚¢");
+        }
+        if (_stateView.CharacterTransform == null)
+        {
+            Debug.Log("walk‚È‚¢");
+            Debug.Log(characterController.InputX);
+        }
         _walk.DoWalk(characterController.InputX, characterController.InputY, _stateView.CharacterTransform);
 
         if (characterController.IsAttack)

@@ -1,8 +1,11 @@
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using UnityEngine;
 
-public class StateMachineGenerator
+public class StateMachineGenerator: MonoBehaviour
 {
+    [SerializeField, Required]
+    StartStateNode _stateNode;
     /// <summary>
     /// cpuで使うステートマシンを生成するメソッド
     /// </summary>
@@ -14,12 +17,14 @@ public class StateMachineGenerator
         //各Cpuにステートマシンを付与する
         foreach (ICpuCharacter cpuCharacter in characterDictionary.AllCpuCharacters)
         {
+            //ステートマシーンのテンプレ生成
+            StartStateNode startState = Instantiate(_stateNode);
             //ステートマシンに使うデータの生成
             StateMachineInformation stateMachineInformation = new StateMachineInformation
                 (
                  cpuCharacter,
                  cpuCharacter.CpuController,
-                 cpuCharacter.StartStateNode,
+                 startState,
                  GetOtherCharacterStatus(cpuCharacter, characterDictionary)
                 );
 

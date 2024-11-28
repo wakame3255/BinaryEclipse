@@ -6,10 +6,10 @@ using UnityEngine;
 public class CharacterGenerator : MonoBehaviour
 {
     [SerializeField, Required][Header("ボスデータ")]
-    EnemyDate _enemyDate;
+    CharacterDate _enemyDate;
 
     [SerializeField, Required][Header("ハンターデータ")]
-    HunterDate _hunterDate;
+    CharacterDate _hunterDate;
 
     private StateMachineGenerator _stateMachineGenerator;
     private CharacterDictionary _characterStateDictionary;
@@ -20,9 +20,11 @@ public class CharacterGenerator : MonoBehaviour
     {
         InitializeComponent();
         MyExtensionClass.CheckArgumentNull(objectDictionary, nameof(objectDictionary));
-        //キャラクター作るメソッド
+
+        //キャラクター作り、リソースを与えるメソッド
         _enemyFactory.GenerateCharacter();
         _hunterFactory.GenerateCharacter();
+
         //ここでキャラクターへ情報を格納
         _characterStateDictionary.SetCharacterState(objectDictionary);
         _stateMachineGenerator.InitializeStateMachine(_characterStateDictionary);
@@ -30,10 +32,10 @@ public class CharacterGenerator : MonoBehaviour
 
     private void InitializeComponent()
     {
-        _stateMachineGenerator = new StateMachineGenerator();
+        _stateMachineGenerator = this.CheckComponentMissing<StateMachineGenerator>();
         _characterStateDictionary = new CharacterDictionary();
         //キャラクターのデータセット
-        _enemyFactory = new(_enemyDate.EnemyInformation);
-        _hunterFactory = new(_hunterDate.HunterInformation);
+        _enemyFactory = new(_enemyDate.CharacterInformation);
+        _hunterFactory = new(_hunterDate.CharacterInformation);
     }
 }

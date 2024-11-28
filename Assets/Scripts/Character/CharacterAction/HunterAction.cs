@@ -20,6 +20,8 @@ public class HunterAction : MonoBehaviour, ICharacterAction
 
      public void SetControlInformation(ICharacterController characterController)
      {
+        MyExtensionClass.CheckArgumentNull(characterController, nameof(characterController));
+
         _walk.DoWalk(characterController.InputX, characterController.InputY, _stateView.CharacterTransform);
 
         //UŒ‚“ü—Í

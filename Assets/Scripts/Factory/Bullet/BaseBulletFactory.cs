@@ -5,8 +5,11 @@ using UnityEngine;
 
 public abstract class BaseBulletFactory : MonoBehaviour
 {
+    [SerializeField]
+    protected int _generateCount;
+
     [SerializeField, Required]
     protected BaseBullet _baseBullet;
 
-    public abstract BaseBullet GetGenerateBullet();
+    public abstract BaseBullet[] GetGenerateBullet();
 }

@@ -4,18 +4,16 @@ using UnityEngine;
 
 public class EnemyFactory : BaseCharacterFactory
 {
-    private List<EnemyInformation> _enemyCharacters;
-
-    public EnemyFactory(List<EnemyInformation> enemyCharacter)
+    public EnemyFactory(List<CharacterInformation> enemyCharacter)
     {
-        _enemyCharacters = enemyCharacter;
+        _characterInformation = enemyCharacter;
     }
 
     public override void GenerateCharacter()
     {
-        foreach (EnemyInformation enemy in _enemyCharacters)
+        foreach (CharacterInformation enemy in _characterInformation)
         {
-            Instantiate(enemy.EnemyPrefab);
+            Instantiate(enemy.CharacterPrefab);
         }   
     }
 }
