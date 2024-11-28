@@ -11,9 +11,21 @@ public class EnemyFactory : BaseCharacterFactory
 
     public override void GenerateCharacter()
     {
-        foreach (CharacterInformation enemy in _characterInformation)
+        for (int i = 0; i < _characterInformation.Count; i++)
         {
-            Instantiate(enemy.CharacterPrefab);
-        }   
+            GameObject enemy;
+            BaseCharacter baseCharacter;
+            //プレイヤーとキャラクターの生成
+            enemy = Instantiate(_characterInformation[i].CharacterPrefab).gameObject;
+            if (i == 0)
+            {
+                baseCharacter = enemy.AddComponent<PlayerCharacter>();
+            }
+            else
+            {
+                baseCharacter = enemy.AddComponent<AllyCharacter>();
+            }
+            SetCharacterInformation(_characterInformation[i], baseCharacter);
+        }
     }
 }
