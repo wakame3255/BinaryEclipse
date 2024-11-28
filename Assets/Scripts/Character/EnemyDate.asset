@@ -12,10 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: eef94c0f5cab7094dbfb780aa1a025c0, type: 3}
   m_Name: EnemyDate
   m_EditorClassIdentifier: 
-  _enemyInformation:
-  - _id: 0
-    _hp: 10
-    _attack: 5
-    _enemyPrefab: {fileID: 2957726711894133144, guid: 6e33397b115bcef459dbfe2c948e896f, type: 3}
-    _bullets:
+  _characterInformation:
+  - _id: 18
+    _hp: 23
+    _attack: 123
+    _characterPrefab: {fileID: 2957726711894133144, guid: 6e33397b115bcef459dbfe2c948e896f, type: 3}
+    _bulletFactorys:
     - {fileID: 2812363607279090795, guid: dbacdbbba1d144843b956e29e4042b96, type: 3}

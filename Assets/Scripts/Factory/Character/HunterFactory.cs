@@ -11,9 +11,18 @@ public class HunterFactory : BaseCharacterFactory
 
     public override void GenerateCharacter()
     {
-        foreach (CharacterInformation hunter in _characterInformation)
+        for (int i = 0; i < _characterInformation.Count; i++)
         {
-            Instantiate(hunter.CharacterPrefab);
+            GameObject character;
+            character = Instantiate(_characterInformation[i].CharacterPrefab).gameObject;
+            if (i == 0)
+            {
+                character.AddComponent<PlayerCharacter>();
+            }
+            else
+            {
+                character.AddComponent<AllyCharacter>();
+            }
         }
     }
     

@@ -22,7 +22,7 @@ public class BossAction : MonoBehaviour, ICharacterAction
     {
         MyExtensionClass.CheckArgumentNull(characterController, nameof(characterController));
 
-        if (_walk == null)
+        if (_stateView.Hp > 0)
         {
             Debug.Log("walk‚È‚¢");
         }
@@ -39,10 +39,10 @@ public class BossAction : MonoBehaviour, ICharacterAction
         }
     }
 
-    public void SetResourceInformation(CharacterStateView characterState, BaseBullet[] bullets)
+    public void SetResourceInformation(CharacterStateView characterState, BaseBulletFactory[] bulletFactorys)
     {
         _stateView = characterState;
-        _attack.SetResource(bullets);
+        _attack.SetResource(bulletFactorys);
     }
 
     private void SetComponent()

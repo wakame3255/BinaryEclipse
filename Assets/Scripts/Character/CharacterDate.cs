@@ -22,13 +22,13 @@ public class CharacterInformation
     private Component _characterPrefab; //キャラクターの基盤
 
     [SerializeField, Required]
-    private BaseBulletFactory[] _bullets; //使う武器のプレハブ
+    private BaseBulletFactory[] _bulletFactorys; //使う武器のプレハブ
 
     public int ID { get => _id; }
     public int Hp { get => _hp; }
     public int Attack { get => _attack; }
     public Component CharacterPrefab { get => _characterPrefab; }
-    public BaseBulletFactory[] Bullets { get => _bullets; }
+    public BaseBulletFactory[] BulletFactorys { get => _bulletFactorys; }
 }
 
 [CreateAssetMenu(menuName = "ScriptableObject/Character Setting", fileName = "CharacterDate")]

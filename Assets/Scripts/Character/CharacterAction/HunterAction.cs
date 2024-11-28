@@ -22,7 +22,7 @@ public class HunterAction : MonoBehaviour, ICharacterAction
      {
         MyExtensionClass.CheckArgumentNull(characterController, nameof(characterController));
 
-        _walk.DoWalk(characterController.InputX, characterController.InputY, _stateView.CharacterTransform);
+        //_walk.DoWalk(characterController.InputX, characterController.InputY, _stateView.CharacterTransform);
 
         //çUåÇì¸óÕ
         if (characterController.IsAttack)
@@ -31,10 +31,10 @@ public class HunterAction : MonoBehaviour, ICharacterAction
         }
      }
 
-    public void SetResourceInformation(CharacterStateView characterState, BaseBullet[] bullets)
+    public void SetResourceInformation(CharacterStateView characterState, BaseBulletFactory[] bulletFactorys)
     {
         _stateView = characterState;
-        _attack.SetResource(bullets);
+        _attack.SetResource(bulletFactorys);
     }
 
     protected void SetComponent()
