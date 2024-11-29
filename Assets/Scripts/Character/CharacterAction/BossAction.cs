@@ -13,6 +13,8 @@ public class BossAction : MonoBehaviour, ICharacterAction
     private IWalk _walk;
     private IAttack _attack;
 
+    private int _count = 0;
+
     private void Awake()
     {
         SetComponent();
@@ -41,6 +43,10 @@ public class BossAction : MonoBehaviour, ICharacterAction
 
     public void SetResourceInformation(CharacterStateView characterState, BaseBulletFactory[] bulletFactorys)
     {
+        MyExtensionClass.CheckArgumentNull(characterState, nameof(characterState));
+        MyExtensionClass.CheckArgumentNull(bulletFactorys, nameof(bulletFactorys));
+        _count++;
+        print(_attack + " " + _count);
         _stateView = characterState;
         _attack.SetResource(bulletFactorys);
     }
@@ -49,5 +55,7 @@ public class BossAction : MonoBehaviour, ICharacterAction
     {
         _walk = this.CheckComponentMissing<Walk>(_actionObject);
         _attack = this.CheckComponentMissing<ShotAttack>(_actionObject);
+        _count++;
+        print(_attack +" "+ _count);
     }
 }

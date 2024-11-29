@@ -12,24 +12,17 @@ public static class MyExtensionClass
     /// <returns>コンポーネント</returns>
     public static T CheckComponentMissing<T>(this MonoBehaviour monoBehaviour, GameObject gameObject = null) where T : class
     {
-        T component = monoBehaviour.GetComponent(typeof(T)) as T;
-        if (component == null)
-        {
-            Debug.LogError(monoBehaviour.transform.name + " " + typeof(T).FullName + "が足りないよ");
+        T component;
 
-            //付けたいオブジェクトの指定
-            if (typeof(Component).IsAssignableFrom(typeof(T)))
-            {
-                if (gameObject == null)
-                {
-                    component = monoBehaviour.gameObject.AddComponent(typeof(T)) as T;
-                }
-                else
-                {
-                    component = gameObject.AddComponent(typeof(T)) as T;
-                }
-            }
+        if (gameObject == null)
+        {
+            component = SetComponent<T>(monoBehaviour.gameObject);
         }
+        else
+        {
+            component = SetComponent<T>(gameObject);
+        }
+
         return component;
     }
 
@@ -45,5 +38,18 @@ public static class MyExtensionClass
         {
             throw new System.ArgumentNullException(arugmentName);
         }
+    }
+
+    private static T SetComponent<T>(GameObject gameObject) where T : class
+    {
+        T component;
+
+        if(!gameObject.TryGetComponent<T>(out component))
+        {
+            Debug.LogError(gameObject.transform.name + " " + typeof(T).FullName + "が足りないよ");
+            component = gameObject.AddComponent(typeof(T)) as T;
+        }
+
+        return component;
     }
 }
