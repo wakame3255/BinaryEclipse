@@ -9,7 +9,9 @@ public class NormalBulletFactory : BaseBulletFactory
         List<BaseBullet> baseBullet = new List<BaseBullet>();
         for (int i = 0; i < _generateCount; i++)
         {
-            baseBullet.Add(Instantiate(_baseBullet));
+            BaseBullet bullet = Instantiate(_baseBullet);
+            bullet.gameObject.SetActive(false);
+            baseBullet.Add(bullet);
         }
         return baseBullet;
     }

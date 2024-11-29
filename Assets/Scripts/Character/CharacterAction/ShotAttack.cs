@@ -68,6 +68,7 @@ public class ShotAttack : MonoBehaviour, IAttack
         {
             if (!bullet.gameObject.activeSelf)
             {
+                bullet.gameObject.SetActive(true);
                 return bullet;
             }
         }
