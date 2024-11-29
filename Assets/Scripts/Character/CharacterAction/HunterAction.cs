@@ -28,8 +28,9 @@ public class HunterAction : MonoBehaviour, ICharacterAction
         if (characterController.IsAttack)
         {
             _attack.DoAttack(_stateView.TargetTransform.position);
+            print("Attack");
         }
-     }
+    }
 
     public void SetResourceInformation(CharacterStateView characterState, BaseBulletFactory[] bulletFactorys)
     {
@@ -37,7 +38,7 @@ public class HunterAction : MonoBehaviour, ICharacterAction
         MyExtensionClass.CheckArgumentNull(bulletFactorys, nameof(bulletFactorys));
 
         _stateView = characterState;
-        //_attack.SetResource(bulletFactorys);
+        _attack.SetResource(bulletFactorys);
     }
 
     protected void SetComponent()

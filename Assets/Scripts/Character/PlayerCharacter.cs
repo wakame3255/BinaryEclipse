@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [RequireComponent(typeof(RotationMove))]
+
 public class PlayerCharacter : BaseCharacter
 {
     private RotationMove _rotationMove;

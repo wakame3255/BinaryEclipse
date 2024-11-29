@@ -11,5 +11,5 @@ public abstract class BaseBulletFactory : MonoBehaviour
     [SerializeField, Required]
     protected BaseBullet _baseBullet;
 
-    public abstract BaseBullet[] GetGenerateBullet();
+    public abstract List<BaseBullet> GetGenerateBullet();
 }

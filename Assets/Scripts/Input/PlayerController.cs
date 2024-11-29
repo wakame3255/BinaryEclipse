@@ -40,6 +40,7 @@ public class PlayerController : MonoBehaviour, ICharacterController
     {
         CheckKeyBoardDevice();
         SetMousePosition();
+        SetButton();
     }
 
     private void CheckKeyBoardDevice()
@@ -64,5 +65,10 @@ public class PlayerController : MonoBehaviour, ICharacterController
     {
         _inputX = Keyboard.current.aKey.isPressed ? -1 : Keyboard.current.dKey.isPressed ? 1 : 0;
         _inputY = Keyboard.current.sKey.isPressed ? -1 : Keyboard.current.wKey.isPressed ? 1 : 0;
+    }
+
+    private void SetButton()
+    {
+        _k_key = Keyboard.current.kKey.isPressed;
     }
 }

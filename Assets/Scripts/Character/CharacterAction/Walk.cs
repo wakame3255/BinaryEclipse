@@ -11,6 +11,6 @@ public class Walk : MonoBehaviour, IWalk
         MyExtensionClass.CheckArgumentNull(myTransform, nameof(myTransform));
 
 
-        transform.position += new Vector3(inputX, inputY, 0)* _speed * Time.deltaTime;
+        myTransform.position += new Vector3(inputX, inputY, 0)* _speed * Time.deltaTime;
     }
 }

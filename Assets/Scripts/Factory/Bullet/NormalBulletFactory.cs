@@ -4,9 +4,9 @@ using UnityEngine;
 
 public class NormalBulletFactory : BaseBulletFactory
 {
-    public override BaseBullet[] GetGenerateBullet()
+    public override List<BaseBullet>GetGenerateBullet()
     {
-        BaseBullet[] baseBullet = new BaseBullet[_generateCount];
+        List<BaseBullet> baseBullet = new List<BaseBullet>(_generateCount);
         for (int i = 0; i < _generateCount; i++)
         {
             baseBullet[i] = Instantiate(_baseBullet);
