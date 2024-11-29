@@ -25,9 +25,9 @@ public class HunterAction : MonoBehaviour, ICharacterAction
         _walk.DoWalk(characterController.InputX, characterController.InputY, _stateView.CharacterTransform);
 
         //çUåÇì¸óÕ
-        if (characterController.IsAttack)
+        if (characterController.IsAttack && _attack != null)
         {
-            _attack.DoAttack(_stateView.TargetTransform.position);
+            _attack.DoAttack(characterController.Direction);
             print("Attack");
         }
     }

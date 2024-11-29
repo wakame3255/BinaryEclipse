@@ -5,16 +5,37 @@ using UnityEngine;
 public class ShotAttack : MonoBehaviour, IAttack
 {
     //ï€éùÇµÇƒÇ¢ÇÈíeçHèÍÇÃÉäÉXÉg
+    [SerializeField]
     private BaseBulletFactory[] _bulletFactorys;
 
     //ê∂ê¨ÇµÇΩíeÇÃÉäÉXÉg
+    [SerializeField]
     private List<List<BaseBullet>> _bulletList = new List<List<BaseBullet>>();
+
+    private void FixedUpdate()
+    {
+        foreach (List<BaseBullet> bulletList in _bulletList)
+        {
+            foreach (BaseBullet bullet in bulletList)
+            {
+                if (bullet.gameObject.activeSelf)
+                {
+                    bullet.MoveBullet();
+                }
+            }
+        }
+    }
 
     public void DoAttack(Vector3 TargerPosition)
     {
+        MyExtensionClass.CheckArgumentNull(TargerPosition, nameof(TargerPosition));
+
         int random = Random.Range(0, _bulletList.Count);
-        GetShotBullet(random).GenerateBullet(transform.position, TargerPosition);
-        print("ShotAttack");
+        BaseBullet baseBullet = GetShotBullet(random);
+        if (baseBullet != null)
+        {
+            baseBullet.GenerateBullet(transform.position, TargerPosition);
+        }
     }
 
     /// <summary>

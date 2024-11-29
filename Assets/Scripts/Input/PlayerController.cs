@@ -34,6 +34,8 @@ public class PlayerController : MonoBehaviour, ICharacterController
         {
             Debug.LogError(transform.root.name + "複数のインスタンスが存在します");
         }
+
+        _targetPosition = transform;
     }
 
     private void Update()

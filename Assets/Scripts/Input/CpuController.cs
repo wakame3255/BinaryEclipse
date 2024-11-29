@@ -26,6 +26,11 @@ public class CpuController : MonoBehaviour, ICharacterController
 
     public ReactiveProperty<Transform> ReactiveTargetTransform { get => _reactiveTargetTransform; }
 
+    private void Awake()
+    {
+        _targetPosition = transform;
+    }
+
     public void SetInputMove(float inputX, float inputY)
     {
         _inputX = inputX;
