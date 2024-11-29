@@ -18,11 +18,12 @@ public abstract class BaseCharacter : MonoBehaviour
     protected void Awake()
     { 
         SetComponent();
+        DeliveryValue();
     }
 
     protected void Start()
     {
-        DeliveryValue();
+        
     }
 
     /// <summary>

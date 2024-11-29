@@ -13,8 +13,6 @@ public class BossAction : MonoBehaviour, ICharacterAction
     private IWalk _walk;
     private IAttack _attack;
 
-    private int _count = 0;
-
     private void Awake()
     {
         SetComponent();
@@ -24,15 +22,6 @@ public class BossAction : MonoBehaviour, ICharacterAction
     {
         MyExtensionClass.CheckArgumentNull(characterController, nameof(characterController));
 
-        if (_stateView.Hp > 0)
-        {
-            Debug.Log("walk‚È‚¢");
-        }
-        if (_stateView.CharacterTransform == null)
-        {
-            Debug.Log("walk‚È‚¢");
-            Debug.Log(characterController.InputX);
-        }
         _walk.DoWalk(characterController.InputX, characterController.InputY, _stateView.CharacterTransform);
 
         if (characterController.IsAttack)
@@ -45,8 +34,7 @@ public class BossAction : MonoBehaviour, ICharacterAction
     {
         MyExtensionClass.CheckArgumentNull(characterState, nameof(characterState));
         MyExtensionClass.CheckArgumentNull(bulletFactorys, nameof(bulletFactorys));
-        _count++;
-        print(_attack + " " + _count);
+       
         _stateView = characterState;
         _attack.SetResource(bulletFactorys);
     }
@@ -55,7 +43,5 @@ public class BossAction : MonoBehaviour, ICharacterAction
     {
         _walk = this.CheckComponentMissing<Walk>(_actionObject);
         _attack = this.CheckComponentMissing<ShotAttack>(_actionObject);
-        _count++;
-        print(_attack +" "+ _count);
     }
 }

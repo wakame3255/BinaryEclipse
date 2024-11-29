@@ -44,6 +44,5 @@ public class HunterAction : MonoBehaviour, ICharacterAction
     {
         _walk = this.CheckComponentMissing<Walk>(_actionObject);
         _attack = this.CheckComponentMissing<ShotAttack>(_actionObject);
-        print(_attack);
     }
 }

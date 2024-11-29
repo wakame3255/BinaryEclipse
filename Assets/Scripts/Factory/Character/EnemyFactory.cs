@@ -13,19 +13,19 @@ public class EnemyFactory : BaseCharacterFactory
     {
         for (int i = 0; i < _characterInformation.Count; i++)
         {
-            GameObject enemy;
+            Component enemy;
             BaseCharacter baseCharacter;
             //プレイヤーとキャラクターの生成
-            enemy = Instantiate(_characterInformation[i].CharacterPrefab).gameObject;
+            enemy = Instantiate(_characterInformation[i].CharacterPrefab);
             if (i == 0)
             {
-                baseCharacter = enemy.AddComponent<PlayerCharacter>();
+                baseCharacter = enemy.gameObject.AddComponent<PlayerCharacter>();
             }
             else
             {
-                baseCharacter = enemy.AddComponent<AllyCharacter>();
+                baseCharacter = enemy.gameObject.AddComponent<AllyCharacter>();
             }
-            SetCharacterInformation(_characterInformation[i], baseCharacter);
+            SetCharacterInformation(_characterInformation[i], baseCharacter, enemy);
         }
     }
 }

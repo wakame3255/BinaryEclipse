@@ -80,14 +80,10 @@ namespace Cpu
         /// <summary>
         /// ステートマシンの生成
         /// </summary>
-        /// <param name="cpuCharacter">キャラクター情報</param>
-        /// <param name="cpuController">コントローラー情報</param>
-        /// <param name="startState">初期のステート</param>
+        /// <param name="stateMachineInformation">キャラクター情報</param>
         public StateMachine(StateMachineInformation stateMachineInformation)
         {
             MyExtensionClass.CheckArgumentNull(stateMachineInformation, nameof(stateMachineInformation));
-            Debug.Log(stateMachineInformation.CpuCharacterDate);
-            Debug.Log(stateMachineInformation.CpuControllerDate);
 
             _cpuCharacter = stateMachineInformation.CpuCharacterDate;
             _cpuController = stateMachineInformation.CpuControllerDate;

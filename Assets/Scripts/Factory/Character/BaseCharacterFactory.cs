@@ -16,17 +16,15 @@ public abstract class BaseCharacterFactory : MonoBehaviour
     /// キャラクターに情報を与えるメソッド
     /// </summary>
     /// <param name="characterAction"></param>
-    private protected void SetCharacterInformation(CharacterInformation resource, BaseCharacter baseCharacter)
+    private protected void SetCharacterInformation(CharacterInformation resource, BaseCharacter baseCharacter, Component character)
     {
         MyExtensionClass.CheckArgumentNull(resource, nameof(resource));
         MyExtensionClass.CheckArgumentNull(baseCharacter, nameof(baseCharacter));
+        MyExtensionClass.CheckArgumentNull(character, nameof(character));
 
         Debug.LogWarning("引数コンパクトにする");
 
-        MyExtensionClass.CheckArgumentNull(resource, nameof(resource));
-        MyExtensionClass.CheckArgumentNull(baseCharacter, nameof(baseCharacter));
-
-        if (resource.CharacterPrefab is ICharacterAction action)
+        if (character is ICharacterAction action)
         {
             action.SetResourceInformation(baseCharacter.CharacterStatusView, resource.BulletFactorys);
         }
