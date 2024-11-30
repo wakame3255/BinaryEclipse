@@ -71,6 +71,6 @@ public class PlayerController : MonoBehaviour, ICharacterController
 
     private void SetButton()
     {
-        _k_key = Keyboard.current.kKey.isPressed;
+        _k_key = Mouse.current.leftButton.isPressed;
     }
 }

@@ -6,16 +6,18 @@ using UnityEngine;
 public class NormalBullet : BaseBullet
 {
 
-    public override void GenerateBullet(Vector3 initializePosition, Vector3 targetDirection)
+    public override void GenerateBullet(Vector3 initializePosition, Vector3 targetPosition)
     {
         transform.position = initializePosition;
-        _targetDirection = targetDirection;
+        _targetDirection = (targetPosition - transform.position).normalized;
+        print(_targetDirection);
         StartDestroyTimerAsync();
     }
 
     public override void MoveBullet()
     {
-        transform.position += (_targetDirection - transform.position).normalized * _speed * Time.deltaTime;
+        transform.position += _targetDirection * _speed * Time.deltaTime;
+        
     }
 
     private async void StartDestroyTimerAsync()

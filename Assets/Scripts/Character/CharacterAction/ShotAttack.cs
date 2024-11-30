@@ -1,16 +1,20 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using UnityEngine;
 
 public class ShotAttack : MonoBehaviour, IAttack
 {
-    //•Û‚µ‚Ä‚¢‚é’eHê‚ÌƒŠƒXƒg
     [SerializeField]
+    private int _shotCoolTime;
+
+    //•Û‚µ‚Ä‚¢‚é’eHê‚ÌƒŠƒXƒg
     private BaseBulletFactory[] _bulletFactorys;
 
     //¶¬‚µ‚½’e‚ÌƒŠƒXƒg
-    [SerializeField]
     private List<List<BaseBullet>> _bulletList = new List<List<BaseBullet>>();
+
+    private bool _isCoolingDown = false;
 
     private void FixedUpdate()
     {
@@ -28,6 +32,8 @@ public class ShotAttack : MonoBehaviour, IAttack
 
     public void DoAttack(Vector3 TargerPosition)
     {
+        if (_isCoolingDown) return;
+
         MyExtensionClass.CheckArgumentNull(TargerPosition, nameof(TargerPosition));
 
         int random = Random.Range(0, _bulletList.Count);
@@ -35,6 +41,7 @@ public class ShotAttack : MonoBehaviour, IAttack
         if (baseBullet != null)
         {
             baseBullet.GenerateBullet(transform.position, TargerPosition);
+            StartCoolDownTimerAsync();
         }
     }
 
@@ -74,5 +81,12 @@ public class ShotAttack : MonoBehaviour, IAttack
         }
 
         return baseBullet;
+    }
+
+    private async void StartCoolDownTimerAsync()
+    {
+        _isCoolingDown = true;
+        await Task.Delay(_shotCoolTime * 1000);
+        _isCoolingDown = false;
     }
 }
