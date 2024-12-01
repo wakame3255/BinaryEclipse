@@ -531,8 +531,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4d59b41d46056e0469e19ba0a0a27bc9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _clearScene: {fileID: 0}
-  _overScene: {fileID: 0}
+  _clearScene: {fileID: 102900000, guid: 60bbaf7a7e6d3424cb97e315cc72c58f, type: 3}
+  _overScene: {fileID: 102900000, guid: 572f611da114ac14d893656c019a5636, type: 3}
 --- !u!1 &1258635741
 GameObject:
   m_ObjectHideFlags: 0

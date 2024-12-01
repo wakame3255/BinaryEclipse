@@ -87,8 +87,12 @@ public class StateMachineGenerator: MonoBehaviour
 
         switch (cpuCharacter)
         {
-            case BossCharacter:
-                return startStateNode;
+            case BossCharacter bossCharacter:
+                if (bossCharacter.TryGetComponent<BossAction>(out BossAction boss))
+                {
+                    return objectDictionary.GetHasComponent<EnemyStateMachine>()[0].StartStateNode;
+                }
+                break;
 
             case AllyCharacter allyCharacter:
                 if (allyCharacter.TryGetComponent<HealerAction>(out HealerAction healer))

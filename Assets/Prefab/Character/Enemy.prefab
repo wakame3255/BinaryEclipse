@@ -58,7 +58,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 746d720f78fb89b448eb288d48aca098, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _shotCoolTime: 0
+  _shotCoolTime: 6
 --- !u!1 &2813569840189240242
 GameObject:
   m_ObjectHideFlags: 0
@@ -194,8 +194,6 @@ GameObject:
   - component: {fileID: 7010358353561877311}
   - component: {fileID: 5829700734047351432}
   - component: {fileID: 1729681649813710583}
-  - component: {fileID: 4407517555116158274}
-  - component: {fileID: 6191586363522397546}
   - component: {fileID: 2957726711894133144}
   m_Layer: 9
   m_Name: Enemy
@@ -350,41 +348,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _rotationSpeed: 1
---- !u!114 &4407517555116158274
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6233098645900595316}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c87dbbeb5328a904b8965d3ff6c5878f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _inputX: 0
-  _inputY: 0
-  _targetDirection: {x: 0, y: 0, z: 0}
-  _targetPosition: {fileID: 0}
-  _k_key: 0
---- !u!114 &6191586363522397546
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6233098645900595316}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f0690a8708a24b143a0586632d16f94e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _startStateNode: {fileID: 0}
-  _stateMachine:
-    _baseStateNodes: []
-    _otherCharacterStatus:
-      _allys: []
-      _enemys: []
 --- !u!114 &2957726711894133144
 MonoBehaviour:
   m_ObjectHideFlags: 0

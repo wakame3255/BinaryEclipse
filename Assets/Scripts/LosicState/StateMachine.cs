@@ -132,7 +132,6 @@ namespace Cpu
                 _baseStateNodes.Clear();
                 _startStateNode.GetHasOutNode();
                 OutNode[] outNodes = new OutNode[] { _startStateNode.OutNode };
-                Debug.Log(outNodes[0].name);
                 CacheNextState(outNodes);
             }
         }
@@ -149,7 +148,6 @@ namespace Cpu
             {
                 outNode.UpdateNextNode();
                 BaseStateNode nextStateNode = outNode.NextStateNode;
-                Debug.Log(nextStateNode);
                 if (nextStateNode != null)
                 {
                     _baseStateNodes.Add(nextStateNode);

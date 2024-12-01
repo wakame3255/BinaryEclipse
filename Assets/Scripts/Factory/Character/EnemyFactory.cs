@@ -17,14 +17,9 @@ public class EnemyFactory : BaseCharacterFactory
             BaseCharacter baseCharacter;
             //プレイヤーとキャラクターの生成
             enemy = Instantiate(_characterInformation[i].CharacterPrefab);
-            if (i == 0)
-            {
-                baseCharacter = enemy.gameObject.AddComponent<PlayerCharacter>();
-            }
-            else
-            {
-                baseCharacter = enemy.gameObject.AddComponent<AllyCharacter>();
-            }
+          
+            baseCharacter = enemy.gameObject.AddComponent<BossCharacter>();
+          
             SetCharacterInformation(_characterInformation[i], baseCharacter, enemy);
         }
     }

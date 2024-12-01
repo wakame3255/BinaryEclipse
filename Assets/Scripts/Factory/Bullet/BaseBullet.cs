@@ -18,6 +18,11 @@ public abstract class BaseBullet : MonoBehaviour
     private RaycastHit2D[] _collisionResults;
     protected Vector3 _targetDirection;
 
+    private void Awake()
+    {
+        _circleCollider = GetComponent<CircleCollider2D>();
+    }
+
     public abstract void GenerateBullet(Vector3 initializePosition, Vector3 targetDirection);
     public virtual void MoveBullet()
     {
