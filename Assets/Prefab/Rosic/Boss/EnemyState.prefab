@@ -2468,7 +2468,7 @@ MonoBehaviour:
   _inNode: {fileID: 8739398775506511713}
   _outNode: {fileID: 7881172089759158588}
   _stateImage: {fileID: 6365512570409002032}
-  _targetDropdown: {x: 0, y: -3, z: 0}
+  _targetDropdown: {x: -4, y: -3, z: 0}
 --- !u!1 &3356059723470033185
 GameObject:
   m_ObjectHideFlags: 0
@@ -4134,7 +4134,7 @@ MonoBehaviour:
   _inNode: {fileID: 5300866634844770165}
   _outNode: {fileID: 3631573470173609340}
   _stateImage: {fileID: 7993303590776725233}
-  _targetDropdown: {x: 0, y: 3, z: 0}
+  _targetDropdown: {x: 4, y: 3, z: 0}
 --- !u!1 &5931130223817591876
 GameObject:
   m_ObjectHideFlags: 0
