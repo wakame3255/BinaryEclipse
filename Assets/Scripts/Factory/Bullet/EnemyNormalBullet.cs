@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using UnityEngine;
 
-public class NormalBullet : BaseBullet
+public class EnemyNormalBullet : BaseBullet
 {
 
     public override void GenerateBullet(Vector3 initializePosition, Vector3 targetPosition)
@@ -17,7 +17,7 @@ public class NormalBullet : BaseBullet
     public override void MoveBullet()
     {
         transform.position += _targetDirection * _speed * Time.deltaTime;
-        
+        base.MoveBullet();
     }
 
     private async void StartDestroyTimerAsync()

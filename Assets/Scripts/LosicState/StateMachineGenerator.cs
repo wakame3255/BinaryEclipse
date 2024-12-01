@@ -4,32 +4,29 @@ using UnityEngine;
 
 public class StateMachineGenerator: MonoBehaviour
 {
-    [SerializeField, Required]
-    StartStateNode _stateNode;
     /// <summary>
     /// cpuで使うステートマシンを生成するメソッド
     /// </summary>
     /// <param name="characterDictionary">キャラクター辞典</param>
-    public void InitializeStateMachine(CharacterDictionary characterDictionary)
+    public void InitializeStateMachine(CharacterDictionary characterDictionary, ObjectDictionary objectDictionary)
     {
         MyExtensionClass.CheckArgumentNull(characterDictionary, nameof(characterDictionary));
 
         //各Cpuにステートマシンを付与する
         foreach (ICpuCharacter cpuCharacter in characterDictionary.AllCpuCharacters)
         {
-            //ステートマシーンのテンプレ生成
-            StartStateNode startState = Instantiate(_stateNode);
             //ステートマシンに使うデータの生成
             StateMachineInformation stateMachineInformation = new StateMachineInformation
                 (
                  cpuCharacter,
                  cpuCharacter.CpuController,
-                 startState,
+                 GetStartNode(cpuCharacter, objectDictionary),
                  GetOtherCharacterStatus(cpuCharacter, characterDictionary)
                 );
 
             Cpu.StateMachine stateMachine = new(stateMachineInformation);
             cpuCharacter.SetStateMachine(stateMachine);
+            stateMachine.Initialize();
         }
     }
 
@@ -82,5 +79,29 @@ public class StateMachineGenerator: MonoBehaviour
         }
 
         return characterStateViews;
+    }
+
+    private StartStateNode GetStartNode(ICpuCharacter cpuCharacter, ObjectDictionary objectDictionary)
+    {
+        StartStateNode startStateNode = null;
+
+        switch (cpuCharacter)
+        {
+            case BossCharacter:
+                return startStateNode;
+
+            case AllyCharacter allyCharacter:
+                if (allyCharacter.TryGetComponent<HealerAction>(out HealerAction healer))
+                {
+                    return objectDictionary.GetHasComponent<HealStateMachine>()[0].StartStateNode;
+                }
+                else if (allyCharacter.TryGetComponent<TankAction>(out TankAction tank))
+                {
+                    return objectDictionary.GetHasComponent<TankStateMachine>()[0].StartStateNode;
+                }
+                break;
+        }
+
+        return startStateNode;
     }
 }

@@ -1,37 +1,26 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using R3;
 using UnityEngine.UI;
 
-public class MoveStateNode : BaseStateNode
-
+public class AttackStateNode : BaseStateNode
 {
     [SerializeField]
     Dropdown _targetDropdown;
 
-    private Vector3 _targetPos;
-
     public override void EnterState()
     {
-        _targetPos = GetTarget(_targetDropdown).position;
+        _cpuController.SetTargetPosition(GetTarget(_targetDropdown));
+        _cpuController.SetAttack(true);
         base.EnterState();
     }
     public override void UpdateState()
-    { 
-        if (Vector3.Distance(_targetPos, _cpuCharacter.Transform.position) <= 1)
-        {
-            _cpuCharacter.StateMachine.TransitionNextState(_outNode.NextStateNode);    
-        }
-        else
-        {
-            Vector3 targetDirection = (_targetPos - _cpuCharacter.Transform.position).normalized;
-            _cpuController.SetInputMove(targetDirection.x, targetDirection.y);
-        }      
+    {
+        _cpuCharacter.StateMachine.TransitionNextState(_outNode.NextStateNode);
     }
     public override void ExitState()
     {
-        _cpuController.SetInputMove(0, 0);
+        _cpuController.SetAttack(false);
         base.ExitState();
     }
 
@@ -44,7 +33,7 @@ public class MoveStateNode : BaseStateNode
 
     private Transform GetTarget(Dropdown targetName)
     {
-        switch (targetName.value)
+        switch(targetName.value)
         {
             case 0:
                 return _otherCharacters.Enemys[0].CharacterTransform;

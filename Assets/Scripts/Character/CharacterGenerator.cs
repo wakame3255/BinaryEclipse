@@ -27,7 +27,7 @@ public class CharacterGenerator : MonoBehaviour
 
         //ここでキャラクターへ情報を格納
         _characterStateDictionary.SetCharacterState(objectDictionary);
-        _stateMachineGenerator.InitializeStateMachine(_characterStateDictionary);
+        _stateMachineGenerator.InitializeStateMachine(_characterStateDictionary, objectDictionary);
     }
 
     private void InitializeComponent()

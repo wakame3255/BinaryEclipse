@@ -26,12 +26,6 @@ public class BossCharacter : BaseCharacter, ICpuCharacter
         base.PhysicsUpDate();
     }
 
-    public void UpdateStateMachine()
-    {
-        _stateMachine.UpdateStateNode();
-        _stateMachine.Initialize(_startStateNode);
-    }
-
     public void SetStateMachine(Cpu.StateMachine stateMachine)
     {
         _stateMachine = stateMachine;

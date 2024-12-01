@@ -17,6 +17,7 @@ public class OutNode : MonoBehaviour, IDragHandler, IEndDragHandler
     private CircleCollider2D _circleCollider;
     private RaycastHit2D[] _collisionResults;
 
+    [SerializeField]
     private BaseStateNode _nowNextStateNode;
     private BaseStateNode _currentNextNode;
     private BaseStateNode _myParentStateNode = default;

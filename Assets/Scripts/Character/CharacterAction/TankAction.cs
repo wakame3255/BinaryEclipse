@@ -1,10 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System;
 using UnityEngine;
 
-public class HunterAction : MonoBehaviour, ICharacterAction
+public class TankAction : MonoBehaviour, ICharacterAction
 {
     [SerializeField, Required]
     protected private GameObject _actionObject;
@@ -12,14 +11,14 @@ public class HunterAction : MonoBehaviour, ICharacterAction
     private CharacterStateView _stateView;
     private IWalk _walk;
     private IAttack _attack;
-  
+
     private void Awake()
     {
         SetComponent();
     }
 
-     public void SetControlInformation(ICharacterController characterController)
-     {
+    public void SetControlInformation(ICharacterController characterController)
+    {
         MyExtensionClass.CheckArgumentNull(characterController, nameof(characterController));
 
         _walk.DoWalk(characterController.InputX, characterController.InputY, _stateView.CharacterTransform);

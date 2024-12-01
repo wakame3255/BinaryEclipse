@@ -3,10 +3,12 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [RequireComponent(typeof(CharacterGenerator))]
+[RequireComponent(typeof(EventJuge))]
 public class GameManager : MonoBehaviour
 { 
     private ObjectDictionary _objectDictionary;
     private CharacterGenerator _characterGenerator;
+    private EventJuge _eventJuge;
 
     private List<BaseCharacter> _baseCharacter;
 
@@ -27,13 +29,14 @@ public class GameManager : MonoBehaviour
 
     private void Update()
     {
-        
+        _eventJuge.JugeEvent();
     }
 
     private void AddComponents()
     {
         _objectDictionary = gameObject.AddComponent<ObjectDictionary>();
         _characterGenerator = this.CheckComponentMissing< CharacterGenerator >();
+        _eventJuge = this.CheckComponentMissing< EventJuge >();
     }
 
     private void CheckAllComponent()
@@ -45,6 +48,7 @@ public class GameManager : MonoBehaviour
     {
         _characterGenerator.GenerateCharacter(_objectDictionary);
         _baseCharacter = _objectDictionary.GetHasComponent<BaseCharacter>();
+        _eventJuge.SetInformation(_objectDictionary);
     }
 
     private void UpDateCharacter()

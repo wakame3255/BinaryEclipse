@@ -4,11 +4,19 @@ using System.ComponentModel.DataAnnotations;
 using UnityEngine;
 using System;
 
+public enum CharacterType
+{
+    Hunter,
+    Tank,
+    Heler,
+    Boss
+}
+
 [Serializable]
 public class CharacterInformation
 {
-    [SerializeField][UnityEngine.Range(0,100)]
-    private int _id;
+    [SerializeField]
+    private CharacterType _characterType;
 
     [SerializeField]
     private int _hp;
@@ -24,7 +32,7 @@ public class CharacterInformation
     [SerializeField, Required]
     private BaseBulletFactory[] _bulletFactorys; //使う武器のプレハブ
 
-    public int ID { get => _id; }
+    public CharacterType CharacterType { get => _characterType; }
     public int Hp { get => _hp; }
     public int Attack { get => _attack; }
     public Component CharacterPrefab { get => _characterPrefab; }

@@ -58,7 +58,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 746d720f78fb89b448eb288d48aca098, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _bulletFactorys: []
+  _shotCoolTime: 0
 --- !u!1 &2813569840189240242
 GameObject:
   m_ObjectHideFlags: 0
@@ -197,7 +197,7 @@ GameObject:
   - component: {fileID: 4407517555116158274}
   - component: {fileID: 6191586363522397546}
   - component: {fileID: 2957726711894133144}
-  m_Layer: 7
+  m_Layer: 9
   m_Name: Enemy
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -336,7 +336,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b6777878ef40223419b467a0c08b2d78, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _hp: 0
+  _hp: 20
 --- !u!114 &1729681649813710583
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -21,6 +21,10 @@ public class CharacterStatus : MonoBehaviour
     {
         _reactiveHp.Value -= damageAmount;
         _hp -= damageAmount;
+        if (_hp <= 0)
+        {
+            gameObject.SetActive(false);
+        }
     }
 
     public void AddHp(int recoveryAmount)

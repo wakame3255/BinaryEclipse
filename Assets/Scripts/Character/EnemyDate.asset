@@ -13,9 +13,9 @@ MonoBehaviour:
   m_Name: EnemyDate
   m_EditorClassIdentifier: 
   _characterInformation:
-  - _id: 18
-    _hp: 23
-    _attack: 123
+  - _characterType: 3
+    _hp: 20
+    _attack: 1
     _characterPrefab: {fileID: 2957726711894133144, guid: 6e33397b115bcef459dbfe2c948e896f, type: 3}
     _bulletFactorys:
-    - {fileID: 2812363607279090795, guid: dbacdbbba1d144843b956e29e4042b96, type: 3}
+    - {fileID: 2812363607279090795, guid: 2748fa9318eb276449bbba3d4a32aeac, type: 3}

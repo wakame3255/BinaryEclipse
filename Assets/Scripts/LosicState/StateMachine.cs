@@ -39,10 +39,14 @@ namespace Cpu
         /// ステートの開始処理
         /// </summary>
         /// <param name="baseState">ステート</param>
-        public void Initialize(BaseStateNode baseState)
+        public void Initialize()
         {
-            CurrentStateNode = baseState;
-            CurrentStateNode.EnterState();
+            UpdateStateNode();
+            CurrentStateNode = _startStateNode;
+            if (CurrentStateNode != null)
+            {
+                CurrentStateNode.EnterState();
+            }
         }
 
         /// <summary>
@@ -90,8 +94,12 @@ namespace Cpu
             _startStateNode = stateMachineInformation.StartStateNodeDate;
             _otherCharacterStatus = stateMachineInformation.OtherCharacterStatusDate;
 
-            _startStateNode.SetCharacterInformation(_cpuCharacter);
-            _startStateNode.SetCpuContoller(_cpuController);
+            if (_startStateNode != null)
+            {
+                _startStateNode.SetCharacterInformation(_cpuCharacter);
+                _startStateNode.SetCpuContoller(_cpuController);
+            }
+           
         }
 
         /// <summary>
@@ -124,6 +132,7 @@ namespace Cpu
                 _baseStateNodes.Clear();
                 _startStateNode.GetHasOutNode();
                 OutNode[] outNodes = new OutNode[] { _startStateNode.OutNode };
+                Debug.Log(outNodes[0].name);
                 CacheNextState(outNodes);
             }
         }
@@ -138,8 +147,9 @@ namespace Cpu
 
             foreach (OutNode outNode in outNodes)
             {
+                outNode.UpdateNextNode();
                 BaseStateNode nextStateNode = outNode.NextStateNode;
-
+                Debug.Log(nextStateNode);
                 if (nextStateNode != null)
                 {
                     _baseStateNodes.Add(nextStateNode);
