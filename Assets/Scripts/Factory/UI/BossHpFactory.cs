@@ -11,8 +11,9 @@ public class BossHpFactory : BaseHpUIFactory
         _cacheSlider = slider;
     }
 
-    public override BaseHpView GenerateHpSlider()
+    public override BaseHpView GenerateHpSlider(Transform canvasObj, int hp)
     {
-        return Instantiate(_cacheSlider);
+        _cacheSlider.SetMaxValue(hp);
+        return Instantiate(_cacheSlider, canvasObj);
     }
 }

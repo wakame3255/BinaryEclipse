@@ -7,9 +7,10 @@ public class UIGenerater : MonoBehaviour
 {
     [SerializeField, Required]
     private HunterHpView _hunterHpView;
-
     [SerializeField, Required]
     private BossHpView _bossHpView;
+    [SerializeField, Required]
+    private Transform _sceneObject;
 
 
 
@@ -24,14 +25,12 @@ public class UIGenerater : MonoBehaviour
 
     public void UIGenerate(CharacterDictionary characterDictionary)
     {
-        _hpPresenter = new(_hunterHpFacory, _bossHpFactory, characterDictionary);
+        _hpPresenter = new(_hunterHpFacory, _bossHpFactory, characterDictionary, _sceneObject);
     }
 
     private void SetComponent()
     {
         _hunterHpFacory = new(_hunterHpView);
         _bossHpFactory = new(_bossHpView);
-        _hunterHpFacory.GenerateHpSlider();
-        _bossHpFactory.GenerateHpSlider();
     }
 }

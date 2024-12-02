@@ -245,7 +245,7 @@ Transform:
   m_GameObject: {fileID: 26079820}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 809.71826, y: -1374.948, z: 19.20937}
+  m_LocalPosition: {x: 810.61, y: -1374.948, z: 19.20937}
   m_LocalScale: {x: 1, y: 9.92, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -548,6 +548,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _hunterHpView: {fileID: 4247663214847762875, guid: f04db74e1e243a8498b65541ab0b9c0c, type: 3}
   _bossHpView: {fileID: 5108790731098558130, guid: 11767905b0c97f64aa864822d1a68587, type: 3}
+  _sceneObject: {fileID: 1284950255}
 --- !u!1 &1258635741
 GameObject:
   m_ObjectHideFlags: 0
@@ -575,7 +576,7 @@ Transform:
   m_GameObject: {fileID: 1258635741}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0.7071068, w: 0.7071068}
-  m_LocalPosition: {x: 801.5, y: -1370, z: 19.20937}
+  m_LocalPosition: {x: 801.5, y: -1369.58, z: 19.20937}
   m_LocalScale: {x: 1, y: 19, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -851,7 +852,7 @@ Transform:
   m_GameObject: {fileID: 1364877128}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0.7071068, w: 0.7071068}
-  m_LocalPosition: {x: 801.5, y: -1380.13, z: 19.20937}
+  m_LocalPosition: {x: 801.5, y: -1380.34, z: 19.20937}
   m_LocalScale: {x: 1, y: 19, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1199,7 +1200,7 @@ Transform:
   m_GameObject: {fileID: 1833578253}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 792.87823, y: -1374.948, z: 19.20937}
+  m_LocalPosition: {x: 791.95, y: -1374.948, z: 19.20937}
   m_LocalScale: {x: 1, y: 9.92, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []

@@ -13,4 +13,8 @@ public class BossHpView : BaseHpView
     {
         _slider.value = hp;
     }
+    public override void SetMaxValue(int hp)
+    {
+        _slider.maxValue = hp;
+    }
 }

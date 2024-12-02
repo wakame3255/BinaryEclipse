@@ -5,5 +5,6 @@ using UnityEngine;
 public abstract class BaseHpView : MonoBehaviour
 {
     public abstract void UpdateSlider(int hp);
+    public abstract void SetMaxValue(int hp);
     
 }

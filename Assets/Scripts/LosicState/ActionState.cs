@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Threading.Tasks;
 using UnityEngine.UI;
 
 public enum Status
@@ -43,6 +44,7 @@ public class ActionState : BaseStateNode
     private CharacterStateView _cacheCharacter;
     private Vector3 _movePosition;
     private bool _isMove;
+    private int PUSH_HOLD_TIME = 1;
 
     public override void EnterState()
     {
@@ -51,10 +53,12 @@ public class ActionState : BaseStateNode
         switch (_actionDown.value)
         {
             case 0:
-                DoAttack();
+                _cpuController.SetTargetPosition(_cacheCharacter.CharacterTransform);
+                StartPushAttackAsync();
                 break;
             case 1:
-                UseSkill();
+                _cpuController.SetTargetPosition(_cacheCharacter.CharacterTransform);
+                StartPushSkillAsync();
                 break;
             case 2:
                 _movePosition = _cacheCharacter.CharacterTransform.position;
@@ -181,16 +185,18 @@ public class ActionState : BaseStateNode
         }
         return index;
     }
-
-    private void DoAttack()
+    private async void StartPushAttackAsync()
     {
         _cpuController.SetAttack(true);
+        await Task.Delay(PUSH_HOLD_TIME * 100);
+        _cpuController.SetAttack(false);
         _cpuCharacter.StateMachine.TransitionNextState(_outNode.NextStateNode);
     }
-
-    private void UseSkill()
+    private async void StartPushSkillAsync()
     {
         _cpuController.SetSkill(true);
+        await Task.Delay(PUSH_HOLD_TIME * 100);
+        _cpuController.SetSkill(false);
         _cpuCharacter.StateMachine.TransitionNextState(_outNode.NextStateNode);
     }
 
