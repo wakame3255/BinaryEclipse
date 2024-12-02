@@ -307,7 +307,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1519369319756813258}
   - component: {fileID: 5342871183194985146}
-  - component: {fileID: 3548597503272818254}
+  - component: {fileID: 5108790731098558130}
   m_Layer: 5
   m_Name: BossHpPrefab
   m_TagString: Untagged
@@ -332,10 +332,10 @@ RectTransform:
   - {fileID: 4620405385141745531}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 37, y: -440.9}
-  m_SizeDelta: {x: 1011.2, y: 36.9}
+  m_AnchorMin: {x: 0.5, y: 0}
+  m_AnchorMax: {x: 0.5, y: 0}
+  m_AnchoredPosition: {x: 0, y: 126}
+  m_SizeDelta: {x: 1011.2, y: 36.899994}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &5342871183194985146
 MonoBehaviour:
@@ -388,7 +388,7 @@ MonoBehaviour:
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls: []
---- !u!114 &3548597503272818254
+--- !u!114 &5108790731098558130
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -397,7 +397,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 8625213094689737770}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 13c8cd91a585d6645b9fe42aad7133e3, type: 3}
+  m_Script: {fileID: 11500000, guid: 3f9d6750615c79548b169e8601402b2d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   _slider: {fileID: 5342871183194985146}

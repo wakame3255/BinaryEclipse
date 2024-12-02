@@ -12,8 +12,8 @@ public class HunterHpFactory : BaseHpUIFactory
         _cacheSlider = slider;
     }
 
-    public override void GenerateHpSlider()
+    public override BaseHpView GenerateHpSlider()
     {
-        Instantiate(_cacheSlider);
+        return Instantiate(_cacheSlider);
     }
 }

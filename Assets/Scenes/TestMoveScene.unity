@@ -459,6 +459,7 @@ GameObject:
   - component: {fileID: 639303970}
   - component: {fileID: 639303971}
   - component: {fileID: 639303972}
+  - component: {fileID: 639303973}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -533,6 +534,20 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _clearScene: 3
   _overScene: 4
+--- !u!114 &639303973
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 639303966}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9255116d344002746af5c674d8884f33, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _hunterHpView: {fileID: 4247663214847762875, guid: f04db74e1e243a8498b65541ab0b9c0c, type: 3}
+  _bossHpView: {fileID: 5108790731098558130, guid: 11767905b0c97f64aa864822d1a68587, type: 3}
 --- !u!1 &1258635741
 GameObject:
   m_ObjectHideFlags: 0

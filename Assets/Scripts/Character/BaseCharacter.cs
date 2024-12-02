@@ -13,6 +13,7 @@ public abstract class BaseCharacter : MonoBehaviour
     protected private CharacterStateView _characterStateView;
 
     public CharacterStateView CharacterStatusView { get => _characterStateView; }
+    public CharacterStatus CharacterStatus { get => _characterStatus; }
     public ICharacterAction CharacterAction { get => _characterAction; }
 
     protected void Awake()

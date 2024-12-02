@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using UnityEngine;
 
+[RequireComponent(typeof(StateMachineGenerator))]
+[RequireComponent(typeof(UIGenerater))]
 public class CharacterGenerator : MonoBehaviour
 {
     [SerializeField, Required][Header("ボスデータ")]
@@ -28,12 +30,15 @@ public class CharacterGenerator : MonoBehaviour
         //ここでキャラクターへ情報を格納
         _characterStateDictionary.SetCharacterState(objectDictionary);
         _stateMachineGenerator.InitializeStateMachine(_characterStateDictionary, objectDictionary);
+        _uIGenerater.UIGenerate(_characterStateDictionary);
     }
 
     private void InitializeComponent()
     {
         _stateMachineGenerator = this.CheckComponentMissing<StateMachineGenerator>();
+        _uIGenerater = this.CheckComponentMissing<UIGenerater>();
         _characterStateDictionary = new CharacterDictionary();
+        
         //キャラクターのデータセット
         _enemyFactory = new(_enemyDate.CharacterInformation);
         _hunterFactory = new(_hunterDate.CharacterInformation);

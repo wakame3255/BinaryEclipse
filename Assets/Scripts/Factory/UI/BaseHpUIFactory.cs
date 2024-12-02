@@ -6,5 +6,5 @@ using UnityEngine.UI;
 public abstract class BaseHpUIFactory : MonoBehaviour
 {
 
-    public abstract void GenerateHpSlider();
+    public abstract BaseHpView GenerateHpSlider();
 }
