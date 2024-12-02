@@ -11,6 +11,7 @@ public interface ICharacterController
     public Transform Target { get; }
 
     public bool IsAttack { get; }
+    public bool IsSkill { get; }
 
-   public ReactiveProperty<Transform> ReactiveTargetTransform { get; }
+    public ReactiveProperty<Transform> ReactiveTargetTransform { get; }
 }

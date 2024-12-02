@@ -15,6 +15,8 @@ public class CpuController : MonoBehaviour, ICharacterController
     private Transform _targetPosition;
     [SerializeField]
     private bool _k_key;
+    [SerializeField]
+    private bool _isSkill;
 
     private ReactiveProperty<Transform> _reactiveTargetTransform = new ReactiveProperty<Transform>();
 
@@ -23,6 +25,7 @@ public class CpuController : MonoBehaviour, ICharacterController
     public Vector3 Direction { get => _targetDirection; }
     public Transform Target { get => _targetPosition; }
     public bool IsAttack { get => _k_key; }
+    public bool IsSkill { get => _isSkill; }
 
     public ReactiveProperty<Transform> ReactiveTargetTransform { get => _reactiveTargetTransform; }
 
@@ -40,6 +43,10 @@ public class CpuController : MonoBehaviour, ICharacterController
     public void SetAttack(bool isAttack)
     {
         _k_key = isAttack;
+    }
+    public void SetSkill(bool isSkill)
+    {
+        _isSkill = isSkill;
     }
 
     public void SetTargetPosition(Transform targetPos)

@@ -1,30 +1,49 @@
-using System.Collections;
-using System.Collections.Generic;
+using System;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using UnityEditor;
+
+public enum Scenes
+{
+    StartMenuScene,
+    TestMoveScene,
+    Algore,
+    ClearScene,
+    GameOverScene
+}
 
 public class SceneChanger : MonoBehaviour
 {
-    [SerializeField]
-    private SceneAsset _sceneAsset;
+    // ƒV[ƒ“–¼‚ð—ñ‹“Œ^‚ÅŠÇ—
+    
 
-    private string SceneName => _sceneAsset != null ? _sceneAsset.name : string.Empty;
+    [SerializeField]
+    private Scenes targetScene;
 
     public void ChangeScene()
     {
-        if (!string.IsNullOrEmpty(SceneName))
+        string sceneName = targetScene.ToString();
+
+        if (Application.CanStreamedLevelBeLoaded(sceneName))
         {
-            SceneManager.LoadScene(SceneName);
+            SceneManager.LoadScene(sceneName);
         }
         else
         {
-            Debug.LogError("Scene name is not set.");
+            Debug.LogError($"Scene '{sceneName}' is not in Build Settings. Please add it.");
         }
     }
 
-    public void ChangeScene(string sceneName)
+    public void ChangeScene(Scenes scene)
     {
-        SceneManager.LoadScene(sceneName);
+        string sceneName = scene.ToString();
+
+        if (Application.CanStreamedLevelBeLoaded(sceneName))
+        {
+            SceneManager.LoadScene(sceneName);
+        }
+        else
+        {
+            Debug.LogError($"Scene '{sceneName}' is not in Build Settings. Please add it.");
+        }
     }
 }

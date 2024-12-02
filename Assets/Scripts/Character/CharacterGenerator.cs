@@ -15,7 +15,7 @@ public class CharacterGenerator : MonoBehaviour
     private CharacterDictionary _characterStateDictionary;
     private EnemyFactory _enemyFactory;
     private HunterFactory _hunterFactory;
-
+    private UIGenerater _uIGenerater;
     public void GenerateCharacter(ObjectDictionary objectDictionary)
     {
         InitializeComponent();
@@ -37,5 +37,6 @@ public class CharacterGenerator : MonoBehaviour
         //キャラクターのデータセット
         _enemyFactory = new(_enemyDate.CharacterInformation);
         _hunterFactory = new(_hunterDate.CharacterInformation);
+        
     }
 }
