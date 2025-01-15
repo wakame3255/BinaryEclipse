@@ -148,13 +148,34 @@ namespace Cpu
             {
                 outNode.UpdateNextNode();
                 BaseStateNode nextStateNode = outNode.NextStateNode;
-                if (nextStateNode != null)
+
+                if (nextStateNode != null && !CheckStateLoop(_baseStateNodes, nextStateNode))
                 {
                     _baseStateNodes.Add(nextStateNode);
 
                     CacheNextState(nextStateNode.GetHasOutNode());
                 }
             }
+        }
+
+        /// <summary>
+        /// ステートのループチェック
+        /// </summary>
+        /// <param name="cacheBaseStates">キャッシュステート群</param>
+        /// <param name="baseState">追加予定のステート</param>
+        /// <returns>ループしているかのBool</returns>
+        private bool CheckStateLoop(List<BaseStateNode> cacheBaseStates, BaseStateNode baseState)
+        {
+            foreach (BaseStateNode stateNode in cacheBaseStates)
+            {
+                if (stateNode == baseState)
+                {
+                    Debug.Log("ループ検知");
+                    return true;
+                }
+            }
+
+            return false;
         }
     }
 }
