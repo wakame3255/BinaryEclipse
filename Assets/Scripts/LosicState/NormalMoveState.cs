@@ -1,26 +1,27 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
 
 public class NormalMoveState : BaseStateNode
 {
-    [SerializeField]
-    Vector3 _targetDropdown;
+    private Vector2 _targetDropdown = new Vector3(10, 8);
+    private Vector3 _wayPointPosition;
 
     public override void EnterState()
     {
+        float randomPositionX = Random.Range(-_targetDropdown.x, _targetDropdown.x);
+        float randomPositionY = Random.Range(-_targetDropdown.y, _targetDropdown.y);
+
+        _wayPointPosition = new Vector3(randomPositionX, randomPositionY, 0);
         base.EnterState();
     }
     public override void UpdateState()
     {
-        if (Vector3.Distance(_targetDropdown, _cpuCharacter.Transform.position) <= 1)
+        if (Vector3.Distance(_wayPointPosition, _cpuCharacter.Transform.position) <= 1)
         {
             _cpuCharacter.StateMachine.TransitionNextState(_outNode.NextStateNode);
         }
         else
         {
-            Vector3 targetDirection = (_targetDropdown - _cpuCharacter.Transform.position).normalized;
+            Vector3 targetDirection = (_wayPointPosition - _cpuCharacter.Transform.position).normalized;
             _cpuController.SetInputMove(targetDirection.x, targetDirection.y);
         }
     }
