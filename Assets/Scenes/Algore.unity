@@ -1122,18 +1122,6 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1920849828}
-        m_TargetAssemblyTypeName: SceneChanger, Assembly-CSharp
-        m_MethodName: ChangeScene
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 1
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
       - m_Target: {fileID: 414229448}
         m_TargetAssemblyTypeName: StateMachineObj, Assembly-CSharp
         m_MethodName: CreateStateMachine
@@ -1154,6 +1142,18 @@ MonoBehaviour:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 1920849828}
+        m_TargetAssemblyTypeName: SceneChanger, Assembly-CSharp
+        m_MethodName: ChangeScene
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 1
           m_FloatArgument: 0
           m_StringArgument: 
           m_BoolArgument: 0
@@ -2190,12 +2190,32 @@ PrefabInstance:
       value: AttackNode
       objectReference: {fileID: 0}
     - target: {fileID: 3238279702656620096, guid: e6c99d90ddd29394f9898cea9592d266, type: 3}
+      propertyPath: m_Color.b
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3238279702656620096, guid: e6c99d90ddd29394f9898cea9592d266, type: 3}
+      propertyPath: m_Color.g
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3238279702656620096, guid: e6c99d90ddd29394f9898cea9592d266, type: 3}
+      propertyPath: m_Color.r
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3238279702656620096, guid: e6c99d90ddd29394f9898cea9592d266, type: 3}
       propertyPath: m_points.Array.data[0].x
-      value: -523.25995
+      value: 881.74
+      objectReference: {fileID: 0}
+    - target: {fileID: 3238279702656620096, guid: e6c99d90ddd29394f9898cea9592d266, type: 3}
+      propertyPath: m_points.Array.data[0].y
+      value: 374.25
       objectReference: {fileID: 0}
     - target: {fileID: 3238279702656620096, guid: e6c99d90ddd29394f9898cea9592d266, type: 3}
       propertyPath: m_points.Array.data[1].x
-      value: -523.75995
+      value: 881.24
+      objectReference: {fileID: 0}
+    - target: {fileID: 3238279702656620096, guid: e6c99d90ddd29394f9898cea9592d266, type: 3}
+      propertyPath: m_points.Array.data[1].y
+      value: 374.25
       objectReference: {fileID: 0}
     - target: {fileID: 7528801101720400326, guid: e6c99d90ddd29394f9898cea9592d266, type: 3}
       propertyPath: m_Pivot.x
