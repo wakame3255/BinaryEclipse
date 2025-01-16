@@ -7,10 +7,10 @@ using UnityEditor;
 public class EventJuge : MonoBehaviour
 {
     [SerializeField]
-    private Scenes _clearScene;
+    private ScenesNames _clearScene;
 
     [SerializeField]
-    private Scenes _overScene;
+    private ScenesNames _overScene;
 
     private PlayerCharacter _playerCharacter;
     private List<AllyCharacter> _allyCharacters;
@@ -33,8 +33,15 @@ public class EventJuge : MonoBehaviour
 
     public void JugeEvent()
     {
-        OverEvent();
-        ClearEvent();
+        if (CheckHasScene(_overScene))
+        {
+            OverEvent();
+        }
+
+        if (CheckHasScene(_clearScene))
+        {
+            ClearEvent();
+        }     
     }
 
     private void ClearEvent()
@@ -65,6 +72,15 @@ public class EventJuge : MonoBehaviour
         }
         DestroyState();
         SceneManager.LoadScene(_overScene.ToString());
+    }
+
+    private bool CheckHasScene(ScenesNames scene)
+    {
+        if (scene == ScenesNames.none)
+        {
+            return false;
+        }
+        return true;
     }
 
     private void DestroyState()

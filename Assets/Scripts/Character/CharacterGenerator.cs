@@ -23,9 +23,8 @@ public class CharacterGenerator : MonoBehaviour
         InitializeComponent();
         MyExtensionClass.CheckArgumentNull(objectDictionary, nameof(objectDictionary));
 
-        //キャラクター作り、リソースを与えるメソッド
-        _enemyFactory.GenerateCharacter();
-        _hunterFactory.GenerateCharacter();
+      
+        
 
         //ここでキャラクターへ情報を格納
         _characterStateDictionary.SetCharacterState(objectDictionary);
@@ -38,10 +37,19 @@ public class CharacterGenerator : MonoBehaviour
         _stateMachineGenerator = this.CheckComponentMissing<StateMachineGenerator>();
         _uIGenerater = this.CheckComponentMissing<UIGenerater>();
         _characterStateDictionary = new CharacterDictionary();
-        
+
         //キャラクターのデータセット
-        _enemyFactory = new(_enemyDate.CharacterInformation);
-        _hunterFactory = new(_hunterDate.CharacterInformation);
-        
+        if (_enemyDate != null)
+        {
+            _enemyFactory = new(_enemyDate.CharacterInformation);
+            //キャラクター作り、リソースを与えるメソッド
+            _enemyFactory.GenerateCharacter();
+        }
+
+        if (_hunterDate != null)
+        {
+            _hunterFactory = new(_hunterDate.CharacterInformation);
+            _hunterFactory.GenerateCharacter();
+        }         
     }
 }

@@ -2,13 +2,14 @@ using System;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public enum Scenes
+public enum ScenesNames
 {
     StartMenuScene,
     TestMoveScene,
     Algore,
     ClearScene,
-    GameOverScene
+    GameOverScene,
+    none
 }
 
 public class SceneChanger : MonoBehaviour
@@ -17,7 +18,7 @@ public class SceneChanger : MonoBehaviour
     
 
     [SerializeField]
-    private Scenes targetScene;
+    private ScenesNames targetScene;
 
     public void ChangeScene()
     {
@@ -33,7 +34,7 @@ public class SceneChanger : MonoBehaviour
         }
     }
 
-    public void ChangeScene(Scenes scene)
+    public void ChangeScene(ScenesNames scene)
     {
         string sceneName = scene.ToString();
 

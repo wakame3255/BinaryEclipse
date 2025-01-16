@@ -87,6 +87,7 @@ public class StateMachineGenerator: MonoBehaviour
 
         switch (cpuCharacter)
         {
+
             case BossCharacter bossCharacter:
                 if (bossCharacter.TryGetComponent<BossAction>(out BossAction boss))
                 {

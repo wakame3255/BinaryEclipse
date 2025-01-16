@@ -13,6 +13,7 @@ public class PlayerController : MonoBehaviour, ICharacterController
     private Transform _targetPosition;
     private bool _k_key;
     private bool _isSkill;
+    private bool _isMenu;
 
     private ReactiveProperty<Transform> _reactiveTargetTransform = new ReactiveProperty<Transform>();
 
@@ -23,6 +24,7 @@ public class PlayerController : MonoBehaviour, ICharacterController
     public Transform Target { get => _targetPosition; }
     public bool IsAttack { get => _k_key; }
     public bool IsSkill { get => _isSkill; }
+    public bool IsMenu { get => _isMenu; }
 
     public ReactiveProperty<Transform> ReactiveTargetTransform { get => _reactiveTargetTransform; }
     private void Awake()
@@ -75,5 +77,6 @@ public class PlayerController : MonoBehaviour, ICharacterController
     {
         _k_key = Mouse.current.leftButton.isPressed;
         _isSkill = Mouse.current.rightButton.isPressed;
+        _isMenu = Keyboard.current.escapeKey.wasPressedThisFrame;
     }
 }
