@@ -58,7 +58,6 @@ public class HeatBeatCont : MonoBehaviour
     {
         if (nowTime > _startSoundTime)
         {
-            print("—¬‚µŽn‚ß");
             heatBeatSource.volume = 0.1f;
             _currentState = BeatState.MiniSound;
         }
@@ -68,7 +67,6 @@ public class HeatBeatCont : MonoBehaviour
     {
         if (nowTime > _startSoundUpTime)
         {
-            print("‚Å‹qŽ€‚Í‚¶‚ß");
             _currentState = BeatState.SoundUp;
         }
     }
@@ -78,7 +76,6 @@ public class HeatBeatCont : MonoBehaviour
         _currentTime += Time.deltaTime;
         if (_currentTime > _currentCount)
         {
-            print("up");
             _currentCount++;
             heatBeatSource.volume += 0.3f;
         }
