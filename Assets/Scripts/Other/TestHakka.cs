@@ -50,14 +50,12 @@ public class TestHakka : MonoBehaviour
     }
 
     private void ApMother()
-    {
-        print("èoåª");
+    {     
         _isApearanceMother = true;
     }
 
     private void ReMother()
     {
-        print("ëﬁèo");
         _isApearanceMother = false;
     }
 }

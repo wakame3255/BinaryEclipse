@@ -10,9 +10,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 13312, guid: 0000000000000000e000000000000000, type: 0}
-  m_Name: "\u30B9\u30AF\u30EA\u30FC\u30F3\u30B7\u30E7\u30C3\u30C8 2024-10-18 103157_0"
+  m_Name: 20210310210729_0
   m_EditorClassIdentifier: 
-  m_Sprite: {fileID: 8180288531621696294, guid: 6fda1ac9e9a882747bad14f3453c0ded, type: 3}
+  m_Sprite: {fileID: 3546185966317406157, guid: 51319089c1158b14790fd36c1a9f0b71, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_Transform:
     e00: 1
@@ -33,4 +33,4 @@ MonoBehaviour:
     e33: 1
   m_InstancedGameObject: {fileID: 0}
   m_Flags: 1
-  m_ColliderType: 1
+  m_ColliderType: 2
