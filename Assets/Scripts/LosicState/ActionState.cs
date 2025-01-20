@@ -112,7 +112,7 @@ public class ActionState : BaseStateNode
     {
         if (characterStates == null || characterStates.Count == 0)
         {
-           
+            return null;
         }
 
         List<int> vs = new List<int>();

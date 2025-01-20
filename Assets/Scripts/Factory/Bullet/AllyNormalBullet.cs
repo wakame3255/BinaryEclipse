@@ -24,7 +24,6 @@ public class AllyNormalBullet : BaseBullet
     private async void StartDestroyTimerAsync()
     {
         await Task.Delay(_destroyTime * 1000);
-        print("gg");
         gameObject.SetActive(false);
     }
 }
