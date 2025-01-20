@@ -107,6 +107,12 @@ public class OutNode : MonoBehaviour, IDragHandler, IEndDragHandler
     private void UpDateConectState(BaseStateNode stateNode)
     {
         transform.position = _rectOriginPosition.TransformPoint(_rectOriginPosition.anchoredPosition3D);
+
+        if (stateNode.InNode == null)
+        {
+            return;
+        }
+
         _nowNextStateNode = stateNode;
 
         _lineRenderer.transforms = new RectTransform[]
