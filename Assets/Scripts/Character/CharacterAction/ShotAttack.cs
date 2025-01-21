@@ -1,4 +1,3 @@
-using System.Collections;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using UnityEngine;
@@ -8,11 +7,10 @@ public class ShotAttack : MonoBehaviour, IAttack
     [SerializeField]
     private int _shotCoolTime;
 
-    //保持している弾工場のリスト
-    private BaseBulletFactory[] _bulletFactorys;
-
     //生成した弾のリスト
     private List<List<BaseBullet>> _bulletList = new List<List<BaseBullet>>();
+
+    private int _cacheShotCount;
 
     private bool _isCoolingDown = false;
 
@@ -37,12 +35,15 @@ public class ShotAttack : MonoBehaviour, IAttack
         MyExtensionClass.CheckArgumentNull(TargerPosition, nameof(TargerPosition));
 
         int random = Random.Range(0, _bulletList.Count);
-        BaseBullet baseBullet = GetShotBullet(random);
-        if (baseBullet != null)
+        List<BaseBullet> baseBullet = GetShotBullet(random, _cacheShotCount);
+        print(_cacheShotCount);
+
+        foreach (BaseBullet bullet in baseBullet)
         {
-            baseBullet.GenerateBullet(transform.position, TargerPosition);
-            StartCoolDownTimerAsync();
+            bullet.GenerateBullet(transform.position, TargerPosition);
         }
+
+        StartCoolDownTimerAsync();
     }
 
     /// <summary>
@@ -53,12 +54,13 @@ public class ShotAttack : MonoBehaviour, IAttack
     {
         MyExtensionClass.CheckArgumentNull(bulletFactorys, nameof(bulletFactorys));
 
-        _bulletFactorys = bulletFactorys;
-
-        for (int i = 0; i < _bulletFactorys.Length; i++)
+        for (int i = 0; i < bulletFactorys.Length; i++)
         {
+            _cacheShotCount = bulletFactorys[i].ShotCount;
+            print(bulletFactorys[i].name);
+
             _bulletList.Add(new List<BaseBullet>());
-            _bulletList[i] = _bulletFactorys[i].GetGenerateBullet();
+            _bulletList[i] = bulletFactorys[i].GetGenerateBullet();
         }
     }
 
@@ -67,19 +69,15 @@ public class ShotAttack : MonoBehaviour, IAttack
     /// </summary>
     /// <param name="index">取得したい弾のインデクス</param>
     /// <returns>撃つことが可能な弾</returns>
-    private BaseBullet GetShotBullet(int index)
+    private List<BaseBullet> GetShotBullet(int index, int shotCount)
     {
-        BaseBullet baseBullet = null;
+        List<BaseBullet> baseBullet = new List<BaseBullet>();
 
-        foreach (BaseBullet bullet in _bulletList[index])
+        for (int i = 0; i < shotCount; i++)
         {
-            if (!bullet.gameObject.activeSelf)
-            {
-                bullet.gameObject.SetActive(true);
-                return bullet;
-            }
+           baseBullet.Add(_bulletList[index][i]);
         }
-
+        
         return baseBullet;
     }
 
