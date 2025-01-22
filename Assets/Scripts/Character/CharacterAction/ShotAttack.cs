@@ -36,11 +36,11 @@ public class ShotAttack : MonoBehaviour, IAttack
 
         int random = Random.Range(0, _bulletList.Count);
         List<BaseBullet> baseBullet = GetShotBullet(random, _cacheShotCount);
-        print(_cacheShotCount);
 
         foreach (BaseBullet bullet in baseBullet)
         {
             bullet.GenerateBullet(transform.position, TargerPosition);
+            print("íeÇÃê∂ê¨");
         }
 
         StartCoolDownTimerAsync();
@@ -57,7 +57,6 @@ public class ShotAttack : MonoBehaviour, IAttack
         for (int i = 0; i < bulletFactorys.Length; i++)
         {
             _cacheShotCount = bulletFactorys[i].ShotCount;
-            print(bulletFactorys[i].name);
 
             _bulletList.Add(new List<BaseBullet>());
             _bulletList[i] = bulletFactorys[i].GetGenerateBullet();
@@ -73,9 +72,12 @@ public class ShotAttack : MonoBehaviour, IAttack
     {
         List<BaseBullet> baseBullet = new List<BaseBullet>();
 
+        print(shotCount);
+
         for (int i = 0; i < shotCount; i++)
         {
            baseBullet.Add(_bulletList[index][i]);
+           _bulletList[index][i].gameObject.SetActive(true);
         }
         
         return baseBullet;
