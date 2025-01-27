@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Threading;
 using System.Threading.Tasks;
 using UnityEngine;
 
@@ -18,10 +19,12 @@ public abstract class BaseBullet : MonoBehaviour
     private CircleCollider2D _circleCollider;
     private RaycastHit2D[] _collisionResults;
     protected Vector3 _targetDirection;
+    private CancellationTokenSource _cancellationTokenSource;
 
     private void Awake()
     {
         _circleCollider = GetComponent<CircleCollider2D>();
+        _cancellationTokenSource = new CancellationTokenSource();
     }
 
     public abstract void GenerateBullet(Vector3 initializePosition, Vector3 targetDirection);
@@ -52,10 +55,21 @@ public abstract class BaseBullet : MonoBehaviour
 
     private protected async void StartDestroyTimerAsync()
     {
-        await Task.Delay(_destroyTime * 1000);
-        if (gameObject != null)
+        _cancellationTokenSource.Cancel();
+        _cancellationTokenSource = new CancellationTokenSource();
+
+        try
         {
-            gameObject.SetActive(false);
-        }    
+            await Task.Delay(_destroyTime * 1000, _cancellationTokenSource.Token);
+            if (this != null)
+            {
+                gameObject.SetActive(false);
+            }
+        }
+        catch (TaskCanceledException)
+        {
+            return;
+        }
+
     }
 }

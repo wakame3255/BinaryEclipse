@@ -18,11 +18,4 @@ public class RemoteBullet : BaseBullet
         transform.position += Vector3.down * _speed * Time.deltaTime;
         base.MoveBullet();
     }
-
-    private async void StartDestroyTimerAsync()
-    {
-        await Task.Delay(_destroyTime * 1000);
-        transform.position = _cacheStartPosition;
-        gameObject.SetActive(false);
-    }
 }
