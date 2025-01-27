@@ -105,7 +105,6 @@ public class ShotRemoteBullet : IAttackInvoker
         {
             if (!bulletList[0].gameObject.activeSelf)
             {
-                Debug.Log(bulletList[0].name);
                 return bulletList;
             }
         }

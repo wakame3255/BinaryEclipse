@@ -11,7 +11,7 @@ public class AllyNormalBullet : BaseBullet
         transform.position = initializePosition;
         _targetDirection = (targetPosition - transform.position);
 
-        StartDestroyTimerAsync();
+        base.StartDestroyTimerAsync();
     }
 
     public override void MoveBullet()
@@ -19,11 +19,5 @@ public class AllyNormalBullet : BaseBullet
         transform.position += Vector3.Scale(_targetDirection, new Vector3(1,1,0)).normalized  * _speed * Time.deltaTime;
  
         base.MoveBullet();
-    }
-
-    private async void StartDestroyTimerAsync()
-    {
-        await Task.Delay(_destroyTime * 1000);
-        gameObject.SetActive(false);
-    }
+    } 
 }

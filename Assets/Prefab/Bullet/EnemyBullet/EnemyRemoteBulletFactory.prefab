@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 5766718350737120331}
   - component: {fileID: -1611861814733931043}
   m_Layer: 0
-  m_Name: EnemyRemoteBulletFactory 1
+  m_Name: EnemyRemoteBulletFactory
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

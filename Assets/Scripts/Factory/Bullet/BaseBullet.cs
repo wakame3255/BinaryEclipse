@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using UnityEngine;
 
 [RequireComponent(typeof(CircleCollider2D))]
@@ -26,7 +27,10 @@ public abstract class BaseBullet : MonoBehaviour
     public abstract void GenerateBullet(Vector3 initializePosition, Vector3 targetDirection);
     public virtual void MoveBullet()
     {
-        CheckCollision();
+        if (gameObject.activeSelf)
+        {
+            CheckCollision();
+        }   
     }
 
     /// <summary>
@@ -44,5 +48,14 @@ public abstract class BaseBullet : MonoBehaviour
                 gameObject.SetActive(false);
             }
         }
+    }
+
+    private protected async void StartDestroyTimerAsync()
+    {
+        await Task.Delay(_destroyTime * 1000);
+        if (gameObject != null)
+        {
+            gameObject.SetActive(false);
+        }    
     }
 }
