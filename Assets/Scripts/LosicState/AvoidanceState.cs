@@ -54,7 +54,7 @@ public class AvoidanceState : BaseStateNode
     private async void StartAvoidanceAsync()
     {
         _isAvoidance = true;
-         await Task.Delay(ConvertTextToInt(_inputSecond.text) * 100);
+         await Task.Delay(ConvertTextToInt(_inputSecond.text) * 1000);
         _isAvoidance = false;
         _cpuCharacter.StateMachine.TransitionNextState(_outNode.NextStateNode);
     }

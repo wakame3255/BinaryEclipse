@@ -37,7 +37,7 @@ public class AvoidanceDirectionCheck
         Vector2 cacheDirection = Vector2.zero;
         float cacheDistance = 1000f;
 
-        RaycastHit2D[] hit2Ds = Physics2D.CircleCastAll(characterPosition, 100f, Vector2.up, 0.1f, _ammoLayerMask);
+        RaycastHit2D[] hit2Ds = Physics2D.CircleCastAll(characterPosition, 2f, Vector2.up, 0.1f, _ammoLayerMask);
         foreach (RaycastHit2D hit in hit2Ds)
         {
             if (Vector3.Distance(hit.transform.position, _characterTransform.position) < cacheDistance)
