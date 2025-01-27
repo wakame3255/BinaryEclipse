@@ -13,7 +13,7 @@ public abstract class BaseBulletFactory : MonoBehaviour
 
     public int ShotCount { get; private set; } = 1;
 
-    public abstract List<BaseBullet> GetGenerateBullet();
+    public abstract IAttackInvoker GetAttackInvoker();
 
     private protected void SetShotCount(int shotCount)
     {

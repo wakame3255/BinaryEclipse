@@ -8,7 +8,7 @@ public class ShotAttack : MonoBehaviour, IAttack
     private int _shotCoolTime;
 
     //ê∂ê¨ÇµÇΩíeÇÃÉäÉXÉg
-    private List<List<BaseBullet>> _bulletList = new List<List<BaseBullet>>();
+    private List<IAttackInvoker> _attackInvokers = new List<IAttackInvoker>();
 
     private int _cacheShotCount;
 
@@ -16,32 +16,21 @@ public class ShotAttack : MonoBehaviour, IAttack
 
     private void FixedUpdate()
     {
-        foreach (List<BaseBullet> bulletList in _bulletList)
+        foreach (IAttackInvoker attack in _attackInvokers)
         {
-            foreach (BaseBullet bullet in bulletList)
-            {
-                if (bullet.gameObject.activeSelf)
-                {
-                    bullet.MoveBullet();
-                }
-            }
+            attack.UpDateBullet();
         }
     }
 
-    public void DoAttack(Vector3 TargerPosition)
+    public void DoAttack(Vector3 TargerDirection)
     {
         if (_isCoolingDown) return;
 
-        MyExtensionClass.CheckArgumentNull(TargerPosition, nameof(TargerPosition));
+        MyExtensionClass.CheckArgumentNull(TargerDirection, nameof(TargerDirection));
 
-        int random = Random.Range(0, _bulletList.Count);
-        List<BaseBullet> baseBullet = GetShotBullet(random, _cacheShotCount);
+        int random = Random.Range(0, _attackInvokers.Count);
 
-        foreach (BaseBullet bullet in baseBullet)
-        {
-            bullet.GenerateBullet(transform.position, TargerPosition);
-            print("íeÇÃê∂ê¨");
-        }
+        _attackInvokers[random].GenerateAttack(transform.position, TargerDirection);
 
         StartCoolDownTimerAsync();
     }
@@ -56,31 +45,8 @@ public class ShotAttack : MonoBehaviour, IAttack
 
         for (int i = 0; i < bulletFactorys.Length; i++)
         {
-            _cacheShotCount = bulletFactorys[i].ShotCount;
-
-            _bulletList.Add(new List<BaseBullet>());
-            _bulletList[i] = bulletFactorys[i].GetGenerateBullet();
+            _attackInvokers.Add(bulletFactorys[i].GetAttackInvoker());
         }
-    }
-
-    /// <summary>
-    /// íeÇéÊìæÇ∑ÇÈ
-    /// </summary>
-    /// <param name="index">éÊìæÇµÇΩÇ¢íeÇÃÉCÉìÉfÉNÉX</param>
-    /// <returns>åÇÇ¬Ç±Ç∆Ç™â¬î\Ç»íe</returns>
-    private List<BaseBullet> GetShotBullet(int index, int shotCount)
-    {
-        List<BaseBullet> baseBullet = new List<BaseBullet>();
-
-        print(shotCount);
-
-        for (int i = 0; i < shotCount; i++)
-        {
-           baseBullet.Add(_bulletList[index][i]);
-           _bulletList[index][i].gameObject.SetActive(true);
-        }
-        
-        return baseBullet;
     }
 
     private async void StartCoolDownTimerAsync()

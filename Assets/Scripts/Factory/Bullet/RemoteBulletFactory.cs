@@ -10,9 +10,9 @@ public class RemoteBulletFactory : BaseBulletFactory
     [SerializeField]
     private float _xSize;
 
-    public override List<BaseBullet> GetGenerateBullet()
+    public override IAttackInvoker GetAttackInvoker()
     {
-        List<BaseBullet> baseBullet = new List<BaseBullet>();
+        List<List<BaseBullet>> baseBullets = new List<List<BaseBullet>>();
 
         List<Vector3> shotPoints = GetShotPoint(_centerShotPoint.position);
 
@@ -20,15 +20,18 @@ public class RemoteBulletFactory : BaseBulletFactory
 
         for (int i = 0; i < _generateCount; i++)
         {
+            baseBullets.Add(new List<BaseBullet>());
+
             foreach (Vector3 pos in shotPoints)
             {
                 BaseBullet bullet = Instantiate(_baseBullet);
                 bullet.transform.position = pos;
                 bullet.gameObject.SetActive(false);
-                baseBullet.Add(bullet);
+                baseBullets[i].Add(bullet);
             }       
         }
-        return baseBullet;
+
+        return new ShotRemoteBullet(baseBullets);
     }
 
     /// <summary>
@@ -51,5 +54,61 @@ public class RemoteBulletFactory : BaseBulletFactory
         }
 
         return shotPoints;
+    }
+}
+
+public class ShotRemoteBullet : IAttackInvoker
+{
+    private List<List<BaseBullet>> _poolBullet;
+
+    public ShotRemoteBullet(List<List<BaseBullet>> baseBullets)
+    {
+        _poolBullet = baseBullets;
+    }
+
+    public void GenerateAttack(Vector3 initializePosition, Vector3 targetDirection)
+    {
+        List<BaseBullet> possibleShotList = ReturnPossibleShotList(_poolBullet);
+
+        foreach (BaseBullet bulletList in possibleShotList)
+        {
+            Debug.Log("Œ‚‚¿‚Ü‚µ‚½");
+            bulletList.GenerateBullet(initializePosition, targetDirection);
+        }
+    }
+
+    public void UpDateBullet()
+    {
+        foreach (List< BaseBullet > bulletList in _poolBullet)
+        {
+            if (bulletList.Count <= 0)
+            {
+                return;
+            }
+
+            if(!bulletList[0].gameObject.activeSelf)
+            {
+                continue;
+            }
+
+            foreach (BaseBullet bullet in bulletList)
+            {
+                bullet.MoveBullet();
+            }
+        }
+    }
+
+    private List<BaseBullet> ReturnPossibleShotList(List<List<BaseBullet>> bulletPool)
+    {
+        foreach (List<BaseBullet> bulletList  in bulletPool)
+        {
+            if (!bulletList[0].gameObject.activeSelf)
+            {
+                Debug.Log(bulletList[0].name);
+                return bulletList;
+            }
+        }
+
+        return null;
     }
 }
