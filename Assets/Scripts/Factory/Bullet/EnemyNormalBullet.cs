@@ -10,7 +10,6 @@ public class EnemyNormalBullet : BaseBullet
     {
         transform.position = initializePosition;
         _targetDirection = (targetPosition - transform.position).normalized;
-        print(_targetDirection);
         StartDestroyTimerAsync();
     }
 

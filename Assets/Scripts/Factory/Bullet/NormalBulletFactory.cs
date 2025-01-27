@@ -29,11 +29,13 @@ public class ShotNormalBullet : IAttackInvoker
 
     public void GenerateAttack(Vector3 initializePosition, Vector3 targetDirection)
     {
-        foreach (BaseBullet bulletList in _poolBullet)
+        foreach (BaseBullet bullet in _poolBullet)
         {
-            if (!bulletList.gameObject.activeSelf)
+            if (!bullet.gameObject.activeSelf)
             {
-                bulletList.GenerateBullet(initializePosition, targetDirection);
+                bullet.gameObject.SetActive(true);
+
+                bullet.GenerateBullet(initializePosition, targetDirection);
                 return;
             }     
         }

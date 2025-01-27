@@ -18,4 +18,4 @@ MonoBehaviour:
     _attack: 1
     _characterPrefab: {fileID: 2957726711894133144, guid: 6e33397b115bcef459dbfe2c948e896f, type: 3}
     _bulletFactorys:
-    - {fileID: -1611861814733931043, guid: 7a95b11762519f0428d4b97965779e1e, type: 3}
+    - {fileID: -1611861814733931043, guid: c3ee39b28adb93b44a373e6f57c54a95, type: 3}

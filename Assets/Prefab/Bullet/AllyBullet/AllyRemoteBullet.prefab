@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 2716727875461380008}
   - component: {fileID: -5343606883633273674}
   m_Layer: 14
-  m_Name: RemoteBullet
+  m_Name: AllyRemoteBullet
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

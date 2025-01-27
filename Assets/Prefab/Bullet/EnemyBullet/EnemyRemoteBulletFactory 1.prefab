@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 5766718350737120331}
   - component: {fileID: -1611861814733931043}
   m_Layer: 0
-  m_Name: RemoteBulletFactory
+  m_Name: EnemyRemoteBulletFactory 1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -45,6 +45,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _generateCount: 10
-  _baseBullet: {fileID: -5343606883633273674, guid: d5af8aef2580c3f4cb15fdc6e6261e37, type: 3}
+  _baseBullet: {fileID: -5343606883633273674, guid: 6997dd25495683043b31c8ad85a2f363, type: 3}
   _centerShotPoint: {fileID: 5899359354673648338, guid: 91df740baf089a04ab2c5df1eae90496, type: 3}
   _xSize: 34

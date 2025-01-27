@@ -10,8 +10,6 @@ public class ShotAttack : MonoBehaviour, IAttack
     //¶¬‚µ‚½’e‚ÌƒŠƒXƒg
     private List<IAttackInvoker> _attackInvokers = new List<IAttackInvoker>();
 
-    private int _cacheShotCount;
-
     private bool _isCoolingDown = false;
 
     private void FixedUpdate()

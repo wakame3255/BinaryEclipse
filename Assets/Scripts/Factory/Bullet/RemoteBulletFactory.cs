@@ -48,7 +48,7 @@ public class RemoteBulletFactory : BaseBulletFactory
         Vector3 startSetPosition = centerPoint + (Vector3.left * (_xSize / 2));
 
         //îzíuèÍèäÇÃäiî[
-        for (int i = 0; i < _generateCount; i++)
+        for (int i = 1; i < _generateCount; i++)
         {
             shotPoints.Add(startSetPosition + (Vector3.right * (positionSpan * i)));
         }
@@ -70,10 +70,11 @@ public class ShotRemoteBullet : IAttackInvoker
     {
         List<BaseBullet> possibleShotList = ReturnPossibleShotList(_poolBullet);
 
-        foreach (BaseBullet bulletList in possibleShotList)
+        foreach (BaseBullet bullet in possibleShotList)
         {
-            Debug.Log("åÇÇøÇ‹ÇµÇΩ");
-            bulletList.GenerateBullet(initializePosition, targetDirection);
+            bullet.gameObject.SetActive(true);
+
+            bullet.GenerateBullet(initializePosition, targetDirection);
         }
     }
 
