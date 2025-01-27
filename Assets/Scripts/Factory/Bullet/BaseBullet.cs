@@ -18,6 +18,7 @@ public abstract class BaseBullet : MonoBehaviour
 
     private CircleCollider2D _circleCollider;
     private RaycastHit2D[] _collisionResults;
+    private Vector3 _resetPosition;
     protected Vector3 _targetDirection;
     private CancellationTokenSource _cancellationTokenSource;
 
@@ -25,6 +26,7 @@ public abstract class BaseBullet : MonoBehaviour
     {
         _circleCollider = GetComponent<CircleCollider2D>();
         _cancellationTokenSource = new CancellationTokenSource();
+        _resetPosition = transform.position;
     }
 
     public abstract void GenerateBullet(Vector3 initializePosition, Vector3 targetDirection);
@@ -48,6 +50,7 @@ public abstract class BaseBullet : MonoBehaviour
             if(_collisionResults[i].collider.TryGetComponent(out CharacterStatus characterStatus))
             {
                 characterStatus.SubtractionHp(_damage);
+                transform.position = _resetPosition;
                 gameObject.SetActive(false);
             }
         }
@@ -63,6 +66,7 @@ public abstract class BaseBullet : MonoBehaviour
             await Task.Delay(_destroyTime * 1000, _cancellationTokenSource.Token);
             if (this != null)
             {
+                transform.position = _resetPosition;
                 gameObject.SetActive(false);
             }
         }
