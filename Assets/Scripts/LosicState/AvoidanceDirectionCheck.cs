@@ -42,6 +42,10 @@ public class AvoidanceDirectionCheck
         {
             if (Vector3.Distance(hit.transform.position, _characterTransform.position) < cacheDistance)
             {
+                //”äŠr‚·‚é‚½‚ß‚Ì‹——£‚ðƒLƒƒƒbƒVƒ…
+                cacheDistance = Vector3.Distance(hit.transform.position, _characterTransform.position);
+
+                //’e‚Ì‹t•ûŒü‚ÉˆÚ“®
                 cacheDirection = -(new Vector2(hit.transform.position.x, hit.transform.position.y) - characterPosition);
             }
         }
