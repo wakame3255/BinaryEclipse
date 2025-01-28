@@ -24,8 +24,8 @@ public class RemoteBulletFactory : BaseBulletFactory
 
             foreach (Vector3 pos in shotPoints)
             {
-                BaseBullet bullet = Instantiate(_baseBullet);
-                bullet.transform.position = pos;
+                BaseBullet bullet = Instantiate(_baseBullet, pos, Quaternion.identity);
+       
                 bullet.gameObject.SetActive(false);
                 baseBullets[i].Add(bullet);
             }       

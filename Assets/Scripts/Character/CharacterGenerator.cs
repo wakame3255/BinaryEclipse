@@ -23,9 +23,6 @@ public class CharacterGenerator : MonoBehaviour
         InitializeComponent();
         MyExtensionClass.CheckArgumentNull(objectDictionary, nameof(objectDictionary));
 
-      
-        
-
         //ここでキャラクターへ情報を格納
         _characterStateDictionary.SetCharacterState(objectDictionary);
         _stateMachineGenerator.InitializeStateMachine(_characterStateDictionary, objectDictionary);
