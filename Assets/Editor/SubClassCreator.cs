@@ -6,8 +6,6 @@ using UnityEngine;
 using Object = UnityEngine.Object;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
-
-
 #if UNITY_EDITOR
 using UnityEditor;
 
@@ -19,6 +17,7 @@ public class SubClassGenerator : EditorWindow
     private int _selectedMask;
     private string _newScriptName = "NewClass";
 
+    private HashSet<string> _usings=new();
     [MenuItem("Tools/Sub Class Generator")]
     public static void ShowWindow()
     {
@@ -104,63 +103,303 @@ public class SubClassGenerator : EditorWindow
 
     private void CreateScript(string baseClassName, string[] interfaceNames, string scriptName)
     {
-        var selectedInterfaces = interfaceNames
-            .Where((_, index) => (_selectedMask & (1 << index)) != 0)
-            .ToList();
+        _usings.Clear();//_unisgsの初期化
+        
 
-        var inheritanceList = new List<string>();
+        List<string> selectedInterfaces = interfaceNames
+           .Where((_, index) => (_selectedMask & (1 << index)) != 0)
+           .ToList();
+
+        string inheritance = CreateInheritanceSentence(baseClassName,selectedInterfaces.ToArray());
+        Assembly assembly = GetAssemblyCS();
+
+        string propertyStub = string.Empty;
+
+        propertyStub += CreateClassPropertyStub(assembly,baseClassName);
+        propertyStub += CreateInterfacePropertyStub(assembly,selectedInterfaces.ToArray());
+
+        string methodStubs = string.Empty;
+
+        methodStubs += CreateClassMethodStubs(assembly,baseClassName);
+        methodStubs += CreateInterfaceMethodStubs(assembly,selectedInterfaces.ToArray());
+
+        RegisterClassUsings(assembly,baseClassName);
+        RegisterInterfaceUsings(assembly,selectedInterfaces.ToArray());
+
+        string usingStatements=string.Empty;
+        usingStatements = CreateUsingStatement(_usings);
+        
+
+        string scriptContent = $"using System;\n" +
+                               $"{usingStatements}\n"+
+                               $"public class {scriptName}{inheritance}\n" +
+                               "{\n" +
+                               propertyStub +
+                               methodStubs +
+                               "}";
+
+       string scriptPath=GetGeneratePath(scriptName);
+
+        File.WriteAllText(scriptPath, scriptContent);
+        Debug.Log("スクリプトが生成されました: " + scriptPath);
+
+        AssetDatabase.Refresh();
+    }
+
+    
+    /// <summary>
+    /// 継承部分の文章を生成
+    /// </summary>
+    /// <param name="baseClassName"></param>
+    /// <param name="selectedInterfaces"></param>
+    /// <returns></returns>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    private string CreateInheritanceSentence(string baseClassName, string[] selectedInterfaces)
+    {
+       
+
+        List<string> inheritanceList = new List<string>();
 
         if (baseClassName != "None")
         {
             inheritanceList.Add(baseClassName);
         }
         inheritanceList.AddRange(selectedInterfaces);
+
         string inheritance = string.Empty;
         if (inheritanceList.Count > 0)
         {
             inheritance = $" : {string.Join(", ", inheritanceList)}";
         }
+        return inheritance;
+    }
 
-
-        string methodStubs = string.Empty;
-
+    
+    #region CreateMethodStub
+    /// <summary>
+    /// abstractMethodの文章を出力
+    /// </summary>
+    /// <param name="assembly"></param>
+    /// <param name="baseClassName"></param>
+    /// <returns></returns>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    private string CreateClassMethodStubs(Assembly assembly,string baseClassName)
+    {
+        string sentence=string.Empty;
         if (baseClassName != "None")
         {
-            Assembly assembly = GetAssemblyCS();
+
 
             Type baseClassType = assembly?.GetType(baseClassName);
 
             if (baseClassType != null)
             {
                 IEnumerable<string> abstractMethods = baseClassType.GetMethods(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance)
-                .Where(mInfo => mInfo.IsAbstract)
-                .Select(mInfo => $"    public override {GetReturnType(mInfo)} {mInfo.Name}({string.Join(", ", mInfo.GetParameters().Select(p => p.ParameterType.Name + " " + p.Name))})\n    {{\n        throw new NotImplementedException();\n    }}\n");
+                .Where(mInfo => mInfo.IsAbstract&&!mInfo.IsSpecialName)
+                .Select(mInfo =>CreateMethodSentence(mInfo,true));
 
-                methodStubs += string.Join("\n", abstractMethods);
+                sentence += string.Join("\n", abstractMethods);
             }
         }
-
+        return sentence;
+    }
+    /// <summary>
+    /// interfaceのメソッドの文章を出力
+    /// </summary>
+    /// <param name="assembly"></param>
+    /// <param name="selectedInterfaces"></param>
+    /// <returns></returns>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    private string CreateInterfaceMethodStubs(Assembly assembly, string[] selectedInterfaces)
+    {
+        string sentence=string.Empty;
         foreach (string interfaceName in selectedInterfaces)
         {
-            Assembly assembly = GetAssemblyCS();
+
 
             Type interfaceType = assembly?.GetType(interfaceName);
 
-            if (interfaceType != null)
+            if (interfaceType == null)
             {
-                IEnumerable<string> interfaceMethods = interfaceType.GetMethods()
-                  .Select(m => $"    public {GetReturnType(m)} {m.Name}({string.Join(", ", m.GetParameters().Select(p => p.ParameterType.Name + " " + p.Name))})\n    {{\n        throw new NotImplementedException();\n    }}\n");
-
-                methodStubs += string.Join("\n", interfaceMethods);
+                continue;
             }
+            IEnumerable<string> interfaceMethods = interfaceType.GetMethods()
+                    .Where(mInfo => !mInfo.IsSpecialName)
+                  .Select(mInfo => CreateMethodSentence(mInfo));
+
+            sentence += string.Join("\n", interfaceMethods);
+        }
+        return sentence;
+    }
+    #endregion CreateMethodStub
+    #region CreatePropertyStub
+
+    /// <summary>
+    /// クラスのプロパティを取得
+    /// </summary>
+    /// <param name="assembly"></param>
+    /// <param name="baseClassName"></param>
+    /// <returns></returns>
+    [method:MethodImpl(MethodImplOptions.AggressiveInlining)]
+    private string CreateClassPropertyStub(Assembly assembly,string baseClassName)
+    {
+        string sentence = string.Empty;
+        if (baseClassName == "None")
+        {
+            return string.Empty;
+        }
+        Type baseClassType = assembly?.GetType(baseClassName);
+
+        if (baseClassType== null)
+        {
+            return string.Empty;
+        }
+        // 抽象プロパティの取得・生成
+        IEnumerable<string> abstractProperties = baseClassType.GetProperties(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance)
+            .Where(property => property.GetGetMethod(true)?.IsAbstract == true || property.GetSetMethod(true)?.IsAbstract == true)
+            .Select(property =>CreatePropertyStub(property,true));
+        sentence += string.Join("\n", abstractProperties);
+        return sentence + "\n";
+    }
+
+    /// <summary>
+    /// interfaceのプロパティを取得
+    /// </summary>
+    /// <param name="assembly"></param>
+    /// <param name="selectedInterfaces"></param>
+    /// <returns></returns>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    private string CreateInterfacePropertyStub(Assembly assembly, string[] selectedInterfaces)
+    {
+        string sentence = string.Empty;
+        foreach (string interfaceName in selectedInterfaces)
+        {
+
+
+            Type interfaceType = assembly?.GetType(interfaceName);
+
+            if (interfaceType == null)
+            {
+                continue;  
+            }
+            IEnumerable<string> interfacePropertyStubs = interfaceType.GetProperties()
+                 .Where(property => property.GetGetMethod(true)?.IsAbstract == true || property.GetSetMethod(true)?.IsAbstract == true)
+                 .Select(property => CreatePropertyStub(property));
+            sentence += string.Join("\n", interfacePropertyStubs);
+        }
+        return sentence+"\n";
+    }
+    [MethodImplAttribute(MethodImplOptions.AggressiveInlining)]
+    private string CreatePropertyStub(PropertyInfo property)
+    {
+        string getPropertySentence = string.Empty;
+        bool hasGetter = property.GetGetMethod(true) != null;
+        if (hasGetter)
+        {
+            getPropertySentence = "get => throw new NotImplementedException(); ";
         }
 
-        string scriptContent = $"using System;\n\n" +
-                               $"public class {scriptName}{inheritance}\n" +
-                               "{\n" +
-                               methodStubs +
-                               "}";
+        string setPropertySentence = string.Empty;
+        bool hasSetter = property.GetSetMethod(true) != null;
+        if (hasSetter)
+        {
+            setPropertySentence = "set => throw new NotImplementedException(); ";
+        }
 
+        return $"    public {ConvertType(property.PropertyType)} {property.Name} {{ " +
+               getPropertySentence +
+               setPropertySentence +
+               "}";
+    }
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    private string CreatePropertyStub(PropertyInfo property,bool isOverride)
+    {
+        if(!isOverride)
+        {
+            CreatePropertyStub(property);
+        }
+        string getPropertySentence = string.Empty;
+        bool hasGetter = property.GetGetMethod(true) != null;
+        if (hasGetter)
+        {
+            getPropertySentence = "get => throw new NotImplementedException(); ";
+        }
+
+        string setPropertySentence = string.Empty;
+        bool hasSetter = property.GetSetMethod(true) != null;
+        if (hasSetter)
+        {
+            setPropertySentence = "set => throw new NotImplementedException(); ";
+        }
+
+        return $"    public override {ConvertType(property.PropertyType)} {property.Name} {{ " +
+               getPropertySentence +
+               setPropertySentence +
+               "}";
+    }
+    #endregion CreatePropertyStub
+    #region CreateMethodSentence
+    /// <summary>
+    /// メソッドの情報を返すよ
+    /// </summary>
+    /// <param name="info"></param>
+    /// <returns></returns>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    private string CreateMethodSentence(MethodInfo info)
+    {
+        return $"    public {ConvertType(info.ReturnType)} {info.Name}({string.Join(", ", info.GetParameters().Select(p => p.ParameterType.Name + " " + p.Name))})\n    {{\n        throw new NotImplementedException();\n    }}\n";
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    private string CreateMethodSentence(MethodInfo info,bool isOverride)
+    {
+        if(!isOverride)
+        {
+            return CreateMethodSentence(info);
+        }
+        return $"    public override {ConvertType(info.ReturnType)} {info.Name}({string.Join(", ", info.GetParameters().Select(p => p.ParameterType.Name + " " + p.Name))})\n    {{\n        throw new NotImplementedException();\n    }}\n";
+    }
+    /// <summary>
+    /// 特殊な変換の必要な戻り値がある場合変換して返す
+    /// </summary>
+    /// <param name="type"></param>
+    /// <returns></returns>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+   private string ConvertType(Type type)
+    {
+        
+        if(type==typeof(void))
+        {
+            return "void";
+        }
+        if(type==typeof(System.Object))
+        {
+            return "object";
+        }
+        if(type==typeof(UnityEngine.Object))
+        {
+            return "UnityEngine.Object";
+        }
+        if(type==typeof(System.String))
+        {
+            return "string";
+        }
+        if(type==typeof(System.Int32))
+        {
+            return "int";
+        }
+        return type.Name;
+    }
+    #endregion CreateMethodSentence
+
+    /// <summary>
+    /// 生成するパスを取得
+    /// </summary>
+    /// <param name="scriptName"></param>
+    /// <returns></returns>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    private string GetGeneratePath(string scriptName)
+    {
         string selectedFolderPath = "Assets";
         Object selected = Selection.activeObject;
 
@@ -174,35 +413,109 @@ public class SubClassGenerator : EditorWindow
         }
 
         string scriptPath = Path.Combine(selectedFolderPath, $"{scriptName}.cs");
-
-        File.WriteAllText(scriptPath, scriptContent);
-        Debug.Log("スクリプトが生成されました: " + scriptPath);
-
-        AssetDatabase.Refresh();
+        return scriptPath;
     }
 
-   private string GetReturnType(MethodInfo info)
-    {
-        
-        if(info.ReturnType==typeof(void))
-        {
-            return "void";
-        }
-        if(info.ReturnType==typeof(System.Object))
-        {
-            return "object";
-        }
-        if(info.ReturnType==typeof(UnityEngine.Object))
-        {
-            return "UnityEngine.Object";
-        }
-        return info.ReturnType.Name;
-    }
+    /// <summary>
+    /// Assembly-CSharpのAssemblyを返す
+    /// </summary>
+    /// <returns></returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     private Assembly GetAssemblyCS()
     {
         return AppDomain.CurrentDomain.GetAssemblies()
                 .FirstOrDefault(a => a.GetName().Name == "Assembly-CSharp");
     }
+
+    #region usings
+   private void RegisterClassUsings(Assembly assembly,string baseClassName)
+    {
+        string sentence = string.Empty;
+        if (baseClassName == "None")
+        {
+            return;
+        }
+        Type baseClassType = assembly?.GetType(baseClassName);
+        RegisterUsingSentence(baseClassType);
+        if (baseClassType == null)
+        {
+            return;
+        }
+        IEnumerable<PropertyInfo> properties = baseClassType.GetProperties(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance)
+                                                        .Where(property => property.GetGetMethod(true)?.IsAbstract == true || property.GetSetMethod(true)?.IsAbstract == true);
+
+
+        foreach (PropertyInfo property in properties)
+        {
+            RegisterPropertyUsings(property);
+        }
+        IEnumerable<MethodInfo> methods = baseClassType.GetMethods(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance)
+                                            .Where(mInfo => mInfo.IsAbstract && !mInfo.IsSpecialName);
+
+        foreach (MethodInfo method in methods)
+        {
+            RegisterMethodUsings(method);
+        }
+    }
+    private void RegisterInterfaceUsings(Assembly assembly, string[] selectInterfaces)
+    {
+        foreach(string interfaceName in selectInterfaces)
+        {
+            Type interfaceType = assembly?.GetType(interfaceName);
+
+            if (interfaceType == null)
+            {
+                continue;
+            }
+            foreach(PropertyInfo property in interfaceType.GetProperties())
+            {
+                RegisterPropertyUsings(property);
+            }
+            foreach(MethodInfo method in interfaceType.GetMethods())
+            {
+                RegisterMethodUsings(method);
+            }
+        }
+
+    }
+
+
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    private void RegisterPropertyUsings(PropertyInfo info)
+    {
+        RegisterUsingSentence(info.PropertyType);
+    }
+
+    private void RegisterMethodUsings(MethodInfo info)
+    {
+        RegisterUsingSentence(info.ReturnType);
+        foreach(ParameterInfo parameter in info.GetParameters())
+        {
+            RegisterUsingSentence(parameter.ParameterType);
+        }
+    }
+
+    [MethodImplAttribute(MethodImplOptions.AggressiveInlining)]
+    private void RegisterUsingSentence(Type type)
+    {
+        if(type.Namespace==null)
+        {
+            return;
+        }
+        if(type.Namespace=="System")
+        {
+            return;
+        }
+        _usings.Add($"using {type.Namespace};");
+    }
+    [MethodImplAttribute(MethodImplOptions.AggressiveInlining)]
+    private string CreateUsingStatement(HashSet<string> usings)
+    {
+        string sentence=string.Empty;
+        sentence = string.Join("\n",_usings);
+        return sentence;
+    }
+    #endregion
 }
 #endif
