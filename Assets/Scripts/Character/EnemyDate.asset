@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _characterInformation:
   - _characterType: 3
-    _hp: 20
+    _hp: 50
     _attack: 1
     _characterPrefab: {fileID: 2957726711894133144, guid: 6e33397b115bcef459dbfe2c948e896f, type: 3}
     _bulletFactorys:

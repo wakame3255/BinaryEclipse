@@ -6,14 +6,18 @@ using R3;
 public class CharacterStatus : MonoBehaviour
 {
     [SerializeField]
-    private int _hp;
+    private int _hp = default;
 
-    private ReactiveProperty<int> _reactiveHp = new ReactiveProperty<int>();
+    private ReactiveProperty<int> _reactiveHp;
 
     public ReactiveProperty<int> ReactiveHp { get => _reactiveHp; }
 
-    private void Awake()
+
+    public CharacterStatus(int hp)
     {
+        print("ステータス生成");
+        _reactiveHp = new ReactiveProperty<int>();
+        _hp = hp;
         _reactiveHp.Value = _hp;
     }
 

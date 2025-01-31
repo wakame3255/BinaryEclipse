@@ -19,7 +19,8 @@ public class EnemyFactory : BaseCharacterFactory
             enemy = Instantiate(_characterInformation[i].CharacterPrefab);
           
             baseCharacter = enemy.gameObject.AddComponent<BossCharacter>();
-          
+
+            baseCharacter.SetCharacterStatus(ReturnCharacterStatus(_characterInformation[i]));
             SetCharacterInformation(_characterInformation[i], baseCharacter, enemy);
         }
     }

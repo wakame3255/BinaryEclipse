@@ -47,9 +47,9 @@ public abstract class BaseBullet : MonoBehaviour
 
         for (int i = 0; i < _collisionResults.Length; i++)
         {
-            if(_collisionResults[i].collider.TryGetComponent(out CharacterStatus characterStatus))
+            if(_collisionResults[i].collider.TryGetComponent(out  BaseCharacter baseCharacter))
             {
-                characterStatus.SubtractionHp(_damage);
+                baseCharacter.CharacterStatus.SubtractionHp(_damage);
                 transform.position = _resetPosition;
                 gameObject.SetActive(false);
             }

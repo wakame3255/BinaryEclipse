@@ -48,6 +48,7 @@ public class ActionState : BaseStateNode
 
     public override void EnterState()
     {
+
         List<CharacterStateView> characterState = GetTargetList(_targetDown);
         _cacheCharacter = GetTarget(characterState);
         switch (_actionDown.value)

@@ -33,6 +33,8 @@ namespace Cpu
         [SerializeField]
         private OtherCharacterStatus _otherCharacterStatus;
 
+        private StateMachineInformation _stateMachineInformation;
+
         public BaseStateNode CurrentStateNode { get; private set; }
 
         /// <summary>

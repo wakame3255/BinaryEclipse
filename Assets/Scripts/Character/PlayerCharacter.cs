@@ -7,7 +7,7 @@ using UnityEngine;
 public class PlayerCharacter : BaseCharacter
 {
     private RotationMove _rotationMove;
-    
+
     protected override void SetComponent()
     {
         _rotationMove = this.CheckComponentMissing<RotationMove>();
@@ -21,8 +21,9 @@ public class PlayerCharacter : BaseCharacter
         base.PhysicsUpDate();
     }
 
-    protected override void DeliveryValue()
+    public override void SetCharacterStatus(CharacterStatus characterStatus)
     {
+        _characterStatus = characterStatus;
         _characterStateView.SetComponent(_characterStatus, this.transform, PlayerController.Instance);
     }
 }

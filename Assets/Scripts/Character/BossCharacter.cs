@@ -25,7 +25,7 @@ public class BossCharacter : BaseCharacter, ICpuCharacter
     {
         _stateMachine.UpdateState();
         _characterAction.SetControlInformation(_cpuController);
-        _rotationMove.DoRotationMove(_cpuController.Target);
+        _rotationMove.DoRotationMove(_cpuController.Target.position);
         base.PhysicsUpDate();
     }
 
@@ -41,8 +41,9 @@ public class BossCharacter : BaseCharacter, ICpuCharacter
         base.SetComponent();
     }
 
-    protected override void DeliveryValue()
+    public override void SetCharacterStatus(CharacterStatus characterStatus)
     {
+        _characterStatus = characterStatus;
         _characterStateView.SetComponent(_characterStatus, this.transform, _cpuController);
     }
 }

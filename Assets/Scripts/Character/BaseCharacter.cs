@@ -16,16 +16,16 @@ public abstract class BaseCharacter : MonoBehaviour
     public CharacterStatus CharacterStatus { get => _characterStatus; }
     public ICharacterAction CharacterAction { get => _characterAction; }
 
-    protected void Awake()
-    { 
+
+    private void Awake()
+    {
         SetComponent();
-        DeliveryValue();
     }
 
-    protected void Start()
-    {
-        
-    }
+    /// <summary>
+    /// Hpの受け渡し        
+    /// </summary>
+    public abstract void SetCharacterStatus(CharacterStatus characterStatus);
 
     /// <summary>
     /// 物理挙動の更新を行うメソッド
@@ -46,9 +46,4 @@ public abstract class BaseCharacter : MonoBehaviour
         _characterStatus = this.CheckComponentMissing<CharacterStatus>();
         _characterAction = this.CheckComponentMissing<ICharacterAction>();
     }
-
-    /// <summary>
-    /// コンポネント同士の受け渡し           
-    /// </summary>
-    protected abstract void DeliveryValue();
 }
