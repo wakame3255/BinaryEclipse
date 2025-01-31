@@ -32,7 +32,7 @@ public class RotationMove : MonoBehaviour
         {
             _cacheTransform.localScale = new Vector3(-_characterScaleX, _cacheTransform.localScale.y, _cacheTransform.localScale.z);
         }
-        // _cacheTransform.rotation = Quaternion.AngleAxis(Mathf.Rad2Deg * targetAngle, Vector3.forward);
+       
     }
 
     /// <summary>

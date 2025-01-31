@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
+using Unity.Mathematics;
 using UnityEngine;
 
 [RequireComponent(typeof(CircleCollider2D))]
@@ -75,5 +76,19 @@ public abstract class BaseBullet : MonoBehaviour
             return;
         }
 
+    }
+
+    /// <summary>
+    /// ターゲットに対してのxから見た角度
+    /// </summary>
+    /// <param name="targetPos">ターゲットの位置</param>
+    /// <returns>ターゲットのいる角度</returns>
+    protected quaternion ReturnTargetToAngle(Vector3 targetPos)
+    {
+        Vector3 targetDirection = targetPos - transform.position;
+
+        float angle = Mathf.Atan2(targetDirection.y, targetDirection.x);
+
+        return Quaternion.AngleAxis(Mathf.Rad2Deg * angle, Vector3.forward);
     }
 }
