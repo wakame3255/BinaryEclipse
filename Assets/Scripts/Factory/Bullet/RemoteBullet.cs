@@ -2,15 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using UnityEngine;
-using static UnityEditor.PlayerSettings;
 
 public class RemoteBullet : BaseBullet
 {
-    private Vector3 _cacheStartPosition;
-
     public override void GenerateBullet(Vector3 initializePosition, Vector3 targetDirection)
     {
-        _cacheStartPosition = transform.position;
 
         StartDestroyTimerAsync();
     }
