@@ -6,18 +6,37 @@ using UnityEngine;
 using Object = UnityEngine.Object;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
+using UnityEngine.UIElements;
+
 #if UNITY_EDITOR
 using UnityEditor;
 
+/// <summary>
+/// サブクラスを生成するための拡張機能
+/// </summary>
 public class SubClassGenerator : EditorWindow
 {
-    private string[] _baseClassOptions;
-    private string[] _interfaceOptions;
-    private int _selectedClassIndex;
-    private int _selectedMask;
-    private string _newScriptName = "NewClass";
+    private string _templateModeName = "Template";
+    private string _subClassModeName = "SubClass";
+    private int _selectModeIndex;
+    private string[] _modeOptions;
+    private string[] _baseClassOptions;//基底リスト
+    private string[] _interfaceOptions;//インターフェースリスト
+    private int _selectedClassIndex;//選択された基底の番号
+    private int _selectedMask;//選択されたインターフェースの番号
+    private string _newScriptName = "NewClass";//生成するスクリプトの名前(defaultはNewClass)
 
-    private HashSet<string> _usings=new();
+    private HashSet<string> _usings = new();//usingのリスト
+
+    private bool _isExplicit = false; // 明示的実装のフラグ
+
+
+    private string _createPath = string.Empty;//生成する位置を設定する場合
+
+    #region temp
+    private string[] _templateFiles; // テンプレートファイルのリスト
+    private int _selectedTemplateIndex = 0; // 選択中のテンプレートインデックス
+    #endregion
     [MenuItem("Tools/Sub Class Generator")]
     public static void ShowWindow()
     {
@@ -26,10 +45,32 @@ public class SubClassGenerator : EditorWindow
 
     private void OnEnable()
     {
-        LoadAbstractClasses();
-        LoadInterfaces();
+        RefreshTypeLists();
     }
 
+    /// <summary>
+    /// 基底とインターフェースのリストのリフレッシュ
+    /// </summary>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    private void RefreshTypeLists()
+    {
+        SetModeOptions();
+        LoadAbstractClasses();
+        LoadInterfaces();
+        LoadTemplateFiles();
+        
+    }
+    /// <summary>
+    /// モードの定義
+    /// </summary>
+    private void SetModeOptions()
+    {
+        _modeOptions = new string[] { _subClassModeName, _templateModeName };
+    }
+
+    /// <summary>
+    /// 基底クラスの読み込み
+    /// </summary>
     private void LoadAbstractClasses()
     {
         Assembly assembly = GetAssemblyCS();
@@ -42,12 +83,15 @@ public class SubClassGenerator : EditorWindow
         }
 
         _baseClassOptions = assembly.GetTypes()
-            .Where(type => type.IsClass && type.IsAbstract && type.IsVisible)
+            .Where(type => type.IsClass && type.IsAbstract && type.IsVisible && !type.IsSealed)
             .Select(type => type.FullName)
             .Prepend("None")
             .ToArray();
     }
 
+    /// <summary>
+    /// インターフェースの読み込み
+    /// </summary>
     private void LoadInterfaces()
     {
         Assembly assembly = GetAssemblyCS();
@@ -70,7 +114,41 @@ public class SubClassGenerator : EditorWindow
     private void OnGUI()
     {
         _newScriptName = EditorGUILayout.TextField("Script Name", _newScriptName);
+        //パス指定のフィールド
+        _createPath = EditorGUILayout.TextField("Creat Path", _createPath);
+        _selectModeIndex = EditorGUILayout.Popup("Select Mode", _selectModeIndex, _modeOptions);
+        switch (_selectModeIndex)
+        {
+            case 0:
+                {
+                    SubClassGenerateGUI();
+                    if (GUILayout.Button("Create Script"))
+                    {
+                        CreateSubScript(_baseClassOptions[_selectedClassIndex], _interfaceOptions, _newScriptName);
+                    }
+                    break;
+                }
+            case 1:
+                {
+                    TemplateGUI();
+                    
+                    break;
+                }
 
+
+        }
+
+        
+        
+        if (GUILayout.Button("Reload Classes"))
+        {
+            RefreshTypeLists();
+        }
+    }
+    #region Sub
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    private void SubClassGenerateGUI()
+    {
         if (_baseClassOptions.Length > 0)
         {
             _selectedClassIndex = EditorGUILayout.Popup("Select Base Class", _selectedClassIndex, _baseClassOptions);
@@ -83,70 +161,80 @@ public class SubClassGenerator : EditorWindow
         if (_interfaceOptions.Length > 0)
         {
             _selectedMask = EditorGUILayout.MaskField("Select Interface", _selectedMask, _interfaceOptions);
+
+            //インターフェースの明示的実装のフラグ
+            _isExplicit = EditorGUILayout.Toggle("Explicit", _isExplicit);
+
         }
         else
         {
             EditorGUILayout.LabelField("プロジェクト内にインターフェースが見つかりませんでした。");
         }
-
-        if (GUILayout.Button("Create Script"))
-        {
-            CreateScript(_baseClassOptions[_selectedClassIndex], _interfaceOptions, _newScriptName);
-        }
-
-        if (GUILayout.Button("Reload Classes"))
-        {
-            LoadAbstractClasses();
-            LoadInterfaces();
-        }
     }
 
-    private void CreateScript(string baseClassName, string[] interfaceNames, string scriptName)
+    /// <summary>
+    /// csファイルの生成
+    /// </summary>
+    /// <param name="baseClassName"></param>
+    /// <param name="interfaceNames"></param>
+    /// <param name="scriptName"></param>
+    private void CreateSubScript(string baseClassName, string[] interfaceNames, string scriptName)
     {
-        _usings.Clear();//_unisgsの初期化
-        
 
+
+        //選択されたインターフェースの取得
         List<string> selectedInterfaces = interfaceNames
            .Where((_, index) => (_selectedMask & (1 << index)) != 0)
            .ToList();
 
-        string inheritance = CreateInheritanceSentence(baseClassName,selectedInterfaces.ToArray());
+        //継承部分の生成
+        string inheritance = CreateInheritanceSentence(baseClassName, selectedInterfaces.ToArray());
+        //アセンブリの取得
         Assembly assembly = GetAssemblyCS();
 
+        //プロパティ部分の用意
         string propertyStub = string.Empty;
 
-        propertyStub += CreateClassPropertyStub(assembly,baseClassName);
-        propertyStub += CreateInterfacePropertyStub(assembly,selectedInterfaces.ToArray());
+        //プロパティ部分の生成
+        propertyStub += CreateClassPropertyStub(assembly, baseClassName);
+        propertyStub += CreateInterfacePropertyStub(assembly, selectedInterfaces.ToArray());
 
+        //メソッド部分の用意
         string methodStubs = string.Empty;
 
-        methodStubs += CreateClassMethodStubs(assembly,baseClassName);
-        methodStubs += CreateInterfaceMethodStubs(assembly,selectedInterfaces.ToArray());
+        //メソッド部分の生成
+        methodStubs += CreateClassMethodStubs(assembly, baseClassName);
+        methodStubs += CreateInterfaceMethodStubs(assembly, selectedInterfaces.ToArray());
 
-        RegisterClassUsings(assembly,baseClassName);
-        RegisterInterfaceUsings(assembly,selectedInterfaces.ToArray());
+        //usingの登録
+        RegisterClassUsings(assembly, baseClassName);
+        RegisterInterfaceUsings(assembly, selectedInterfaces.ToArray());
 
-        string usingStatements=string.Empty;
+        //using部分の用意
+        string usingStatements = string.Empty;
+
+        //using部分の生成
         usingStatements = CreateUsingStatement(_usings);
-        
 
+        //スクリプトの内容を生成
         string scriptContent = $"using System;\n" +
-                               $"{usingStatements}\n"+
+                               $"{usingStatements}\n" +
                                $"public class {scriptName}{inheritance}\n" +
                                "{\n" +
                                propertyStub +
                                methodStubs +
                                "}";
-
-       string scriptPath=GetGeneratePath(scriptName);
-
+        //ファイルを生成する位置の取得
+        string scriptPath = CreatePath(scriptName);
+        //ファイルを出力
         File.WriteAllText(scriptPath, scriptContent);
         Debug.Log("スクリプトが生成されました: " + scriptPath);
-
+        //リフレッシュ
+        _usings.Clear();
         AssetDatabase.Refresh();
     }
 
-    
+
     /// <summary>
     /// 継承部分の文章を生成
     /// </summary>
@@ -156,7 +244,7 @@ public class SubClassGenerator : EditorWindow
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     private string CreateInheritanceSentence(string baseClassName, string[] selectedInterfaces)
     {
-       
+
 
         List<string> inheritanceList = new List<string>();
 
@@ -174,8 +262,208 @@ public class SubClassGenerator : EditorWindow
         return inheritance;
     }
 
-    
+    #region CreateUsingSentence
+
+    /// <summary>
+    /// 渡された名前のクラスのUsingを取得・登録
+    /// </summary>
+    /// <param name="assembly"></param>
+    /// <param name="baseClassName"></param>
+    private void RegisterClassUsings(Assembly assembly, string baseClassName)
+    {
+        string sentence = string.Empty;
+        if (baseClassName == "None")
+        {
+            return;
+        }
+        //Typeの生成
+        Type baseClassType = assembly?.GetType(baseClassName);
+
+        if (baseClassType == null)
+        {
+            return;
+        }
+        RegisterUsingSentence(baseClassType);
+        //プロパティの取得
+        IEnumerable<PropertyInfo> properties = baseClassType.GetProperties(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance)
+                                                        .Where(property => property.GetGetMethod(true)?.IsAbstract == true || property.GetSetMethod(true)?.IsAbstract == true);
+
+        //プロパティのusingを登録
+        foreach (PropertyInfo property in properties)
+        {
+            RegisterPropertyUsings(property);
+        }
+
+        //メソッドの取得
+        IEnumerable<MethodInfo> methods = GetAbstractClassMethods(baseClassType);
+
+        foreach (MethodInfo method in methods)
+        {
+            RegisterMethodUsings(method);
+        }
+    }
+    /// <summary>
+    /// 渡されたインターフェースの名前群のusingを登録
+    /// </summary>
+    /// <param name="assembly"></param>
+    /// <param name="selectInterfaces"></param>
+    private void RegisterInterfaceUsings(Assembly assembly, string[] selectInterfaces)
+    {
+        foreach (string interfaceName in selectInterfaces)
+        {
+            Type interfaceType = assembly?.GetType(interfaceName);
+
+            if (interfaceType == null)
+            {
+                continue;
+            }
+            foreach (PropertyInfo property in interfaceType.GetProperties())
+            {
+                RegisterPropertyUsings(property);
+            }
+            foreach (MethodInfo method in GetInterfaceMethods(interfaceType))
+            {
+                RegisterMethodUsings(method);
+            }
+        }
+
+    }
+
+
+    /// <summary>
+    /// propertyのusingを登録
+    /// </summary>
+    /// <param name="info"></param>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    private void RegisterPropertyUsings(PropertyInfo info)
+    {
+        RegisterUsingSentence(info.PropertyType);
+    }
+    /// <summary>
+    /// methodのusingを登録
+    /// </summary>
+    /// <param name="info"></param>
+    private void RegisterMethodUsings(MethodInfo info)
+    {
+        RegisterUsingSentence(info.ReturnType);
+        foreach (ParameterInfo parameter in info.GetParameters())
+        {
+            RegisterUsingSentence(parameter.ParameterType);
+        }
+    }
+
+    /// <summary>
+    /// _usingにtypeのusingを登録
+    /// </summary>
+    /// <param name="type"></param>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    private void RegisterUsingSentence(Type type)
+    {
+        if (type.Namespace == null)
+        {
+            return;
+        }
+        if (type.Namespace == "System")
+        {
+            return;
+        }
+        _usings.Add($"using {type.Namespace};");
+    }
+    /// <summary>
+    /// usingの部分の生成
+    /// </summary>
+    /// <param name="usings"></param>
+    /// <returns></returns>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    private string CreateUsingStatement(HashSet<string> usings)
+    {
+        string sentence = string.Empty;
+        sentence = string.Join("\n", _usings);
+        return sentence;
+    }
+    #endregion CreateUsingSentence
+    #region getModifier
+    /// <summary>
+    /// メソッドのアクセス修飾子を取得＋変換
+    /// </summary>
+    /// <param name="method"></param>
+    /// <returns></returns>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    private string GetMethodAccessModifier(MethodInfo method)
+    {
+        if (method.IsPublic)
+        {
+            return "public";
+        }
+        if (method.IsPrivate)
+        {
+            return "private";
+        }
+        if (method.IsFamily) // protected
+        {
+            return "protected";
+        }
+        if (method.IsAssembly) // internal
+        {
+            return "internal";
+        }
+        if (method.IsFamilyOrAssembly) // protected internal
+        {
+            return "protected internal";
+        }
+        if (method.IsFamilyAndAssembly) // private protected
+        {
+            return "private protected";
+        }
+
+        return "public"; // デフォルトは public（通常、ここには到達しない）
+    }
+
+    /// <summary>
+    /// プロパティ全体のアクセス修飾子を決定
+    /// </summary>
+    private string GetPropertyAccessModifier(PropertyInfo prop)
+    {
+        MethodInfo getter = prop.GetGetMethod(true);
+        MethodInfo setter = prop.GetSetMethod(true);
+        bool hasGetter = getter != null;
+        string getAccess = string.Empty;
+        if (hasGetter)
+        {
+            getAccess = GetMethodAccessModifier(getter);
+        }
+        bool hasSetter = setter != null;
+        string setAccess = string.Empty;
+        if (hasSetter)
+        {
+            setAccess = GetMethodAccessModifier(setter);
+        }
+
+
+        // 最も広いアクセス修飾子を適用
+        return GetWidestAccessModifier(getAccess, setAccess);
+    }
+
+    /// <summary>
+    /// 最も広いアクセス修飾子を決定
+    /// </summary>
+    static string GetWidestAccessModifier(string access1, string access2)
+    {
+        string[] order = { "private", "private protected", "protected", "internal", "protected internal", "public" };
+
+        string widest = "private"; // デフォルトは private
+        foreach (string level in order)
+        {
+            if (access1 == level || access2 == level)
+            {
+                widest = level;
+            }
+        }
+        return widest;
+    }
+    #endregion getModifier
     #region CreateMethodStub
+
     /// <summary>
     /// abstractMethodの文章を出力
     /// </summary>
@@ -183,26 +471,26 @@ public class SubClassGenerator : EditorWindow
     /// <param name="baseClassName"></param>
     /// <returns></returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    private string CreateClassMethodStubs(Assembly assembly,string baseClassName)
+    private string CreateClassMethodStubs(Assembly assembly, string baseClassName)
     {
-        string sentence=string.Empty;
+        string sentence = string.Empty;
         if (baseClassName != "None")
         {
 
 
             Type baseClassType = assembly?.GetType(baseClassName);
 
-            if (baseClassType != null)
+            if (baseClassType == null)
             {
-                IEnumerable<string> abstractMethods = baseClassType.GetMethods(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance)
-                .Where(mInfo => mInfo.IsAbstract&&!mInfo.IsSpecialName)
-                .Select(mInfo =>CreateMethodSentence(mInfo,true));
-
-                sentence += string.Join("\n", abstractMethods);
+                return sentence;
             }
+
+            IEnumerable<string> abstractMethods = GetAbstractClassMethods(baseClassType).Select(mInfo => CreateClassMethodSentence(mInfo, true));
+            sentence += string.Join("\n", abstractMethods);
         }
         return sentence;
     }
+
     /// <summary>
     /// interfaceのメソッドの文章を出力
     /// </summary>
@@ -212,7 +500,7 @@ public class SubClassGenerator : EditorWindow
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     private string CreateInterfaceMethodStubs(Assembly assembly, string[] selectedInterfaces)
     {
-        string sentence=string.Empty;
+        string sentence = string.Empty;
         foreach (string interfaceName in selectedInterfaces)
         {
 
@@ -223,9 +511,8 @@ public class SubClassGenerator : EditorWindow
             {
                 continue;
             }
-            IEnumerable<string> interfaceMethods = interfaceType.GetMethods()
-                    .Where(mInfo => !mInfo.IsSpecialName)
-                  .Select(mInfo => CreateMethodSentence(mInfo));
+            IEnumerable<string> interfaceMethods = GetInterfaceMethods(interfaceType)
+                  .Select(mInfo => CreateInterfaceMethodSentence(mInfo, _isExplicit, interfaceName));
 
             sentence += string.Join("\n", interfaceMethods);
         }
@@ -240,8 +527,8 @@ public class SubClassGenerator : EditorWindow
     /// <param name="assembly"></param>
     /// <param name="baseClassName"></param>
     /// <returns></returns>
-    [method:MethodImpl(MethodImplOptions.AggressiveInlining)]
-    private string CreateClassPropertyStub(Assembly assembly,string baseClassName)
+    [method: MethodImpl(MethodImplOptions.AggressiveInlining)]
+    private string CreateClassPropertyStub(Assembly assembly, string baseClassName)
     {
         string sentence = string.Empty;
         if (baseClassName == "None")
@@ -250,14 +537,13 @@ public class SubClassGenerator : EditorWindow
         }
         Type baseClassType = assembly?.GetType(baseClassName);
 
-        if (baseClassType== null)
+        if (baseClassType == null)
         {
             return string.Empty;
         }
         // 抽象プロパティの取得・生成
-        IEnumerable<string> abstractProperties = baseClassType.GetProperties(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance)
-            .Where(property => property.GetGetMethod(true)?.IsAbstract == true || property.GetSetMethod(true)?.IsAbstract == true)
-            .Select(property =>CreatePropertyStub(property,true));
+        IEnumerable<string> abstractProperties = GetAbstractClassProperties(baseClassType)
+                                                 .Select(property => CreatePropertyStub(property, true));
         sentence += string.Join("\n", abstractProperties);
         return sentence + "\n";
     }
@@ -280,44 +566,25 @@ public class SubClassGenerator : EditorWindow
 
             if (interfaceType == null)
             {
-                continue;  
+                continue;
             }
-            IEnumerable<string> interfacePropertyStubs = interfaceType.GetProperties()
-                 .Where(property => property.GetGetMethod(true)?.IsAbstract == true || property.GetSetMethod(true)?.IsAbstract == true)
-                 .Select(property => CreatePropertyStub(property));
+            IEnumerable<string> interfacePropertyStubs = GetInterfaceProperties(interfaceType)
+                                                         .Select(property => CreatePropertyStub(property, false));
             sentence += string.Join("\n", interfacePropertyStubs);
         }
-        return sentence+"\n";
+        return sentence + "\n";
     }
-    [MethodImplAttribute(MethodImplOptions.AggressiveInlining)]
-    private string CreatePropertyStub(PropertyInfo property)
-    {
-        string getPropertySentence = string.Empty;
-        bool hasGetter = property.GetGetMethod(true) != null;
-        if (hasGetter)
-        {
-            getPropertySentence = "get => throw new NotImplementedException(); ";
-        }
 
-        string setPropertySentence = string.Empty;
-        bool hasSetter = property.GetSetMethod(true) != null;
-        if (hasSetter)
-        {
-            setPropertySentence = "set => throw new NotImplementedException(); ";
-        }
-
-        return $"    public {ConvertType(property.PropertyType)} {property.Name} {{ " +
-               getPropertySentence +
-               setPropertySentence +
-               "}";
-    }
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    private string CreatePropertyStub(PropertyInfo property,bool isOverride)
+    private string CreatePropertyStub(PropertyInfo property, bool isOverride)
     {
-        if(!isOverride)
+        string overrideSentence = string.Empty;
+        if (isOverride)
         {
-            CreatePropertyStub(property);
+            overrideSentence = "override";
         }
+        string modifier = string.Empty;
+        modifier = GetPropertyAccessModifier(property);
         string getPropertySentence = string.Empty;
         bool hasGetter = property.GetGetMethod(true) != null;
         if (hasGetter)
@@ -332,7 +599,7 @@ public class SubClassGenerator : EditorWindow
             setPropertySentence = "set => throw new NotImplementedException(); ";
         }
 
-        return $"    public override {ConvertType(property.PropertyType)} {property.Name} {{ " +
+        return $"    {modifier} {overrideSentence} {ConvertType(property.PropertyType)} {property.Name} {{ " +
                getPropertySentence +
                setPropertySentence +
                "}";
@@ -345,76 +612,230 @@ public class SubClassGenerator : EditorWindow
     /// <param name="info"></param>
     /// <returns></returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    private string CreateMethodSentence(MethodInfo info)
+    private string CreateClassMethodSentence(MethodInfo info, bool isOverride)
     {
-        return $"    public {ConvertType(info.ReturnType)} {info.Name}({string.Join(", ", info.GetParameters().Select(p => p.ParameterType.Name + " " + p.Name))})\n    {{\n        throw new NotImplementedException();\n    }}\n";
-    }
-
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    private string CreateMethodSentence(MethodInfo info,bool isOverride)
-    {
-        if(!isOverride)
+        string overrideSetence = string.Empty;
+        if (isOverride)
         {
-            return CreateMethodSentence(info);
+            overrideSetence = "override";
         }
-        return $"    public override {ConvertType(info.ReturnType)} {info.Name}({string.Join(", ", info.GetParameters().Select(p => p.ParameterType.Name + " " + p.Name))})\n    {{\n        throw new NotImplementedException();\n    }}\n";
+        string modifiere = GetMethodAccessModifier(info);
+        return $"    {modifiere} {overrideSetence} {ConvertType(info.ReturnType)} {info.Name}({string.Join(", ", info.GetParameters().Select(p => ConvertType(p.ParameterType) + " " + p.Name))})\n    {{\n        throw new NotImplementedException();\n    }}\n";
+    }
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    private string CreateInterfaceMethodSentence(MethodInfo info, bool isExplicit, string interfaceName)
+    {
+        string nameSetence = string.Empty;
+        string modifiere = string.Empty;
+        if (isExplicit)
+        {
+            nameSetence = $"{interfaceName}.";
+        }
+        else
+        {
+            modifiere = $"{GetMethodAccessModifier(info)} ";
+        }
+        return $"    {modifiere}{ConvertType(info.ReturnType)} {nameSetence}{info.Name}({string.Join(", ", info.GetParameters().Select(p => ConvertType(p.ParameterType) + " " + p.Name))})\n    {{\n        throw new NotImplementedException();\n    }}\n";
+
     }
     /// <summary>
-    /// 特殊な変換の必要な戻り値がある場合変換して返す
+    /// 特殊な変換の必要がある場合,変換して返す
+    /// </summary>
+    /// <param name="convertType"></param>
+    /// <returns></returns>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    private string ConvertType(Type convertType)
+    {
+        if (convertType == typeof(void)) return "void";
+        if (convertType == typeof(object)) return "object";
+        if (convertType == typeof(string)) return "string";
+        if (convertType == typeof(UnityEngine.Object)) return "UnityEngine.Object";
+        if (convertType == typeof(Int32)) return "int";
+        if (convertType == typeof(Boolean)) return "bool";
+
+
+        if (convertType.IsGenericType) // ジェネリック型の場合
+        {
+            string baseName = convertType.Name.Split('`')[0]; // `List` のように `List<T>` から `List` 部分を取得            
+            string genericArgs = string.Join(", ", convertType.GetGenericArguments().Select(ConvertType));// 再帰的に型変換
+            return $"{baseName}<{genericArgs}>";
+        }
+
+        return convertType.Name;
+    }
+    #endregion CreateMethodSentence
+    #region GetMethods
+    /// <summary>
+    /// 基底クラスのメソッドを取得
     /// </summary>
     /// <param name="type"></param>
     /// <returns></returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-   private string ConvertType(Type type)
+    private IEnumerable<MethodInfo> GetAbstractClassMethods(Type type)
     {
-        
-        if(type==typeof(void))
-        {
-            return "void";
-        }
-        if(type==typeof(System.Object))
-        {
-            return "object";
-        }
-        if(type==typeof(UnityEngine.Object))
-        {
-            return "UnityEngine.Object";
-        }
-        if(type==typeof(System.String))
-        {
-            return "string";
-        }
-        if(type==typeof(System.Int32))
-        {
-            return "int";
-        }
-        return type.Name;
+        return type.GetMethods(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance)
+                                            .Where(mInfo => mInfo.IsAbstract && !mInfo.IsSpecialName);
     }
-    #endregion CreateMethodSentence
+    /// <summary>
+    /// インターフェースのメソッドを取得
+    /// </summary>
+    /// <param name="interfaceType"></param>
+    /// <returns></returns>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    private IEnumerable<MethodInfo> GetInterfaceMethods(Type interfaceType)
+    {
+        return interfaceType.GetMethods()
+                    .Where(mInfo => !mInfo.IsSpecialName);
+    }
 
+
+    #endregion GetMethods
+    #region GetProperties
+    /// <summary>
+    /// 基底クラスのメソッドを取得
+    /// </summary>
+    /// <param name="baseClassType"></param>
+    /// <returns></returns>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    private IEnumerable<PropertyInfo> GetAbstractClassProperties(Type baseClassType)
+    {
+        return baseClassType.GetProperties(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance)
+                                    .Where(property => property.GetGetMethod(true)?.IsAbstract == true || property.GetSetMethod(true)?.IsAbstract == true);
+    }
+
+    private IEnumerable<PropertyInfo> GetInterfaceProperties(Type interfaceType)
+    {
+        return interfaceType.GetProperties()
+                 .Where(property => property.GetGetMethod(true)?.IsAbstract == true || property.GetSetMethod(true)?.IsAbstract == true);
+
+
+    }
+    #endregion GetProperties
+    #endregion Sub
+    #region Template
+    private void LoadTemplateFiles()
+    {
+        // Templateフォルダのパスを指定
+        string templateFolderPath = "Assets/Template";
+
+        // フォルダが存在するか確認
+        if (Directory.Exists(templateFolderPath))
+        {
+            // 指定したフォルダ内の全てのファイルを取得
+            string[] files = Directory.GetFiles(templateFolderPath, "*.txt");
+
+            // ファイル名だけに変換して格納
+            _templateFiles = new string[files.Length];
+            for (int i = 0; i < files.Length; i++)
+            {
+                _templateFiles[i] = Path.GetFileNameWithoutExtension(files[i]);
+            }
+        }
+        else
+        {
+            Debug.LogError("Templateフォルダが見つかりません: " + templateFolderPath);
+            _templateFiles = new string[0];
+        }
+    }
+    private void TemplateGUI()
+    {
+        // ドロップダウンメニューでテンプレートを選択
+        if (_templateFiles.Length > 0)
+        {
+            _selectedTemplateIndex = EditorGUILayout.Popup("Select Template", _selectedTemplateIndex, _templateFiles);
+
+            if (GUILayout.Button("Create Script"))
+            {
+                CreateScriptFromTemplate(_templateFiles[_selectedTemplateIndex], _newScriptName);
+            }
+        }
+        else
+        {
+            EditorGUILayout.LabelField("Templateフォルダ内にテンプレートファイルがありません。");
+        }
+    }
+    private void CreateScriptFromTemplate(string templateName, string scriptName)
+    {
+        // Templateファイルのパス
+        string templatePath = $"Assets/Template/{templateName}.txt";
+
+        if (File.Exists(templatePath))
+        {
+            // テンプレートの内容を読み込む
+            string templateContent = File.ReadAllText(templatePath);
+
+            // #CLASS_NAME# をスクリプト名で置き換える
+            templateContent = templateContent.Replace("#SCRIPTNAME#", scriptName);
+
+            // 現在選択されているフォルダのパスを取得
+            string selectedFolderPath = "Assets"; // デフォルトは Assets フォルダに設定
+            Object selected = Selection.activeObject;
+            if (selected != null)
+            {
+                selectedFolderPath = AssetDatabase.GetAssetPath(selected);
+
+                // フォルダが選択されていない場合は、ファイルが選択されている可能性があるため、その場合はフォルダパスに修正
+                if (!Directory.Exists(selectedFolderPath))
+                {
+                    selectedFolderPath = Path.GetDirectoryName(selectedFolderPath);
+                }
+            }
+
+            // 新しいスクリプトの保存先と名前を設定
+            string scriptPath = Path.Combine(selectedFolderPath, $"{scriptName}.cs");
+
+            // ファイルを書き込む
+            File.WriteAllText(scriptPath, templateContent);
+
+            RefreshTypeLists();
+
+            Debug.Log("スクリプトが生成されました: " + scriptPath);
+        }
+        else
+        {
+            Debug.LogError("テンプレートファイルが見つかりません: " + templatePath);
+        }
+    }
+    #endregion Template
     /// <summary>
     /// 生成するパスを取得
     /// </summary>
     /// <param name="scriptName"></param>
     /// <returns></returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    private string GetGeneratePath(string scriptName)
+    private string CreatePath(string scriptName)
     {
         string selectedFolderPath = "Assets";
-        Object selected = Selection.activeObject;
-
-        if (selected != null)
+        if (_createPath != string.Empty)
         {
-            selectedFolderPath = AssetDatabase.GetAssetPath(selected);
-            if (!Directory.Exists(selectedFolderPath))
+            string folderPath = _createPath.Trim();
+            if (!folderPath.StartsWith("Assets"))
             {
-                selectedFolderPath = Path.GetDirectoryName(selectedFolderPath);
+                Debug.LogWarning("スクリプトの出力先は Assets フォルダ内でなければなりません。");
+                folderPath = "Assets";
+            }
+            selectedFolderPath = folderPath;
+        }
+        else//パス指定がなかった場合は、今選択しているフォルダ・ファイルのパスを
+        {
+            Object selected = Selection.activeObject;
+
+            if (selected != null)
+            {
+                selectedFolderPath = AssetDatabase.GetAssetPath(selected);
+                if (!Directory.Exists(selectedFolderPath))
+                {
+                    selectedFolderPath = Path.GetDirectoryName(selectedFolderPath);
+                }
             }
         }
 
         string scriptPath = Path.Combine(selectedFolderPath, $"{scriptName}.cs");
         return scriptPath;
+
     }
+
+    
 
     /// <summary>
     /// Assembly-CSharpのAssemblyを返す
@@ -427,95 +848,7 @@ public class SubClassGenerator : EditorWindow
                 .FirstOrDefault(a => a.GetName().Name == "Assembly-CSharp");
     }
 
-    #region usings
-   private void RegisterClassUsings(Assembly assembly,string baseClassName)
-    {
-        string sentence = string.Empty;
-        if (baseClassName == "None")
-        {
-            return;
-        }
-        Type baseClassType = assembly?.GetType(baseClassName);
-        RegisterUsingSentence(baseClassType);
-        if (baseClassType == null)
-        {
-            return;
-        }
-        IEnumerable<PropertyInfo> properties = baseClassType.GetProperties(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance)
-                                                        .Where(property => property.GetGetMethod(true)?.IsAbstract == true || property.GetSetMethod(true)?.IsAbstract == true);
 
 
-        foreach (PropertyInfo property in properties)
-        {
-            RegisterPropertyUsings(property);
-        }
-        IEnumerable<MethodInfo> methods = baseClassType.GetMethods(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance)
-                                            .Where(mInfo => mInfo.IsAbstract && !mInfo.IsSpecialName);
-
-        foreach (MethodInfo method in methods)
-        {
-            RegisterMethodUsings(method);
-        }
-    }
-    private void RegisterInterfaceUsings(Assembly assembly, string[] selectInterfaces)
-    {
-        foreach(string interfaceName in selectInterfaces)
-        {
-            Type interfaceType = assembly?.GetType(interfaceName);
-
-            if (interfaceType == null)
-            {
-                continue;
-            }
-            foreach(PropertyInfo property in interfaceType.GetProperties())
-            {
-                RegisterPropertyUsings(property);
-            }
-            foreach(MethodInfo method in interfaceType.GetMethods())
-            {
-                RegisterMethodUsings(method);
-            }
-        }
-
-    }
-
-
-
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    private void RegisterPropertyUsings(PropertyInfo info)
-    {
-        RegisterUsingSentence(info.PropertyType);
-    }
-
-    private void RegisterMethodUsings(MethodInfo info)
-    {
-        RegisterUsingSentence(info.ReturnType);
-        foreach(ParameterInfo parameter in info.GetParameters())
-        {
-            RegisterUsingSentence(parameter.ParameterType);
-        }
-    }
-
-    [MethodImplAttribute(MethodImplOptions.AggressiveInlining)]
-    private void RegisterUsingSentence(Type type)
-    {
-        if(type.Namespace==null)
-        {
-            return;
-        }
-        if(type.Namespace=="System")
-        {
-            return;
-        }
-        _usings.Add($"using {type.Namespace};");
-    }
-    [MethodImplAttribute(MethodImplOptions.AggressiveInlining)]
-    private string CreateUsingStatement(HashSet<string> usings)
-    {
-        string sentence=string.Empty;
-        sentence = string.Join("\n",_usings);
-        return sentence;
-    }
-    #endregion
 }
 #endif
