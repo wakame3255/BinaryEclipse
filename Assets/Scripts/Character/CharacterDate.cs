@@ -21,9 +21,6 @@ public class CharacterInformation
     [SerializeField]
     private int _hp;
 
-    [SerializeField]
-    private int _attack;//UŒ‚—Í
-
     [Required]
     [SerializeField]
     [InterfaceField(typeof(ICharacterAction))]
@@ -34,7 +31,6 @@ public class CharacterInformation
 
     public CharacterType CharacterType { get => _characterType; }
     public int Hp { get => _hp; }
-    public int Attack { get => _attack; }
     public Component CharacterPrefab { get => _characterPrefab; }
     public BaseBulletFactory[] BulletFactorys { get => _bulletFactorys; }
 }

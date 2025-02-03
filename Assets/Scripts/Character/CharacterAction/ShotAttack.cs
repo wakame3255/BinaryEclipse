@@ -10,6 +10,8 @@ public class ShotAttack : MonoBehaviour, IAttack
     //生成した弾のリスト
     private List<IAttackInvoker> _attackInvokers = new List<IAttackInvoker>();
 
+    private int _attackCurrentIndex = default;
+
     private bool _isCoolingDown = false;
 
     private void FixedUpdate()
@@ -26,9 +28,9 @@ public class ShotAttack : MonoBehaviour, IAttack
 
         MyExtensionClass.CheckArgumentNull(TargerDirection, nameof(TargerDirection));
 
-        int random = Random.Range(0, _attackInvokers.Count);
+        _attackInvokers[_attackCurrentIndex]?.GenerateAttack(transform.position, TargerDirection);
 
-        _attackInvokers[random].GenerateAttack(transform.position, TargerDirection);
+        UpdateShotIndex();
 
         StartCoolDownTimerAsync();
     }
@@ -44,6 +46,18 @@ public class ShotAttack : MonoBehaviour, IAttack
         for (int i = 0; i < bulletFactorys.Length; i++)
         {
             _attackInvokers.Add(bulletFactorys[i].GetAttackInvoker());
+        }
+    }
+
+    /// <summary>
+    /// インデックスの更新
+    /// </summary>
+    private void UpdateShotIndex()
+    {
+        _attackCurrentIndex++;
+        if (_attackCurrentIndex >= _attackInvokers.Count)
+        {
+            _attackCurrentIndex = 0;
         }
     }
 
