@@ -44,7 +44,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 685ec2e903a96514dadc9717347607cd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _generateCount: 10
+  _generateCount: 8
   _baseBullet: {fileID: -5343606883633273674, guid: 6997dd25495683043b31c8ad85a2f363, type: 3}
   _centerShotPoint: {fileID: 5899359354673648338, guid: 91df740baf089a04ab2c5df1eae90496, type: 3}
   _xSize: 34
