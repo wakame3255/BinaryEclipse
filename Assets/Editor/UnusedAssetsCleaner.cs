@@ -1,146 +1,157 @@
+using UnityEngine;
+using UnityEditor;
 using System.Collections.Generic;
 using System.Linq;
-using UnityEditor;
-using UnityEditor.SceneManagement;
-using UnityEngine;
-using UnityEngine.SceneManagement;
+using System.IO;
 
 public class UnusedAssetsCleaner : EditorWindow
 {
-    private List<string> unusedAssets = new List<string>();
+    private List<string> selectedFolders = new List<string>();
     private Vector2 scrollPosition;
-    private HashSet<string> excludedFolders = new HashSet<string> { "Assets/Editor", "Assets/Resources", "Assets/StreamingAssets", "Assets" }; // Assetsフォルダを除外
+    private List<string> unusedAssets = new List<string>();
+    private bool showConfirmation = false;
 
-    [MenuItem("Tools/Unused Assets Cleaner")]
-    public static void ShowWindow()
+    [MenuItem("Tools/未使用アセットクリーナー")]
+    static void ShowWindow()
     {
-        GetWindow<UnusedAssetsCleaner>("Unused Assets Cleaner");
+        GetWindow<UnusedAssetsCleaner>("未使用アセットクリーナー");
     }
 
     private void OnGUI()
     {
-        GUILayout.Label("Unused Assets Cleanup Tool", EditorStyles.boldLabel);
+        GUILayout.Label("未使用アセットクリーナー", EditorStyles.boldLabel);
+        EditorGUILayout.Space();
 
-        if (GUILayout.Button("Scan for Unused Assets"))
+        // フォルダ選択部分
+        GUILayout.Label("検索対象フォルダ:");
+
+        scrollPosition = EditorGUILayout.BeginScrollView(scrollPosition, GUILayout.Height(150));
+
+        for (int i = 0; i < selectedFolders.Count; i++)
         {
-            ScanForUnusedAssets();
+            EditorGUILayout.BeginHorizontal();
+            EditorGUILayout.LabelField(selectedFolders[i]);
+            if (GUILayout.Button("削除", GUILayout.Width(60)))
+            {
+                selectedFolders.RemoveAt(i);
+            }
+            EditorGUILayout.EndHorizontal();
         }
 
+        EditorGUILayout.EndScrollView();
+
+        if (GUILayout.Button("フォルダを追加"))
+        {
+            string folder = EditorUtility.OpenFolderPanel("検索するフォルダを選択", "Assets", "");
+            if (!string.IsNullOrEmpty(folder))
+            {
+                string relativePath = "Assets" + folder.Substring(Application.dataPath.Length);
+                if (!selectedFolders.Contains(relativePath))
+                {
+                    selectedFolders.Add(relativePath);
+                }
+            }
+        }
+
+        EditorGUILayout.Space();
+
+        if (GUILayout.Button("未使用アセットを検索"))
+        {
+            FindUnusedAssets();
+        }
+
+        // 未使用アセット表示部分
         if (unusedAssets.Count > 0)
         {
-            GUILayout.Label($"Found {unusedAssets.Count} potentially unused assets:");
+            EditorGUILayout.Space();
+            GUILayout.Label($"未使用アセット ({unusedAssets.Count}個):");
 
-            scrollPosition = EditorGUILayout.BeginScrollView(scrollPosition);
-            foreach (var asset in unusedAssets)
+            EditorGUILayout.BeginScrollView(Vector2.zero);
+            foreach (string asset in unusedAssets)
             {
                 EditorGUILayout.BeginHorizontal();
                 EditorGUILayout.LabelField(asset);
-                if (GUILayout.Button("Delete", GUILayout.Width(60)))
+                if (GUILayout.Button("選択", GUILayout.Width(60)))
                 {
-                    DeleteAsset(asset);
+                    Selection.activeObject = AssetDatabase.LoadAssetAtPath<Object>(asset);
                 }
                 EditorGUILayout.EndHorizontal();
             }
             EditorGUILayout.EndScrollView();
 
-            if (GUILayout.Button("Delete All Selected"))
+            if (!showConfirmation)
             {
-                DeleteAllUnusedAssets();
-            }
-        }
-    }
-
-    private void ScanForUnusedAssets()
-    {
-        unusedAssets.Clear();
-        var allAssets = AssetDatabase.GetAllAssetPaths()
-            .Where(IsValidAsset)
-            .ToHashSet();
-
-        var usedAssets = new HashSet<string>();
-
-        // Scan scenes
-        foreach (var scenePath in AssetDatabase.FindAssets("t:Scene")
-                 .Select(guid => AssetDatabase.GUIDToAssetPath(guid)))
-        {
-            var scene = EditorSceneManager.OpenScene(scenePath, OpenSceneMode.Additive);
-            foreach (var obj in GetSceneDependencies(scene))
-            {
-                usedAssets.Add(obj);
-            }
-            EditorSceneManager.CloseScene(scene, true);
-        }
-
-        // Scan prefabs
-        foreach (var prefabPath in AssetDatabase.FindAssets("t:Prefab")
-                 .Select(guid => AssetDatabase.GUIDToAssetPath(guid)))
-        {
-            foreach (var dependency in AssetDatabase.GetDependencies(prefabPath, true))
-            {
-                usedAssets.Add(dependency);
-            }
-        }
-
-        unusedAssets = allAssets.Except(usedAssets).ToList();
-        unusedAssets.Sort();
-    }
-
-    private bool IsValidAsset(string path)
-    {
-        // Exclude specific folders and file types
-        if (excludedFolders.Any(folder => path.StartsWith(folder))) return false;
-        if (path.EndsWith(".cs")) return false;
-        if (path.EndsWith(".shader")) return false;
-        return true;
-    }
-
-    private IEnumerable<string> GetSceneDependencies(Scene scene)
-    {
-        foreach (GameObject go in scene.GetRootGameObjects())
-        {
-            foreach (var component in go.GetComponentsInChildren<Component>())
-            {
-                if (!component) continue;
-
-                SerializedObject so = new SerializedObject(component);
-                var iterator = so.GetIterator();
-
-                while (iterator.NextVisible(true))
+                if (GUILayout.Button("選択した未使用アセットを削除"))
                 {
-                    if (iterator.propertyType == SerializedPropertyType.ObjectReference)
-                    {
-                        var obj = iterator.objectReferenceValue;
-                        if (obj != null)
-                        {
-                            var path = AssetDatabase.GetAssetPath(obj);
-                            if (!string.IsNullOrEmpty(path)) yield return path;
-                        }
-                    }
+                    showConfirmation = true;
                 }
             }
+            else
+            {
+                EditorGUILayout.HelpBox("本当に削除しますか？この操作は取り消せません。", MessageType.Warning);
+                EditorGUILayout.BeginHorizontal();
+                if (GUILayout.Button("はい、削除します"))
+                {
+                    DeleteUnusedAssets();
+                    showConfirmation = false;
+                }
+                if (GUILayout.Button("キャンセル"))
+                {
+                    showConfirmation = false;
+                }
+                EditorGUILayout.EndHorizontal();
+            }
         }
     }
 
-    private void DeleteAsset(string assetPath)
+    private void FindUnusedAssets()
     {
-        if (assetPath == "Assets") // Assetsフォルダ自体を削除しない
+        if (selectedFolders.Count == 0)
         {
-            Debug.LogWarning("Cannot delete the 'Assets' folder.");
+            EditorUtility.DisplayDialog("エラー", "フォルダを選択してください。", "OK");
             return;
         }
 
-        if (AssetDatabase.DeleteAsset(assetPath))
+        unusedAssets.Clear();
+
+        // すべての依存関係を取得
+        string[] allDependencies = AssetDatabase.GetAllAssetPaths()
+            .SelectMany(path => AssetDatabase.GetDependencies(path, true))
+            .Distinct()
+            .ToArray();
+
+        // 選択されたフォルダ内のアセットをチェック
+        foreach (string folder in selectedFolders)
         {
-            Debug.Log($"Deleted unused asset: {assetPath}");
-            unusedAssets.Remove(assetPath);
+            string[] assets = AssetDatabase.FindAssets("", new[] { folder })
+                .Select(guid => AssetDatabase.GUIDToAssetPath(guid))
+                .Where(path => !path.EndsWith(".cs") && !path.EndsWith(".meta"))
+                .ToArray();
+
+            foreach (string asset in assets)
+            {
+                if (!allDependencies.Contains(asset))
+                {
+                    unusedAssets.Add(asset);
+                }
+            }
+        }
+
+        if (unusedAssets.Count == 0)
+        {
+            EditorUtility.DisplayDialog("結果", "未使用のアセットは見つかりませんでした。", "OK");
         }
     }
 
-    private void DeleteAllUnusedAssets()
+    private void DeleteUnusedAssets()
     {
-        foreach (var asset in unusedAssets.ToList())
+        foreach (string asset in unusedAssets)
         {
-            DeleteAsset(asset);
+            AssetDatabase.DeleteAsset(asset);
         }
+
+        AssetDatabase.Refresh();
+        unusedAssets.Clear();
+        EditorUtility.DisplayDialog("完了", "選択された未使用アセットを削除しました。", "OK");
     }
 }
