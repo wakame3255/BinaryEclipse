@@ -9,7 +9,7 @@ public class UnusedAssetsCleaner : EditorWindow
 {
     private List<string> unusedAssets = new List<string>();
     private Vector2 scrollPosition;
-    private HashSet<string> excludedFolders = new HashSet<string> { "Assets/Editor", "Assets/Resources", "Assets/StreamingAssets" };
+    private HashSet<string> excludedFolders = new HashSet<string> { "Assets/Editor", "Assets/Resources", "Assets/StreamingAssets", "Assets" }; // Assetsフォルダを除外
 
     [MenuItem("Tools/Unused Assets Cleaner")]
     public static void ShowWindow()
@@ -37,9 +37,7 @@ public class UnusedAssetsCleaner : EditorWindow
                 EditorGUILayout.LabelField(asset);
                 if (GUILayout.Button("Delete", GUILayout.Width(60)))
                 {
-                    AssetDatabase.DeleteAsset(asset);
-                    unusedAssets.Remove(asset);
-                    break;
+                    DeleteAsset(asset);
                 }
                 EditorGUILayout.EndHorizontal();
             }
@@ -123,15 +121,26 @@ public class UnusedAssetsCleaner : EditorWindow
         }
     }
 
+    private void DeleteAsset(string assetPath)
+    {
+        if (assetPath == "Assets") // Assetsフォルダ自体を削除しない
+        {
+            Debug.LogWarning("Cannot delete the 'Assets' folder.");
+            return;
+        }
+
+        if (AssetDatabase.DeleteAsset(assetPath))
+        {
+            Debug.Log($"Deleted unused asset: {assetPath}");
+            unusedAssets.Remove(assetPath);
+        }
+    }
+
     private void DeleteAllUnusedAssets()
     {
         foreach (var asset in unusedAssets.ToList())
         {
-            if (AssetDatabase.DeleteAsset(asset))
-            {
-                Debug.Log($"Deleted unused asset: {asset}");
-                unusedAssets.Remove(asset);
-            }
+            DeleteAsset(asset);
         }
     }
 }

@@ -8,16 +8,16 @@ EditorBuildSettings:
   - enabled: 0
     path: Assets/Scenes/SampleScene.unity
     guid: 2cda990e2423bbf4892e6590ba056729
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/StartMenuScene.unity
     guid: 38f8c0eced2b91b4b859a460eda53093
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/Algore.unity
     guid: 205384cd0df21ae49af6af311740ce26
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/TestMoveScene.unity
     guid: bb6a3eda2d88d6f489953b649234e5b3
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/GameOverScene.unity
     guid: 572f611da114ac14d893656c019a5636
   - enabled: 1
