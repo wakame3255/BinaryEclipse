@@ -14,20 +14,17 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::HunterDate
   _characterInformation:
   - _characterType: 0
-    _hp: 20
-    _attack: 324
+    _hp: 100
     _characterPrefab: {fileID: 6084560874897942402, guid: 686042192b08ff74d97142a47c408fad, type: 3}
     _bulletFactorys:
     - {fileID: 2812363607279090795, guid: dbacdbbba1d144843b956e29e4042b96, type: 3}
   - _characterType: 1
-    _hp: 20
-    _attack: 324
+    _hp: 10
     _characterPrefab: {fileID: 4167812812058643834, guid: d724549957cc59d4eab99d1044c52db3, type: 3}
     _bulletFactorys:
     - {fileID: 2812363607279090795, guid: dbacdbbba1d144843b956e29e4042b96, type: 3}
   - _characterType: 2
-    _hp: 20
-    _attack: 324
+    _hp: 10
     _characterPrefab: {fileID: 3958008437112923585, guid: 94faa93f1ba626845a8bfac51862a9db, type: 3}
     _bulletFactorys:
     - {fileID: 2812363607279090795, guid: dbacdbbba1d144843b956e29e4042b96, type: 3}

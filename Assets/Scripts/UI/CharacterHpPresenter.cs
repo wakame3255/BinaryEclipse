@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using R3;
 
-public class CharacterHpPresenter : MonoBehaviour
+public class CharacterHpPresenter 
 {
     const int HP_Y_POSITION = 50;
     const int HP_X_POSITION = 25;
