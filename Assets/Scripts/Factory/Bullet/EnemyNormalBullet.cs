@@ -19,7 +19,7 @@ public class EnemyNormalBullet : BaseBullet
         base.MoveBullet();
     }
 
-    private async void StartDestroyTimerAsync()
+    private new async void StartDestroyTimerAsync()
     {
         await Task.Delay(_destroyTime * 1000);
         gameObject.SetActive(false);

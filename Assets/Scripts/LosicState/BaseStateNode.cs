@@ -81,7 +81,7 @@ public abstract class BaseStateNode : MonoBehaviour, IDragHandler
     {
         if (_inNode == null || _outNode == null)
         {
-            Debug.LogError(transform.name + " " + "子のノードがないよ");
+            //Debug.LogError(transform.name + " " + "子のノードがないよ");
             _isComponentNull = true;
         }
     }
