@@ -1840,7 +1840,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Attack
+  m_Text: "\u653B\u6483"
 --- !u!1 &3185435543234284799
 GameObject:
   m_ObjectHideFlags: 0
@@ -2170,9 +2170,9 @@ MonoBehaviour:
   m_Value: 0
   m_Options:
     m_Options:
-    - m_Text: Enemy
+    - m_Text: "\u6575"
       m_Image: {fileID: 0}
-    - m_Text: Ally
+    - m_Text: "\u5473\u65B9"
       m_Image: {fileID: 0}
   m_OnValueChanged:
     m_PersistentCalls:
@@ -2964,7 +2964,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Enemy
+  m_Text: "\u6575"
 --- !u!1 &5492833634692171021
 GameObject:
   m_ObjectHideFlags: 0
@@ -3681,11 +3681,11 @@ MonoBehaviour:
   m_Value: 0
   m_Options:
     m_Options:
-    - m_Text: Attack
+    - m_Text: "\u653B\u6483"
       m_Image: {fileID: 0}
     - m_Text: Skill
       m_Image: {fileID: 0}
-    - m_Text: Move
+    - m_Text: "\u79FB\u52D5"
       m_Image: {fileID: 0}
   m_OnValueChanged:
     m_PersistentCalls:

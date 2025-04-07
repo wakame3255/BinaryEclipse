@@ -78,7 +78,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Enemy
+  m_Text: "\u6575"
 --- !u!1 &1000886517219090464
 GameObject:
   m_ObjectHideFlags: 0
@@ -1037,9 +1037,9 @@ MonoBehaviour:
   m_Value: 0
   m_Options:
     m_Options:
-    - m_Text: Enemy
+    - m_Text: "\u6575"
       m_Image: {fileID: 0}
-    - m_Text: Ally
+    - m_Text: "\u5473\u65B9"
       m_Image: {fileID: 0}
   m_OnValueChanged:
     m_PersistentCalls:
@@ -1553,7 +1553,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 14.8}
+  m_AnchoredPosition: {x: 0, y: 31.47}
   m_SizeDelta: {x: 200, y: 200}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &8410162822941209394
@@ -1597,11 +1597,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 'Move
-
-    follow
-
-'
+  m_Text: "\u79FB\u52D5\u65B9\u5411"
 --- !u!1 &9058671612428459473
 GameObject:
   m_ObjectHideFlags: 0

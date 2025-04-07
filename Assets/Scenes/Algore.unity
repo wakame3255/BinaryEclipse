@@ -717,8 +717,8 @@ MonoBehaviour:
   _tabButtons:
   - {fileID: 1918825224}
   - {fileID: 1987526088}
-  _selectedColor: {r: 0.4811321, g: 0.4811321, b: 0.4811321, a: 1}
-  _unselectedColor: {r: 1, g: 1, b: 1, a: 1}
+  _selectedColor: {r: 1, g: 1, b: 1, a: 1}
+  _unselectedColor: {r: 0.509434, g: 0.509434, b: 0.509434, a: 1}
   _selectedSize: {x: 240, y: 380}
   _unselectedSize: {x: 170, y: 340}
 --- !u!224 &220796970 stripped
@@ -6950,7 +6950,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.5283019, g: 0.5283019, b: 0.5283019, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -7507,7 +7507,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0.509434, g: 0.509434, b: 0.509434, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
